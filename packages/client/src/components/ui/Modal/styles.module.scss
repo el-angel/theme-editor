@@ -1,0 +1,24 @@
+.container {
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 99;
+  left: 50vw;
+  transform: translate(-50%, 0);
+}
+
+.center {
+  top: 50vh;
+  transform: translate(-50%, -50%);
+}
+
+.overlay {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+}

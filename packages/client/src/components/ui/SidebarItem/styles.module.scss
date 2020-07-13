@@ -1,0 +1,45 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1px solid var(--focusBorder);
+  align-items: center;
+  padding: 10px 10px;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+
+  &.active {
+    background-color: #ffffff20;
+  }
+
+  &:not(.active):hover {
+    transition: 0.1s background ease-in-out;
+    background-color: #ffffff20;
+  }
+}
+
+.warning {
+  font-family: var(--font-primary);
+  margin-right: 10px;
+}
+
+.name {
+  max-width: 90%;
+  text-overflow: ellipsis;
+  overflow: auto;
+  font-size: 14px;
+}
+
+.color {
+  cursor: pointer;
+  width: 14px;
+  height: 14px;
+}
+
+.input {
+  border: 0;
+  outline: 0;
+  font-size: 14px;
+  font-family: var(--font-code);
+  background: transparent;
+}

@@ -1,0 +1,24 @@
+.rules {
+  overflow: scroll;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0px;
+
+  &::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: transparent;
+  }
+}
+
+.content {
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: 0px;
+}

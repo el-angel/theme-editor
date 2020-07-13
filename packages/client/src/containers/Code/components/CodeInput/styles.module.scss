@@ -1,0 +1,18 @@
+.codeText {
+  font-size: 14px;
+  line-height: 20px;
+  font-family: var(--font-code);
+}
+
+.textArea {
+  width: 100%;
+  resize: none;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  padding-left: 40px;
+  box-sizing: border-box;
+  padding-top: 20px;
+  margin: 0;
+  color: var(--foreground);
+}

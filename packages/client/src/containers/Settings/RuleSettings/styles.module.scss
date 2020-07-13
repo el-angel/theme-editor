@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.colorContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.top {
+  display: flex;
+  flex-grow: 1;
+}
+
+.left {
+  flex-direction: column;
+  padding: 0px 0 20px 18px;
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
+.tools {
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.picker {
+  margin-bottom: 20px;
+}
+
+.delete {
+  font-size: 12px;
+}
+
+.scopesList {
+  margin-top: 10px;
+}
+
+.addScope {
+  border-top: 1px solid var(--input-border);
+
+  & .addScopeInput {
+    color: var(--input-foreground);
+    background-color: var(--input-background);
+
+    font-size: 14px;
+    font-family: var(--font-code);
+    border: 0;
+    width: 100%;
+    padding: 8px 10px;
+    outline: 0;
+
+    &::placeholder {
+      color: var(--input-placeholderForeground);
+    }
+  }
+}

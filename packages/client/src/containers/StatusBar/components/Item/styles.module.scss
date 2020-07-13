@@ -1,0 +1,13 @@
+.item {
+  padding: 0px 6px;
+  margin-right: 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--statusBarItem-hoverBackground);
+  }
+
+  &:active {
+    background-color: var(--statusBarItem-activeBackground);
+  }
+}

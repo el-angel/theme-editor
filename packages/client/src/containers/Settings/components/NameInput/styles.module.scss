@@ -1,0 +1,22 @@
+.name {
+  font-size: 16px;
+  font-family: var(--font-code);
+  padding: 4px 8px 8px 0;
+  height: 24px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  width: 90%;
+  cursor: pointer;
+  color: var(--foreground);
+
+  &.readonly {
+    cursor: default;
+  }
+}
+
+.editable:not(.readonly) {
+  cursor: text;
+  padding-bottom: 6px;
+  border-bottom: 2px solid black;
+}

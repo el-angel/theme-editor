@@ -1,0 +1,6 @@
+build
+config
+scripts
+node_modules
+.eslintrc.js
+*.d.ts

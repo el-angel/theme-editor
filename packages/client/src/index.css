@@ -1,0 +1,32 @@
+:root {
+  --font-primary: -apple-system,
+  /* // Chrome < 56 for OS X (San Francisco) */
+  BlinkMacSystemFont,
+  /* // Windows */
+  "Segoe UI",
+  /* // Android */
+  "Roboto",
+  /* // Basic web fallback */
+  "Helvetica Neue", Arial, sans-serif,
+  /* // Emoji fonts */
+  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  --font-code: Menlo, Monaco, Consolas, 'Courier New',
+    monospace, "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: #f9f9f9;
+}
+
+code {
+  font-family: var(--font-code);
+}
+
+#modal {
+  position: relative;
+  z-index: 999;
+}

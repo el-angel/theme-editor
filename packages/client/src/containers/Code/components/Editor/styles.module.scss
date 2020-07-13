@@ -8,10 +8,6 @@
 .container {
   width: 100%;
 
-  @media screen and (max-width: 995px), screen and (max-height: 700px) {
-    height: fit-content;
-  }
-
   &::-webkit-scrollbar {
     width: 0px;
     background: transparent;

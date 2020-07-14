@@ -8,30 +8,12 @@ import { themeStyle } from '~/state/theme';
 import SettingsMenuItem from '~/containers/Code/components/SettingsMenu/Item';
 
 import { GeneralScope, Rule } from '~/types';
+import { Theme, ThemeRule } from '~/types/theme';
 
 interface Options {
   name: string;
   generalScopes: GeneralScope[];
   rules: Rule[];
-  type: 'dark' | 'light';
-}
-
-interface ThemeRule {
-  name: string;
-  scope: string[];
-  settings: {
-    fontStyle?: string;
-    foreground: string;
-  };
-}
-
-interface Theme {
-  name: string;
-  colors: {
-    [scope: string]: string;
-  };
-  semanticHighlighting: boolean;
-  tokenColors: ThemeRule[];
   type: 'dark' | 'light';
 }
 

@@ -5,6 +5,8 @@ import { useRecoilValue } from 'recoil';
 
 import generalScopeManager from '~/state/generalScopes';
 
+import Open from '~/containers/Code/components/SettingsMenu/Items/Open';
+
 import useOutsideClick from '~/hooks/useOutsideClick';
 
 import getContrastColor from '~/helpers/getContrastColor';
@@ -51,7 +53,7 @@ const SettingsMenu: React.FC = () => {
       >
         <ul>
           <New />
-          <li className={css.disabled}>Open</li>
+          <Open />
           <li className={css.divider}></li>
           <CustomizeCode />
           <li className={css.divider}></li>

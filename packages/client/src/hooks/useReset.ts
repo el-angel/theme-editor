@@ -8,10 +8,10 @@ import { GENERAL_SCOPES } from '~/constants';
 
 import { Rule } from '~/types';
 
-const useReset = (): (() => {}) => {
-  const _reset = useRecoilCallback(({ reset, snapshot, set }) => async (): Promise<void> => {
-    reset(themeStyle);
-    GENERAL_SCOPES.map(name => reset(generalScopeManager(name)));
+const useReset = (): (() => void) => {
+  const reset = useRecoilCallback(({ reset: _reset, snapshot, set }) => async (): Promise<void> => {
+    _reset(themeStyle);
+    GENERAL_SCOPES.map(name => _reset(generalScopeManager(name)));
 
     const ids = await snapshot.getPromise(getRuleIds);
 
@@ -31,7 +31,7 @@ const useReset = (): (() => {}) => {
     });
   });
 
-  return _reset;
+  return reset;
 };
 
 export default useReset;

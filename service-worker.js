@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/textmate-editor/precache-manifest.6ca00731baeefeb7c395b4a265ef7cdb.js"
+  "/textmate-editor/precache-manifest.e072c92ee3a5a26d25945acfafd64dc7.js"
 );
 
 self.addEventListener('message', (event) => {

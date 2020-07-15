@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "528af9d116e37c72f7244aa6812c38e8",
+    "revision": "c84618916b5774b867efd28bee30a861",
     "url": "/textmate-editor/index.html"
   },
   {
-    "revision": "010c931e1d7743d0ac5f",
+    "revision": "0f676fee66caa681b9f4",
     "url": "/textmate-editor/static/css/main.5c6afd9f.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/textmate-editor/static/js/2.6f8c5d60.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "010c931e1d7743d0ac5f",
-    "url": "/textmate-editor/static/js/main.3961064f.chunk.js"
+    "revision": "0f676fee66caa681b9f4",
+    "url": "/textmate-editor/static/js/main.fbfbf591.chunk.js"
   },
   {
     "revision": "4528afe2429cf09b5357",

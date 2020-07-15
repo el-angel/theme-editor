@@ -2,7 +2,6 @@ import React, { Profiler } from 'react';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import ReactDOM from 'react-dom';
-import { unstable_trace as trace } from 'scheduler/tracing';
 
 import App from './App';
 

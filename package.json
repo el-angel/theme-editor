@@ -12,7 +12,8 @@
   },
   "private": true,
   "scripts": {
-    "start": "yarn workspace @anche/textmate-grammar-parser run build && yarn workspace @anche/tmtheme-client run start",
+    "start": "yarn workspace @anche/textmate-grammar-parser run build && yarn start:editor",
+    "start:editor": "yarn workspace @anche/tmtheme-client run start",
     "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,scss,js,json}\""
   },
   "husky": {

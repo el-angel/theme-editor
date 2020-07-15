@@ -62,7 +62,7 @@ const CodeView: React.FC = () => {
         {codeObj.lines.map(line => (
           <Line key={line.number} lineNumber={line.number}>
             {line.content.map((subline, i) => {
-              const sublineKey = `${line.number}-"${subline.text}"-${i}`;
+              const sublineKey = `${line.number}-"${subline.content}"-${i}`;
               return (
                 <SubLine
                   rules={rules}

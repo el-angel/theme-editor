@@ -4,7 +4,7 @@ import initialize from './init';
 type Scope = string;
 
 export interface SubLine {
-  text: string;
+  content: string;
   scopes: Scope[];
 }
 export interface Line {
@@ -12,6 +12,7 @@ export interface Line {
   content: SubLine[];
 }
 export interface Code {
+  scopeName: string;
   lines: Line[];
 }
 
@@ -82,6 +83,7 @@ class GrammarHelper<LSN extends string> {
     const text = _code.split('\n');
 
     const code: Code = {
+      scopeName: scope,
       lines: [],
     };
 
@@ -99,7 +101,7 @@ class GrammarHelper<LSN extends string> {
         const token = lineTokens.tokens[j];
 
         const linePart: SubLine = {
-          text: line.substring(token.startIndex, token.endIndex),
+          content: line.substring(token.startIndex, token.endIndex),
           scopes: token.scopes.filter((e, i) => token.scopes.indexOf(e) === i),
         };
 

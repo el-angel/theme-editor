@@ -1,5 +1,5 @@
 import React from 'react';
-import { Code as CodeType, initialize } from '@anche/textmate-grammar-parser';
+import { initialize } from '@anche/textmate-grammar-parser';
 import { RecoilRoot } from 'recoil';
 
 import { rawCode } from '~/state/code';
@@ -48,7 +48,7 @@ const initializeState = ({ set }): void => {
     }
 
     if (key.includes(atomKey('RawCode'))) {
-      const code = storage.get<CodeType>(key)!;
+      const code = storage.get<string>(key)!;
       set(rawCode, code);
     }
 

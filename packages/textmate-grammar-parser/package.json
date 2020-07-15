@@ -35,7 +35,7 @@
     "build:esm": "tsc --noEmit false --target ES2015 --module esnext --outDir ./esm",
     "build:cjs": "tsc --noEmit false",
     "prepack": "yarn build",
-    "watch": "tsc -w --noEmit false --preserveWatchOutput",
+    "watch": "tsc --noEmit false -w --preserveWatchOutput",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts,.tsx .",
     "precommit": "tsc --noEmit && lint-staged"
@@ -50,6 +50,7 @@
     "url": "https://github.com/el-angel/tmtheme-editor/issues"
   },
   "dependencies": {
+    "monaco-textmate": "^3.0.1",
     "onigasm": "^2.2.4"
   },
   "devDependencies": {

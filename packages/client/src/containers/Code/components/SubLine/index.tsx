@@ -28,7 +28,7 @@ const getClass = (scopes: string, empty?: boolean): string => {
   });
 };
 
-const SubLine: React.FC<Props> = ({ rules, scopes, text, selected, onClick, onHover, id }) => {
+const SubLine: React.FC<Props> = ({ rules, scopes, content, selected, onClick, onHover, id }) => {
   const [activeScope, setActiveScope] = React.useState('');
   const [rule, setRule] = React.useState<Nullable<Rule>>(null);
 
@@ -40,7 +40,7 @@ const SubLine: React.FC<Props> = ({ rules, scopes, text, selected, onClick, onHo
 
   const editorBackground = useRecoilValue(generalScopeManager('editor.background')) as GeneralScope;
 
-  const empty = !text.trim();
+  const empty = !content.trim();
 
   return (
     <span
@@ -59,7 +59,7 @@ const SubLine: React.FC<Props> = ({ rules, scopes, text, selected, onClick, onHo
           }
         : {})}
     >
-      {text || ' '}
+      {content || ' '}
     </span>
   );
 };

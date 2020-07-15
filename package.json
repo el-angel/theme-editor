@@ -12,8 +12,12 @@
   },
   "private": true,
   "scripts": {
-    "start": "yarn workspace @anche/textmate-grammar-parser run build && yarn workspace @anche/tmtheme-client run start",
-    "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,scss,js,json}\""
+    "start": "yarn workspace @anche/textmate-grammar-parser run build && yarn start:editor",
+    "start:editor": "yarn workspace @anche/tmtheme-client run start",
+    "watch": "lerna run watch --stream",
+    "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,scss,js,json}\"",
+    "p:client": "yarn workspace @anche/tmtheme-client",
+    "p:parser": "yarn workspace @anche/textmate-grammar-parser"
   },
   "husky": {
     "hooks": {

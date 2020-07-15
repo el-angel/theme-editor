@@ -16,7 +16,7 @@ type Props = SubLineType & {
   rules: Rule[];
   id: string;
   selected: boolean;
-  onClick: (scopes: string[], rule: Rule, id: string, isSelected: boolean) => void;
+  onClick: (scopes: string[], rule: Rule, id: string) => void;
   onHover: (scopes: string[]) => void;
 };
 
@@ -54,7 +54,7 @@ const SubLine: React.FC<Props> = ({ rules, scopes, content, selected, onClick, o
       }
       {...(!empty
         ? {
-            onClick: (): void => onClick(scopes, rule!, id, selected),
+            onClick: (): void => onClick(scopes, rule!, id),
             onMouseEnter: (): void => onHover(scopes),
           }
         : {})}

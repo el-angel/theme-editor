@@ -10,15 +10,17 @@ export const Languages = {
   'source.json': 'JSON',
 };
 
+const getUrl = (file: string): string => `${process.env.PUBLIC_URL}/grammar/${file}`;
+
 const languageService = new GrammarHelper({
   filePaths: {
-    'source.ts': '/grammar/typescript.json',
-    'source.tsx': '/grammar/typescriptreact.json',
-    'source.js': '/grammar/javascript.json',
-    'source.jsx': '/grammar/javascriptreact.json',
-    'source.css': '/grammar/css.json',
-    'text.html.basic': '/grammar/html.json',
-    'source.json': '/grammar/json.json',
+    'source.ts': getUrl('typescript.json'),
+    'source.tsx': getUrl('typescriptreact.json'),
+    'source.js': getUrl('javascript.json'),
+    'source.jsx': getUrl('javascriptreact.json'),
+    'source.css': getUrl('css.json'),
+    'text.html.basic': getUrl('html.json'),
+    'source.json': getUrl('json.json'),
   },
 });
 

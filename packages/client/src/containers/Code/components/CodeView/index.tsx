@@ -25,30 +25,28 @@ const CodeView: React.FC = () => {
   const rules = useRecoilValue(getAllRules);
   const codeObj = useRecoilValue(parsedCode);
   const [selected, setSelected] = useRecoilState(sublineSelected);
-  const setInfoScopes = useSetRecoilState(infoState);
+  const setInfoState = useSetRecoilState(infoState);
   const viewRule = useViewRule();
 
   const onHoverSubline = React.useCallback(
     (scopes: string[]): void => {
-      setInfoScopes(scopes);
+      setInfoState({
+        scopes,
+      });
     },
-    [setInfoScopes],
+    [setInfoState],
   );
 
   const onClickSubline = React.useCallback(
-    (scopes: string[], rule: Rule, id: string, isSelected: boolean): void => {
+    (scopes: string[], rule: Rule, id: string): void => {
       viewRule(rule || '');
 
-      if (!isSelected) {
-        setSelected(id);
-        setInfoScopes(scopes);
-        return;
-      }
-
-      setSelected('');
-      setInfoScopes([]);
+      setInfoState({
+        selected: id,
+        scopes,
+      });
     },
-    [setInfoScopes, setSelected, viewRule],
+    [setInfoState, viewRule],
   );
 
   return (

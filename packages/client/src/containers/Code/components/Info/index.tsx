@@ -1,6 +1,13 @@
 import React from 'react';
 import cx from 'classnames';
-import { atom, selector, useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import {
+  atom,
+  DefaultValue,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from 'recoil';
 
 import ruleManager, { getAllRules } from '~/state/rules';
 import editRuleState from '~/state/rules/edit';
@@ -20,23 +27,48 @@ export const _infoState = atom<string[]>({
   default: [],
 });
 
-export const infoState = selector<string[]>({
+interface InfoState {
+  selected?: string;
+  scopes: string[];
+}
+
+export const infoState = selector<InfoState>({
   key: 'scopesInfoSelector',
-  get: ({ get }) => get(_infoState),
-  set: ({ set, get }, input) => {
+  get: ({ get }) => {
+    const scopes = get(_infoState);
     const selected = get(sublineSelected);
 
-    if (selected) {
+    return {
+      selected,
+      scopes,
+    };
+  },
+  set: ({ set, get, reset }, input) => {
+    if (input instanceof DefaultValue) {
       return;
     }
 
-    set(_infoState, input);
+    const selected = get(sublineSelected);
+
+    if (selected && !input.selected) {
+      return;
+    }
+
+    if (selected === input.selected) {
+      // deselect
+      reset(sublineSelected);
+      reset(_infoState);
+      return;
+    }
+
+    set(sublineSelected, input.selected || '');
+    set(_infoState, input.scopes);
   },
 });
 
 const Info: React.FC = () => {
   const definedRules = useRecoilValue(getAllRules);
-  const scopes = useRecoilValue(infoState);
+  const { scopes } = useRecoilValue(infoState);
   const activateRule = useSetRecoilState(activateRuleByScope);
   const id = useRecoilValue(editRuleState);
 

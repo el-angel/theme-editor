@@ -1,32 +1,32 @@
 .container {
-  display: flex;
-  flex-direction: row;
-  position: relative;
-  align-items: center;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    align-items: center;
 }
 
 .hexValue {
-  width: 80px;
-  padding: 5px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  margin-right: 20px;
-  font-family: var(--font-code);
-  font-size: 13px;
+    width: 80px;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    margin-right: 20px;
+    font-family: var(--font-code);
+    font-size: 13px;
 }
 
 .picker {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  padding: 2px;
-  fill: var(--foreground);
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    padding: 2px;
+    fill: var(--foreground);
 }
 
 .input {
-  width: 0px;
-  height: 0px;
-  visibility: hidden;
-  position: absolute;
+    width: 0px;
+    height: 0px;
+    visibility: hidden;
+    position: absolute;
 }

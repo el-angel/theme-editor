@@ -14,27 +14,27 @@ import getGeneralScopesCSS from '~/selectors/generalScopeCSS';
 import { getRulesCSS } from '~/selectors/rulesCSS';
 
 const Sidebar: React.FC = () => {
-  const currentMode = useRecoilValue(mode);
-  const ruleStyle = useRecoilValue(getRulesCSS);
-  const generalStyle = useRecoilValue(getGeneralScopesCSS);
+    const currentMode = useRecoilValue(mode);
+    const ruleStyle = useRecoilValue(getRulesCSS);
+    const generalStyle = useRecoilValue(getGeneralScopesCSS);
 
-  return (
-    <>
-      <div>
-        <Toolbar />
-      </div>
-      <div className={css.content}>
-        <style type="text/css">{ruleStyle}</style>
-        <style type="text/css">{generalStyle}</style>
-        <div className={css.rules}>
-          {currentMode === 'rules' && <Rules />}
+    return (
+        <>
+            <div>
+                <Toolbar />
+            </div>
+            <div className={css.content}>
+                <style type="text/css">{ruleStyle}</style>
+                <style type="text/css">{generalStyle}</style>
+                <div className={css.rules}>
+                    {currentMode === 'rules' && <Rules />}
 
-          {currentMode === 'general' && <General />}
-        </div>
-        <Info />
-      </div>
-    </>
-  );
+                    {currentMode === 'general' && <General />}
+                </div>
+                <Info />
+            </div>
+        </>
+    );
 };
 
 export default Sidebar;

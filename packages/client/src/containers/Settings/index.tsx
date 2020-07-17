@@ -7,13 +7,13 @@ import GeneralSettings from '~/containers/Settings/GeneralSettings';
 import RuleSettings from '~/containers/Settings/RuleSettings';
 
 const Settings: React.FC = () => {
-  const currentMode = useRecoilValue(mode);
+    const currentMode = useRecoilValue(mode);
 
-  if (currentMode === 'general') {
-    return <GeneralSettings />;
-  }
+    if (currentMode === 'general') {
+        return <GeneralSettings />;
+    }
 
-  return <RuleSettings />;
+    return <RuleSettings />;
 };
 
 export default Settings;

@@ -1,15 +1,15 @@
 .icon {
-  width: 24px;
-  height: 24px;
-  padding: 2px;
-  margin-bottom: 20px;
-  display: inline-flex;
-  cursor: pointer;
-  fill: var(--foreground);
-  transition: box-shadow 0.1s ease-in-out;
-
-  &.enabled {
-    box-shadow: inset 0px 0px 6px 3px rgba(0, 0, 0, 0.57);
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+    margin-bottom: 20px;
+    display: inline-flex;
+    cursor: pointer;
+    fill: var(--foreground);
     transition: box-shadow 0.1s ease-in-out;
-  }
+
+    &.enabled {
+        box-shadow: inset 0px 0px 6px 3px rgba(0, 0, 0, 0.57);
+        transition: box-shadow 0.1s ease-in-out;
+    }
 }

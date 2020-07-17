@@ -9,29 +9,31 @@ import { GENERAL_SCOPES } from '~/constants';
 import { Rule } from '~/types';
 
 const useReset = (): (() => void) => {
-  const reset = useRecoilCallback(({ reset: _reset, snapshot, set }) => async (): Promise<void> => {
-    _reset(themeStyle);
-    GENERAL_SCOPES.map(name => _reset(generalScopeManager(name)));
+    const reset = useRecoilCallback(({ reset: _reset, snapshot, set }) => async (): Promise<
+        void
+    > => {
+        _reset(themeStyle);
+        GENERAL_SCOPES.map(name => _reset(generalScopeManager(name)));
 
-    const ids = await snapshot.getPromise(getRuleIds);
+        const ids = await snapshot.getPromise(getRuleIds);
 
-    ids.forEach(async id => {
-      const state = await snapshot.getPromise(ruleManager(id));
+        ids.forEach(async id => {
+            const state = await snapshot.getPromise(ruleManager(id));
 
-      if (state) {
-        const updatedRule: Rule = {
-          ...state,
-          __meta: {
-            state: 'deleted',
-          },
-        };
+            if (state) {
+                const updatedRule: Rule = {
+                    ...state,
+                    __meta: {
+                        state: 'deleted',
+                    },
+                };
 
-        set(ruleManager(id), updatedRule);
-      }
+                set(ruleManager(id), updatedRule);
+            }
+        });
     });
-  });
 
-  return reset;
+    return reset;
 };
 
 export default useReset;

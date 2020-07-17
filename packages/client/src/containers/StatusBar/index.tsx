@@ -15,40 +15,40 @@ import { Languages } from '~/services/language';
 import css from './styles.module.scss';
 
 const StatusBar: React.FC = () => {
-  const [languageOpen, openLanguageSwitcher] = useRecoilState(getModalState('language'));
-  const [themeStyleOpen, openThemeStyleSwitcher] = useRecoilState(getModalState('themeStyle'));
+    const [languageOpen, openLanguageSwitcher] = useRecoilState(getModalState('language'));
+    const [themeStyleOpen, openThemeStyleSwitcher] = useRecoilState(getModalState('themeStyle'));
 
-  const language = useRecoilValue(languageState);
-  const [style] = useRecoilState(themeStyle);
+    const language = useRecoilValue(languageState);
+    const [style] = useRecoilState(themeStyle);
 
-  return (
-    <>
-      <LanguageSwitcher />
-      <ThemeStyleSwitcher />
-      <div className={css.container}>
-        <div className="left">main*</div>
+    return (
+        <>
+            <LanguageSwitcher />
+            <ThemeStyleSwitcher />
+            <div className={css.container}>
+                <div className="left">main*</div>
 
-        <div className="right">
-          <Item
-            onClick={(): void => openThemeStyleSwitcher(!themeStyleOpen)}
-          >{`Style: ${style}`}</Item>
-          <Item onClick={(): void => openLanguageSwitcher(!languageOpen)}>
-            {Languages[language]}
-          </Item>
-          <Item>
-            <a
-              className={css.c_est_moi}
-              href="http://github.com/el-angel"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              el angel @ github
-            </a>
-          </Item>
-        </div>
-      </div>
-    </>
-  );
+                <div className="right">
+                    <Item
+                        onClick={(): void => openThemeStyleSwitcher(!themeStyleOpen)}
+                    >{`Style: ${style}`}</Item>
+                    <Item onClick={(): void => openLanguageSwitcher(!languageOpen)}>
+                        {Languages[language]}
+                    </Item>
+                    <Item>
+                        <a
+                            className={css.c_est_moi}
+                            href="http://github.com/el-angel"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            el angel @ github
+                        </a>
+                    </Item>
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default StatusBar;

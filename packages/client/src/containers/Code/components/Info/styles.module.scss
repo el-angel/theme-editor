@@ -1,36 +1,36 @@
 .info {
-  display: flex;
-  flex-direction: column;
-  border-top: 1px solid var(--panel-border);
-  padding: 10px 0;
-
-  & span {
     display: flex;
-    font-size: 13px;
-    line-height: 23px;
-    cursor: copy;
+    flex-direction: column;
+    border-top: 1px solid var(--panel-border);
+    padding: 10px 0;
 
-    &.exists {
-      cursor: alias;
+    & span {
+        display: flex;
+        font-size: 13px;
+        line-height: 23px;
+        cursor: copy;
+
+        &.exists {
+            cursor: alias;
+        }
     }
-  }
 }
 
 .scope {
-  &:hover {
-    background-color: var(--button-hoverBackground);
-  }
+    &:hover {
+        background-color: var(--button-hoverBackground);
+    }
 
-  padding: 0 10px;
+    padding: 0 10px;
 }
 
 .copied {
-  position: absolute;
-  right: 0;
-  top: 0;
-  font-size: 12px;
-  border-left: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
-  padding: 2px;
-  top: -19px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 12px;
+    border-left: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 2px;
+    top: -19px;
 }

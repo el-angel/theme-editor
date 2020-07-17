@@ -9,30 +9,30 @@ import SidebarItem from '~/components/ui/SidebarItem';
 import { GeneralScope as GeneralScopeType } from '~/types';
 
 interface Props {
-  scope: string;
+    scope: string;
 }
 
 const GeneralScope: React.FC<Props> = ({ scope }) => {
-  const [generalScope] = useRecoilState(generalScopeManager(scope));
+    const [generalScope] = useRecoilState(generalScopeManager(scope));
 
-  const [editingScope, editScope] = useRecoilState(editGeneralScopeState);
+    const [editingScope, editScope] = useRecoilState(editGeneralScopeState);
 
-  const isActive = (generalScope as GeneralScopeType)?.scope === editingScope;
+    const isActive = (generalScope as GeneralScopeType)?.scope === editingScope;
 
-  if (!generalScope) {
-    return null;
-  }
+    if (!generalScope) {
+        return null;
+    }
 
-  return (
-    <>
-      <SidebarItem
-        isActive={isActive}
-        onClick={(): void => editScope(generalScope.scope)}
-        title={generalScope.scope}
-        color={generalScope.color}
-      />
-    </>
-  );
+    return (
+        <>
+            <SidebarItem
+                isActive={isActive}
+                onClick={(): void => editScope(generalScope.scope)}
+                title={generalScope.scope}
+                color={generalScope.color}
+            />
+        </>
+    );
 };
 
 export default GeneralScope;

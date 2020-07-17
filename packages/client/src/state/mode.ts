@@ -8,19 +8,19 @@ import { atomKey, selectorKey } from './../helpers/state';
 type Mode = 'rules' | 'general';
 
 const _mode = atom<Mode>({
-  key: atomKey('Mode'),
-  default: 'rules',
+    key: atomKey('Mode'),
+    default: 'rules',
 });
 
 const mode = selector<Mode>({
-  key: selectorKey('Mode'),
-  get: ({ get }) => get(_mode),
-  set: ({ set }, newMode) => {
-    set(editRuleState, '');
-    set(editGeneralScopeState, '');
+    key: selectorKey('Mode'),
+    get: ({ get }) => get(_mode),
+    set: ({ set }, newMode) => {
+        set(editRuleState, '');
+        set(editGeneralScopeState, '');
 
-    set(_mode, newMode);
-  },
+        set(_mode, newMode);
+    },
 });
 
 export default mode;

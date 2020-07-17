@@ -1,70 +1,70 @@
 .container {
-  height: 100vh;
-  display: grid;
-  grid-template-columns: 30% 70%;
-  grid-template-rows: 1fr 22px;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-template-rows: 1fr 22px;
 
-  grid-template-areas: 'sidebar main' 'statusbar statusbar';
+    grid-template-areas: 'sidebar main' 'statusbar statusbar';
 }
 
 .settings {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  z-index: 99;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    z-index: 99;
 
-  & > * {
-    margin-bottom: 10px;
-    fill: blue !important;
-  }
+    & > * {
+        margin-bottom: 10px;
+        fill: blue !important;
+    }
 }
 
 .statusbar {
-  border-top: 1px solid var(--statusBar-border);
-  grid-area: statusbar;
-  background-color: var(--statusBar-background);
-  color: var(--statusBar-foreground);
+    border-top: 1px solid var(--statusBar-border);
+    grid-area: statusbar;
+    background-color: var(--statusBar-background);
+    color: var(--statusBar-foreground);
 }
 
 .editor {
-  display: flex;
-  height: 100%;
-  flex-direction: row;
+    display: flex;
+    height: 100%;
+    flex-direction: row;
 }
 
 .sidebar {
-  background-color: var(--sideBar-background);
-  color: var(--sideBar-foreground);
-  box-sizing: border-box;
-  grid-area: sidebar;
-  border-right: 1px solid var(--sideBar-border);
-  display: flex;
-  flex-direction: column;
+    background-color: var(--sideBar-background);
+    color: var(--sideBar-foreground);
+    box-sizing: border-box;
+    grid-area: sidebar;
+    border-right: 1px solid var(--sideBar-border);
+    display: flex;
+    flex-direction: column;
 }
 
 .main {
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  grid-area: main;
-  background-color: var(--editor-background);
-  color: var(--editor-foreground);
-  border-color: var(--focusBorder);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    grid-area: main;
+    background-color: var(--editor-background);
+    color: var(--editor-foreground);
+    border-color: var(--focusBorder);
 }
 
 .code {
-  display: flex;
-  position: relative;
-  overflow: scroll;
-  flex-shrink: 1;
-  flex-grow: 1;
-  flex-basis: 0px;
+    display: flex;
+    position: relative;
+    overflow: scroll;
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-basis: 0px;
 }
 
 .bottom {
-  width: 100%;
-  height: auto;
+    width: 100%;
+    height: auto;
 }

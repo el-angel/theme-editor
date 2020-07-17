@@ -8,33 +8,33 @@ import { Rule } from '~/types';
 type ReturnType = (input: Rule | string) => void;
 
 const useDeleteRule = (): ReturnType => {
-  const [editingId, setEditId] = useRecoilState(editRuleState);
+    const [editingId, setEditId] = useRecoilState(editRuleState);
 
-  const deleteRule = useRecoilCallback(
-    ({ set, snapshot }) => async (input: Rule | string): Promise<void> => {
-      const id = typeof input === 'string' ? input : input.id;
+    const deleteRule = useRecoilCallback(
+        ({ set, snapshot }) => async (input: Rule | string): Promise<void> => {
+            const id = typeof input === 'string' ? input : input.id;
 
-      const state = await snapshot.getPromise(ruleManager(id));
+            const state = await snapshot.getPromise(ruleManager(id));
 
-      if (state) {
-        const updatedRule: Rule = {
-          ...state,
-          __meta: {
-            state: 'deleted',
-          },
-        };
+            if (state) {
+                const updatedRule: Rule = {
+                    ...state,
+                    __meta: {
+                        state: 'deleted',
+                    },
+                };
 
-        set(ruleManager(id), updatedRule);
-      }
+                set(ruleManager(id), updatedRule);
+            }
 
-      if (editingId === id) {
-        setEditId('');
-      }
-    },
-    [editingId, setEditId],
-  );
+            if (editingId === id) {
+                setEditId('');
+            }
+        },
+        [editingId, setEditId],
+    );
 
-  return deleteRule;
+    return deleteRule;
 };
 
 export default useDeleteRule;

@@ -13,39 +13,39 @@ import Panel from '~/components/ui/Panel';
 import css from './styles.module.scss';
 
 const GeneralSettings: React.FC = () => {
-  const [scope, setScope] = useRecoilState(editGeneralScopeState);
+    const [scope, setScope] = useRecoilState(editGeneralScopeState);
 
-  const [generalScope, updateGeneralScope] = useRecoilState(generalScopeManager(scope));
+    const [generalScope, updateGeneralScope] = useRecoilState(generalScopeManager(scope));
 
-  const onChangeColor = React.useCallback(
-    (color: string) => {
-      updateGeneralScope({
-        ...generalScope!,
-        color,
-      });
-    },
-    [updateGeneralScope, generalScope],
-  );
+    const onChangeColor = React.useCallback(
+        (color: string) => {
+            updateGeneralScope({
+                ...generalScope!,
+                color,
+            });
+        },
+        [updateGeneralScope, generalScope],
+    );
 
-  if (!generalScope || !scope) {
-    return null;
-  }
+    if (!generalScope || !scope) {
+        return null;
+    }
 
-  return (
-    <Panel onClose={(): void => setScope(undefined)}>
-      <div className={css.left}>
-        <NameInput readonly value={generalScope.scope} />
-      </div>
-      <div className={css.tools}>
-        <ColorPicker value={generalScope.color} onChange={onChangeColor} />
-      </div>
-      <div className={css.colorContainer}>
-        <Swatches
-          color={generalScope.color}
-          onColorSelect={(color): void => onChangeColor(color)}
-        />
-      </div>
-    </Panel>
-  );
+    return (
+        <Panel onClose={(): void => setScope(undefined)}>
+            <div className={css.left}>
+                <NameInput readonly value={generalScope.scope} />
+            </div>
+            <div className={css.tools}>
+                <ColorPicker value={generalScope.color} onChange={onChangeColor} />
+            </div>
+            <div className={css.colorContainer}>
+                <Swatches
+                    color={generalScope.color}
+                    onColorSelect={(color): void => onChangeColor(color)}
+                />
+            </div>
+        </Panel>
+    );
 };
 export default GeneralSettings;

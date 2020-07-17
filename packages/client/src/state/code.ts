@@ -44,44 +44,44 @@ export default Viewer;
 `;
 
 const _rawCode = atom<string>({
-  key: atomKey('RawCode'),
-  default: initCode,
+    key: atomKey('RawCode'),
+    default: initCode,
 });
 
 export const rawCode = selector<string>({
-  key: selectorKey('RawCode__Selector'),
-  get: ({ get }) => {
-    return get(_rawCode);
-  },
-  set: ({ set, get }, input) => {
-    set(_rawCode, input);
+    key: selectorKey('RawCode__Selector'),
+    get: ({ get }) => {
+        return get(_rawCode);
+    },
+    set: ({ set, get }, input) => {
+        set(_rawCode, input);
 
-    /**
-     * @TODO Replace when Atom Effects is introduced
-     */
-    storage.set(atomKey('RawCode'), get(_rawCode));
-  },
+        /**
+         * @TODO Replace when Atom Effects is introduced
+         */
+        storage.set(atomKey('RawCode'), get(_rawCode));
+    },
 });
 
 export const editCodeState = atom<boolean>({
-  key: atomKey('EditCode'),
-  default: false,
+    key: atomKey('EditCode'),
+    default: false,
 });
 
 const parsedCode = selector<Code>({
-  key: selectorKey('Code'),
-  get: async ({ get }) => {
-    const code = get(_rawCode);
-    const language = get(languageState);
-    const response = await languageService.parse(code, language);
+    key: selectorKey('Code'),
+    get: async ({ get }) => {
+        const code = get(_rawCode);
+        const language = get(languageState);
+        const response = await languageService.parse(code, language);
 
-    return response;
-  },
+        return response;
+    },
 });
 
 export const selectedSubline = atom<Nullable<string>>({
-  key: atomKey('SelectedSubline'),
-  default: '',
+    key: atomKey('SelectedSubline'),
+    default: '',
 });
 
 export default parsedCode;

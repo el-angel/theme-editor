@@ -1,33 +1,33 @@
 .container {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 .swatchGroup {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  margin-left: 1px;
-  height: 100%;
-  position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    margin-left: 1px;
+    height: 100%;
+    position: relative;
 }
 
 .swatch {
-  position: relative;
-  width: 50px;
-  height: calc(100% / 6);
-  margin-bottom: 1px;
-  cursor: pointer;
+    position: relative;
+    width: 50px;
+    height: calc(100% / 6);
+    margin-bottom: 1px;
+    cursor: pointer;
 
-  &:last-child {
-    margin-bottom: 0;
-  }
+    &:last-child {
+        margin-bottom: 0;
+    }
 
-  &:hover {
-    box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 15px;
-    transition: 0.15s box-shadow ease-out;
-    z-index: 9;
-  }
+    &:hover {
+        box-shadow: rgba(0, 0, 0, 0.5) 0px 4px 15px;
+        transition: 0.15s box-shadow ease-out;
+        z-index: 9;
+    }
 }

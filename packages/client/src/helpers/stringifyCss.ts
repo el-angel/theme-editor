@@ -1,24 +1,24 @@
 import { CSS } from '~/types';
 
 const stringifyCss = (obj: CSS): string => {
-  const css = Object.keys(obj).reduce((acc: string, className: string) => {
-    const props = obj[className];
+    const css = Object.keys(obj).reduce((acc: string, className: string) => {
+        const props = obj[className];
 
-    acc += `.${className} {\n`;
+        acc += `.${className} {\n`;
 
-    Object.keys(props).map(property => {
-      const cssProperty = property.replace(/[A-Z]/g, m => '-' + m.toLowerCase());
+        Object.keys(props).map(property => {
+            const cssProperty = property.replace(/[A-Z]/g, m => '-' + m.toLowerCase());
 
-      acc += `${cssProperty}: ${props[property]};\n`;
-    });
+            acc += `${cssProperty}: ${props[property]};\n`;
+        });
 
-    acc += `}\n`;
-    acc += '\n';
+        acc += `}\n`;
+        acc += '\n';
 
-    return acc;
-  }, '');
+        return acc;
+    }, '');
 
-  return css;
+    return css;
 };
 
 export default stringifyCss;

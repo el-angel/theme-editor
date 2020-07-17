@@ -6,15 +6,15 @@ import { getAllRules } from '~/state/rules';
 import Rule from '~/containers/Sidebar/components/Rule';
 
 const Rules: React.FC = () => {
-  const rules = useRecoilValue(getAllRules);
+    const rules = useRecoilValue(getAllRules);
 
-  return (
-    <>
-      {rules.map(rule => (
-        <Rule key={rule.id} {...rule} />
-      ))}
-    </>
-  );
+    return (
+        <>
+            {rules.map(rule => (
+                <Rule key={rule.id} {...rule} />
+            ))}
+        </>
+    );
 };
 
 export default Rules;

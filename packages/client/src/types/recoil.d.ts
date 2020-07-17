@@ -1,298 +1,298 @@
 declare module 'recoil' {
-  // Type rules for recoil 0.10
-  // Project: https://github.com/facebookexperimental/recoil#readme
-  // Rules by: Christian Santos <https://github.com/csantos42>
-  // Rules: https://github.com/DefinitelyTyped/DefinitelyTyped
-  // Minimum TypeScript Version: 3.7
+    // Type rules for recoil 0.10
+    // Project: https://github.com/facebookexperimental/recoil#readme
+    // Rules by: Christian Santos <https://github.com/csantos42>
+    // Rules: https://github.com/DefinitelyTyped/DefinitelyTyped
+    // Minimum TypeScript Version: 3.7
 
-  // state.d.ts
-  type NodeKey = string;
-  type AtomValues = Map<NodeKey, Loadable<any>>;
-  type ComponentCallback = (state: TreeState) => void;
-  type TreeState = Readonly<{
-    isSnapshot: boolean;
-    transactionMetadata: object;
-    dirtyAtoms: Set<NodeKey>;
-    atomValues: AtomValues;
-    nonvalidatedAtoms: Map<NodeKey, unknown>;
-    nodeDeps: Map<NodeKey, Set<NodeKey>>;
-    nodeToNodeSubscriptions: Map<NodeKey, Set<NodeKey>>;
-    nodeToComponentSubscriptions: Map<NodeKey, Map<number, [string, ComponentCallback]>>;
-  }>;
+    // state.d.ts
+    type NodeKey = string;
+    type AtomValues = Map<NodeKey, Loadable<any>>;
+    type ComponentCallback = (state: TreeState) => void;
+    type TreeState = Readonly<{
+        isSnapshot: boolean;
+        transactionMetadata: object;
+        dirtyAtoms: Set<NodeKey>;
+        atomValues: AtomValues;
+        nonvalidatedAtoms: Map<NodeKey, unknown>;
+        nodeDeps: Map<NodeKey, Set<NodeKey>>;
+        nodeToNodeSubscriptions: Map<NodeKey, Set<NodeKey>>;
+        nodeToComponentSubscriptions: Map<NodeKey, Map<number, [string, ComponentCallback]>>;
+    }>;
 
-  // node.d.ts
-  export class DefaultValue {}
+    // node.d.ts
+    export class DefaultValue {}
 
-  // recoilRoot.d.ts
-  import * as React from 'react';
+    // recoilRoot.d.ts
+    import * as React from 'react';
 
-  export interface RecoilRootProps {
-    initializeState?: (options: {
-      set: <T>(recoilVal: RecoilState<T>, newVal: T) => void;
-      setUnvalidatedAtomValues: (atomMap: Map<string, unknown>) => void;
-    }) => void;
-  }
+    export interface RecoilRootProps {
+        initializeState?: (options: {
+            set: <T>(recoilVal: RecoilState<T>, newVal: T) => void;
+            setUnvalidatedAtomValues: (atomMap: Map<string, unknown>) => void;
+        }) => void;
+    }
 
-  export const RecoilRoot: React.FC<RecoilRootProps>;
+    export const RecoilRoot: React.FC<RecoilRootProps>;
 
-  // atom.d.ts
-  export interface AtomOptions<T> {
-    key: NodeKey;
-    default: RecoilValue<T> | Promise<T> | T;
-    dangerouslyAllowMutability?: boolean;
-    persistence_UNSTABLE?: boolean;
-  }
-  /**
-   * Creates an atom, which represents a piece of writeable state
-   */
-  export function atom<T>(options: AtomOptions<T>): RecoilState<T>;
+    // atom.d.ts
+    export interface AtomOptions<T> {
+        key: NodeKey;
+        default: RecoilValue<T> | Promise<T> | T;
+        dangerouslyAllowMutability?: boolean;
+        persistence_UNSTABLE?: boolean;
+    }
+    /**
+     * Creates an atom, which represents a piece of writeable state
+     */
+    export function atom<T>(options: AtomOptions<T>): RecoilState<T>;
 
-  // selector.d.ts
-  export type GetRecoilValue = <T>(recoilVal: RecoilValue<T>) => T;
+    // selector.d.ts
+    export type GetRecoilValue = <T>(recoilVal: RecoilValue<T>) => T;
 
-  export type SetRecoilState = <T>(
-    recoilVal: RecoilState<T>,
-    newVal: T | DefaultValue | ((prevValue: T) => T | DefaultValue),
-  ) => void;
+    export type SetRecoilState = <T>(
+        recoilVal: RecoilState<T>,
+        newVal: T | DefaultValue | ((prevValue: T) => T | DefaultValue),
+    ) => void;
 
-  export type ResetRecoilState = (recoilVal: RecoilState<any>) => void;
+    export type ResetRecoilState = (recoilVal: RecoilState<any>) => void;
 
-  export interface ReadOnlySelectorOptions<T> {
-    key: string;
-    get: (opts: { get: GetRecoilValue }) => Promise<T> | RecoilValue<T> | T;
-    dangerouslyAllowMutability?: boolean;
-  }
+    export interface ReadOnlySelectorOptions<T> {
+        key: string;
+        get: (opts: { get: GetRecoilValue }) => Promise<T> | RecoilValue<T> | T;
+        dangerouslyAllowMutability?: boolean;
+    }
 
-  export interface ReadWriteSelectorOptions<T> extends ReadOnlySelectorOptions<T> {
-    set: (
-      opts: {
+    export interface ReadWriteSelectorOptions<T> extends ReadOnlySelectorOptions<T> {
+        set: (
+            opts: {
+                set: SetRecoilState;
+                get: GetRecoilValue;
+                reset: ResetRecoilState;
+            },
+            newValue: T | DefaultValue,
+        ) => void;
+    }
+
+    export function selector<T>(options: ReadWriteSelectorOptions<T>): RecoilState<T>;
+    export function selector<T>(options: ReadOnlySelectorOptions<T>): RecoilValueReadOnly<T>;
+
+    // hooks.d.ts
+    export class Snapshot {
+        getLoadable<T>(recoilValue: RecoilValue<T>): Loadable<T>;
+        getPromise<T>(recoilValue: RecoilValue<T>): Promise<T>;
+        map(cb: (mutableSnapshot: MutableSnapshot) => void): Snapshot;
+        asyncMap(cb: (mutableSnapshot: MutableSnapshot) => Promise<void>): Promise<Snapshot>;
+    }
+
+    export class MutableSnapshot extends Snapshot {
         set: SetRecoilState;
-        get: GetRecoilValue;
         reset: ResetRecoilState;
-      },
-      newValue: T | DefaultValue,
-    ) => void;
-  }
+    }
 
-  export function selector<T>(options: ReadWriteSelectorOptions<T>): RecoilState<T>;
-  export function selector<T>(options: ReadOnlySelectorOptions<T>): RecoilValueReadOnly<T>;
+    export type SetterOrUpdater<T> = (valOrUpdater: ((currVal: T) => T) | T) => void;
+    export type Resetter = () => void;
+    export type CallbackInterface = Readonly<{
+        set: <T>(recoilVal: RecoilState<T>, valOrUpdater: ((currVal: T) => T) | T) => void;
+        reset: (recoilVal: RecoilState<any>) => void;
+        snapshot: Snapshot;
+        gotoSnapshot: (snapshot: Snapshot) => void;
+    }>;
 
-  // hooks.d.ts
-  export class Snapshot {
-    getLoadable<T>(recoilValue: RecoilValue<T>): Loadable<T>;
-    getPromise<T>(recoilValue: RecoilValue<T>): Promise<T>;
-    map(cb: (mutableSnapshot: MutableSnapshot) => void): Snapshot;
-    asyncMap(cb: (mutableSnapshot: MutableSnapshot) => Promise<void>): Promise<Snapshot>;
-  }
+    /**
+     * Returns the value of an atom or selector (readonly or writeable) and
+     * subscribes the components to future updates of that state.
+     */
+    export function useRecoilValue<T>(recoilValue: RecoilValue<T>): T;
 
-  export class MutableSnapshot extends Snapshot {
-    set: SetRecoilState;
-    reset: ResetRecoilState;
-  }
+    /**
+     * Returns a Loadable representing the status of the given Recoil state
+     * and subscribes the component to future updates of that state. Useful
+     * for working with async selectors.
+     */
+    export function useRecoilValueLoadable<T>(recoilValue: RecoilValue<T>): Loadable<T>;
 
-  export type SetterOrUpdater<T> = (valOrUpdater: ((currVal: T) => T) | T) => void;
-  export type Resetter = () => void;
-  export type CallbackInterface = Readonly<{
-    set: <T>(recoilVal: RecoilState<T>, valOrUpdater: ((currVal: T) => T) | T) => void;
-    reset: (recoilVal: RecoilState<any>) => void;
-    snapshot: Snapshot;
-    gotoSnapshot: (snapshot: Snapshot) => void;
-  }>;
+    /**
+     * Returns a tuple where the first element is the value of the recoil state
+     * and the second is a setter to update that state. Subscribes component
+     * to updates of the given state.
+     */
+    export function useRecoilState<T>(recoilState: RecoilState<T>): [T, SetterOrUpdater<T>];
 
-  /**
-   * Returns the value of an atom or selector (readonly or writeable) and
-   * subscribes the components to future updates of that state.
-   */
-  export function useRecoilValue<T>(recoilValue: RecoilValue<T>): T;
+    /**
+     * Returns a tuple where the first element is a Loadable and the second
+     * element is a setter function to update the given state. Subscribes
+     * component to updates of the given state.
+     */
+    export function useRecoilStateLoadable<T>(
+        recoilState: RecoilState<T>,
+    ): [Loadable<T>, SetterOrUpdater<T>];
 
-  /**
-   * Returns a Loadable representing the status of the given Recoil state
-   * and subscribes the component to future updates of that state. Useful
-   * for working with async selectors.
-   */
-  export function useRecoilValueLoadable<T>(recoilValue: RecoilValue<T>): Loadable<T>;
+    /**
+     * Returns a setter function for updating Recoil state. Does not subscribe
+     * the component to the given state.
+     */
 
-  /**
-   * Returns a tuple where the first element is the value of the recoil state
-   * and the second is a setter to update that state. Subscribes component
-   * to updates of the given state.
-   */
-  export function useRecoilState<T>(recoilState: RecoilState<T>): [T, SetterOrUpdater<T>];
+    export function useSetRecoilState<T>(recoilState: RecoilState<T>): SetterOrUpdater<T>;
 
-  /**
-   * Returns a tuple where the first element is a Loadable and the second
-   * element is a setter function to update the given state. Subscribes
-   * component to updates of the given state.
-   */
-  export function useRecoilStateLoadable<T>(
-    recoilState: RecoilState<T>,
-  ): [Loadable<T>, SetterOrUpdater<T>];
+    /**
+     * Returns a function that will reset the given state to its default value.
+     */
+    export function useResetRecoilState(recoilState: RecoilState<any>): Resetter;
 
-  /**
-   * Returns a setter function for updating Recoil state. Does not subscribe
-   * the component to the given state.
-   */
+    /**
+     * Returns a function that will run the callback that was passed when
+     * calling this hook. Useful for accessing Recoil state in response to
+     * events.
+     */
+    export function useRecoilCallback<Args extends ReadonlyArray<unknown>, Return>(
+        fn: (interface: CallbackInterface) => (...args: Args) => Return,
+        deps?: ReadonlyArray<unknown>,
+    ): (...args: Args) => Return;
 
-  export function useSetRecoilState<T>(recoilState: RecoilState<T>): SetterOrUpdater<T>;
+    export function useRecoilTransactionObserver_UNSTABLE(
+        callback: (opts: { snapshot: Snapshot; previousSnapshot: Snapshot }) => void,
+    ): void;
 
-  /**
-   * Returns a function that will reset the given state to its default value.
-   */
-  export function useResetRecoilState(recoilState: RecoilState<any>): Resetter;
+    export function useGotoRecoilSnapshot(): (snapshot: Snapshot) => void;
 
-  /**
-   * Returns a function that will run the callback that was passed when
-   * calling this hook. Useful for accessing Recoil state in response to
-   * events.
-   */
-  export function useRecoilCallback<Args extends ReadonlyArray<unknown>, Return>(
-    fn: (interface: CallbackInterface) => (...args: Args) => Return,
-    deps?: ReadonlyArray<unknown>,
-  ): (...args: Args) => Return;
+    export function useRecoilSnapshot(): Snapshot;
 
-  export function useRecoilTransactionObserver_UNSTABLE(
-    callback: (opts: { snapshot: Snapshot; previousSnapshot: Snapshot }) => void,
-  ): void;
+    // loadable.d.ts
+    type ResolvedLoadablePromiseInfo<T> = Readonly<{
+        value: T;
+    }>;
 
-  export function useGotoRecoilSnapshot(): (snapshot: Snapshot) => void;
+    export type LoadablePromise<T> = Promise<ResolvedLoadablePromiseInfo<T>>;
 
-  export function useRecoilSnapshot(): Snapshot;
+    export type Loadable<T> =
+        | Readonly<{
+              state: 'hasValue';
+              contents: T;
+          }>
+        | Readonly<{
+              state: 'hasError';
+              contents: Error;
+          }>
+        | Readonly<{
+              state: 'loading';
+              contents: LoadablePromise<T>;
+          }>;
 
-  // loadable.d.ts
-  type ResolvedLoadablePromiseInfo<T> = Readonly<{
-    value: T;
-  }>;
+    // recoilValue.d.ts
+    declare class AbstractRecoilValue<T> {
+        __tag: [T];
+        __cTag: (t: T) => void; // for contravariance
 
-  export type LoadablePromise<T> = Promise<ResolvedLoadablePromiseInfo<T>>;
+        key: NodeKey;
+        constructor(newKey: NodeKey);
+    }
 
-  export type Loadable<T> =
-    | Readonly<{
-        state: 'hasValue';
-        contents: T;
-      }>
-    | Readonly<{
-        state: 'hasError';
-        contents: Error;
-      }>
-    | Readonly<{
-        state: 'loading';
-        contents: LoadablePromise<T>;
-      }>;
+    declare class AbstractRecoilValueReadonly<T> {
+        __tag: [T];
 
-  // recoilValue.d.ts
-  declare class AbstractRecoilValue<T> {
-    __tag: [T];
-    __cTag: (t: T) => void; // for contravariance
+        key: NodeKey;
+        constructor(newKey: NodeKey);
+    }
 
-    key: NodeKey;
-    constructor(newKey: NodeKey);
-  }
+    export class RecoilState<T> extends AbstractRecoilValue<T> {}
+    export class RecoilValueReadOnly<T> extends AbstractRecoilValueReadonly<T> {}
+    export type RecoilValue<T> = RecoilValueReadOnly<T> | RecoilState<T>;
 
-  declare class AbstractRecoilValueReadonly<T> {
-    __tag: [T];
+    export function isRecoilValue(val: unknown): val is RecoilValue<any>;
 
-    key: NodeKey;
-    constructor(newKey: NodeKey);
-  }
+    /** Utilities */
 
-  export class RecoilState<T> extends AbstractRecoilValue<T> {}
-  export class RecoilValueReadOnly<T> extends AbstractRecoilValueReadonly<T> {}
-  export type RecoilValue<T> = RecoilValueReadOnly<T> | RecoilState<T>;
+    // bigint not supported yet
+    export type Primitive = undefined | null | boolean | number | symbol | string;
 
-  export function isRecoilValue(val: unknown): val is RecoilValue<any>;
+    export type SerializableParam =
+        | Primitive
+        | SerializableParam[]
+        | { [key: string]: SerializableParam };
 
-  /** Utilities */
+    export interface AtomFamilyOptions<T, P extends SerializableParam> {
+        key: NodeKey;
+        dangerouslyAllowMutability?: boolean;
+        persistence_UNSTABLE?: boolean;
+        default: RecoilValue<T> | Promise<T> | T | ((param: P) => T | RecoilValue<T> | Promise<T>);
+    }
 
-  // bigint not supported yet
-  export type Primitive = undefined | null | boolean | number | symbol | string;
+    export function atomFamily<T, P extends SerializableParam>(
+        options: AtomFamilyOptions<T, P>,
+    ): (param: P) => RecoilState<T>;
 
-  export type SerializableParam =
-    | Primitive
-    | SerializableParam[]
-    | { [key: string]: SerializableParam };
+    export interface ReadOnlySelectorFamilyOptions<T, P extends SerializableParam> {
+        key: string;
+        get: (param: P) => (opts: { get: GetRecoilValue }) => Promise<T> | RecoilValue<T> | T;
+        // cacheImplementation_UNSTABLE?: () => CacheImplementation<Loadable<T>>,
+        // cacheImplementationForParams_UNSTABLE?: () => CacheImplementation<
+        //   RecoilValue<T>,
+        // >,
+        dangerouslyAllowMutability?: boolean;
+    }
 
-  export interface AtomFamilyOptions<T, P extends SerializableParam> {
-    key: NodeKey;
-    dangerouslyAllowMutability?: boolean;
-    persistence_UNSTABLE?: boolean;
-    default: RecoilValue<T> | Promise<T> | T | ((param: P) => T | RecoilValue<T> | Promise<T>);
-  }
+    export interface ReadWriteSelectorFamilyOptions<T, P extends SerializableParam> {
+        key: string;
+        get: (param: P) => (opts: { get: GetRecoilValue }) => Promise<T> | RecoilValue<T> | T;
+        set: (
+            param: P,
+        ) => (
+            opts: { set: SetRecoilState; get: GetRecoilValue; reset: ResetRecoilState },
+            newValue: T | DefaultValue,
+        ) => void;
+        // cacheImplementation_UNSTABLE?: () => CacheImplementation<Loadable<T>>,
+        // cacheImplementationForParams_UNSTABLE?: () => CacheImplementation<
+        //   RecoilValue<T>,
+        // >,
+        dangerouslyAllowMutability?: boolean;
+    }
 
-  export function atomFamily<T, P extends SerializableParam>(
-    options: AtomFamilyOptions<T, P>,
-  ): (param: P) => RecoilState<T>;
+    export function selectorFamily<T, P extends SerializableParam>(
+        options: ReadWriteSelectorFamilyOptions<T, P>,
+    ): (param: P) => RecoilState<T>;
 
-  export interface ReadOnlySelectorFamilyOptions<T, P extends SerializableParam> {
-    key: string;
-    get: (param: P) => (opts: { get: GetRecoilValue }) => Promise<T> | RecoilValue<T> | T;
-    // cacheImplementation_UNSTABLE?: () => CacheImplementation<Loadable<T>>,
-    // cacheImplementationForParams_UNSTABLE?: () => CacheImplementation<
-    //   RecoilValue<T>,
-    // >,
-    dangerouslyAllowMutability?: boolean;
-  }
+    export function selectorFamily<T, P extends SerializableParam>(
+        options: ReadOnlySelectorFamilyOptions<T, P>,
+    ): (param: P) => RecoilValueReadOnly<T>;
 
-  export interface ReadWriteSelectorFamilyOptions<T, P extends SerializableParam> {
-    key: string;
-    get: (param: P) => (opts: { get: GetRecoilValue }) => Promise<T> | RecoilValue<T> | T;
-    set: (
-      param: P,
-    ) => (
-      opts: { set: SetRecoilState; get: GetRecoilValue; reset: ResetRecoilState },
-      newValue: T | DefaultValue,
-    ) => void;
-    // cacheImplementation_UNSTABLE?: () => CacheImplementation<Loadable<T>>,
-    // cacheImplementationForParams_UNSTABLE?: () => CacheImplementation<
-    //   RecoilValue<T>,
-    // >,
-    dangerouslyAllowMutability?: boolean;
-  }
+    export function constSelector<T extends SerializableParam>(constant: T): RecoilValueReadOnly<T>;
 
-  export function selectorFamily<T, P extends SerializableParam>(
-    options: ReadWriteSelectorFamilyOptions<T, P>,
-  ): (param: P) => RecoilState<T>;
+    export function errorSelector(message: string): RecoilValueReadOnly<never>;
 
-  export function selectorFamily<T, P extends SerializableParam>(
-    options: ReadOnlySelectorFamilyOptions<T, P>,
-  ): (param: P) => RecoilValueReadOnly<T>;
+    export function readOnlySelector<T>(atom: RecoilValue<T>): RecoilValueReadOnly<T>;
 
-  export function constSelector<T extends SerializableParam>(constant: T): RecoilValueReadOnly<T>;
+    export function noWait<T>(state: RecoilValue<T>): RecoilValueReadOnly<Loadable<T>>;
 
-  export function errorSelector(message: string): RecoilValueReadOnly<never>;
+    export type UnwrapRecoilValue<T> = T extends RecoilValue<infer R> ? R : never;
 
-  export function readOnlySelector<T>(atom: RecoilValue<T>): RecoilValueReadOnly<T>;
+    export type UnwrapRecoilValueLoadables<
+        T extends Array<RecoilValue<any>> | { [key: string]: RecoilValue<any> }
+    > = {
+        [P in keyof T]: Loadable<UnwrapRecoilValue<T[P]>>;
+    };
 
-  export function noWait<T>(state: RecoilValue<T>): RecoilValueReadOnly<Loadable<T>>;
+    export function waitForNone<RecoilValues extends Array<RecoilValue<any>> | [RecoilValue<any>]>(
+        param: RecoilValues,
+    ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
 
-  export type UnwrapRecoilValue<T> = T extends RecoilValue<infer R> ? R : never;
+    export function waitForNone<RecoilValues extends { [key: string]: RecoilValue<any> }>(
+        param: RecoilValues,
+    ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
 
-  export type UnwrapRecoilValueLoadables<
-    T extends Array<RecoilValue<any>> | { [key: string]: RecoilValue<any> }
-  > = {
-    [P in keyof T]: Loadable<UnwrapRecoilValue<T[P]>>;
-  };
+    export function waitForAny<RecoilValues extends Array<RecoilValue<any>> | [RecoilValue<any>]>(
+        param: RecoilValues,
+    ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
 
-  export function waitForNone<RecoilValues extends Array<RecoilValue<any>> | [RecoilValue<any>]>(
-    param: RecoilValues,
-  ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
+    export function waitForAny<RecoilValues extends { [key: string]: RecoilValue<any> }>(
+        param: RecoilValues,
+    ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
 
-  export function waitForNone<RecoilValues extends { [key: string]: RecoilValue<any> }>(
-    param: RecoilValues,
-  ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
+    export function waitForAll<RecoilValues extends Array<RecoilValue<any>> | [RecoilValue<any>]>(
+        param: RecoilValues,
+    ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
 
-  export function waitForAny<RecoilValues extends Array<RecoilValue<any>> | [RecoilValue<any>]>(
-    param: RecoilValues,
-  ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
-
-  export function waitForAny<RecoilValues extends { [key: string]: RecoilValue<any> }>(
-    param: RecoilValues,
-  ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
-
-  export function waitForAll<RecoilValues extends Array<RecoilValue<any>> | [RecoilValue<any>]>(
-    param: RecoilValues,
-  ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
-
-  export function waitForAll<RecoilValues extends { [key: string]: RecoilValue<any> }>(
-    param: RecoilValues,
-  ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
+    export function waitForAll<RecoilValues extends { [key: string]: RecoilValue<any> }>(
+        param: RecoilValues,
+    ): RecoilValueReadOnly<UnwrapRecoilValueLoadables<RecoilValues>>;
 }

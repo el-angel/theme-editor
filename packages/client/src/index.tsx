@@ -9,11 +9,11 @@ import App from './App';
 import './index.css';
 
 ReactDOM.render(
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  <Profiler id="Application" onRender={(): void => {}}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Profiler>,
-  document.getElementById('root'),
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    <Profiler id="Application" onRender={(): void => {}}>
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    </Profiler>,
+    document.getElementById('root'),
 );

@@ -14,28 +14,28 @@ import getExistingScopes from '~/helpers/getExistingScopes';
 import { Rule as RuleType } from '~/types';
 
 const Rule: React.FC<RuleType> = props => {
-  const { id, name, settings, scope } = props;
-  const viewRule = useViewRule();
-  const rules = useRecoilValue(getAllRules);
-  const editingRuleId = useRecoilValue(editRuleState);
+    const { id, name, settings, scope } = props;
+    const viewRule = useViewRule();
+    const rules = useRecoilValue(getAllRules);
+    const editingRuleId = useRecoilValue(editRuleState);
 
-  const existingScopes = getExistingScopes({ id, name, settings, scope }, rules);
+    const existingScopes = getExistingScopes({ id, name, settings, scope }, rules);
 
-  const isActive = editingRuleId === id;
+    const isActive = editingRuleId === id;
 
-  return (
-    <SidebarItem
-      isActive={isActive}
-      onClick={(): void => {
-        if (!isActive) {
-          viewRule(id);
-        }
-      }}
-      title={name}
-      color={settings.foreground}
-      showWarning={!!existingScopes.length}
-    />
-  );
+    return (
+        <SidebarItem
+            isActive={isActive}
+            onClick={(): void => {
+                if (!isActive) {
+                    viewRule(id);
+                }
+            }}
+            title={name}
+            color={settings.foreground}
+            showWarning={!!existingScopes.length}
+        />
+    );
 };
 
 export default Rule;

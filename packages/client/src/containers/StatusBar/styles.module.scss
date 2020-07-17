@@ -1,23 +1,23 @@
 .container {
-  height: 22px;
-  display: flex;
-  font-size: 12px;
-  -webkit-font-smoothing: antialiased;
-  padding: 0 10px;
-  box-sizing: border-box;
-  justify-content: space-between;
-  line-height: 20px;
-
-  & > div {
+    height: 22px;
     display: flex;
-    flex-direction: row;
-  }
+    font-size: 12px;
+    -webkit-font-smoothing: antialiased;
+    padding: 0 10px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    line-height: 20px;
+
+    & > div {
+        display: flex;
+        flex-direction: row;
+    }
 }
 
 .c_est_moi {
-  text-decoration: none;
+    text-decoration: none;
 
-  &:visited {
-    color: inherit;
-  }
+    &:visited {
+        color: inherit;
+    }
 }

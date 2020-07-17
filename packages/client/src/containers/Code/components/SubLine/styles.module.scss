@@ -1,9 +1,9 @@
 .subline {
-  background-color: var(--editor-background);
-  cursor: default;
+    background-color: var(--editor-background);
+    cursor: default;
 
-  &:not(.empty):hover {
-    cursor: pointer;
-    background-color: rgba(255, 255, 255, 0.15);
-  }
+    &:not(.empty):hover {
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, 0.15);
+    }
 }

@@ -17,67 +17,67 @@ import { Rule } from '~/types';
 import css from './styles.module.scss';
 
 export const sublineSelected = atom<string>({
-  key: 'selectedSubline',
-  default: '',
+    key: 'selectedSubline',
+    default: '',
 });
 
 const CodeView: React.FC = () => {
-  const rules = useRecoilValue(getAllRules);
-  const codeObj = useRecoilValue(parsedCode);
-  const [selected, setSelected] = useRecoilState(sublineSelected);
-  const setInfoState = useSetRecoilState(infoState);
-  const viewRule = useViewRule();
+    const rules = useRecoilValue(getAllRules);
+    const codeObj = useRecoilValue(parsedCode);
+    const [selected, setSelected] = useRecoilState(sublineSelected);
+    const setInfoState = useSetRecoilState(infoState);
+    const viewRule = useViewRule();
 
-  const onHoverSubline = React.useCallback(
-    (scopes: string[]): void => {
-      setInfoState({
-        scopes,
-      });
-    },
-    [setInfoState],
-  );
+    const onHoverSubline = React.useCallback(
+        (scopes: string[]): void => {
+            setInfoState({
+                scopes,
+            });
+        },
+        [setInfoState],
+    );
 
-  const onClickSubline = React.useCallback(
-    (scopes: string[], rule: Rule, id: string): void => {
-      viewRule(rule || '');
+    const onClickSubline = React.useCallback(
+        (scopes: string[], rule: Rule, id: string): void => {
+            viewRule(rule || '');
 
-      setInfoState({
-        selected: id,
-        scopes,
-      });
-    },
-    [setInfoState, viewRule],
-  );
+            setInfoState({
+                selected: id,
+                scopes,
+            });
+        },
+        [setInfoState, viewRule],
+    );
 
-  return (
-    <>
-      <span className={cx(css.lineNumbers)}>
-        {codeObj.lines.map((_, i) => (
-          <span key={i}>{i + 1}</span>
-        ))}
-      </span>
-      <span>
-        {codeObj.lines.map(line => (
-          <Line key={line.number} lineNumber={line.number}>
-            {line.content.map((subline, i) => {
-              const sublineKey = `${line.number}-"${subline.content}"-${i}`;
-              return (
-                <SubLine
-                  rules={rules}
-                  selected={sublineKey === selected}
-                  key={sublineKey}
-                  id={sublineKey}
-                  onHover={onHoverSubline}
-                  onClick={onClickSubline}
-                  {...subline}
-                />
-              );
-            })}
-          </Line>
-        ))}
-      </span>
-    </>
-  );
+    return (
+        <>
+            <span className={cx(css.lineNumbers)}>
+                {codeObj.lines.map((_, i) => (
+                    <span key={i}>{i + 1}</span>
+                ))}
+            </span>
+            <span>
+                {codeObj.lines.map(line => (
+                    <Line key={line.number} lineNumber={line.number}>
+                        {line.content.map((subline, i) => {
+                            const sublineKey = `${line.number}-"${subline.content}"-${i}`;
+                            return (
+                                <SubLine
+                                    rules={rules}
+                                    selected={sublineKey === selected}
+                                    key={sublineKey}
+                                    id={sublineKey}
+                                    onHover={onHoverSubline}
+                                    onClick={onClickSubline}
+                                    {...subline}
+                                />
+                            );
+                        })}
+                    </Line>
+                ))}
+            </span>
+        </>
+    );
 };
 
 export default CodeView;

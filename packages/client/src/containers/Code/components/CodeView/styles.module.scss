@@ -1,31 +1,31 @@
 .container {
-  width: 100%;
-  overflow: scroll;
+    width: 100%;
+    overflow: scroll;
 
-  &::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
-  }
+    &::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
 
-  &::-webkit-scrollbar-thumb {
-    background: transparent;
-  }
+    &::-webkit-scrollbar-thumb {
+        background: transparent;
+    }
 }
 
 .code {
-  display: flex;
-  flex-direction: row;
-  margin: 0;
-  width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    width: 100%;
 }
 
 .lineNumbers {
-  width: 72px;
-  text-align: right;
-  padding-right: 25px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--editorGutter-background);
-  color: var(--editorLineNumber-foreground);
+    width: 72px;
+    text-align: right;
+    padding-right: 25px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--editorGutter-background);
+    color: var(--editorLineNumber-foreground);
 }

@@ -1,55 +1,55 @@
 .toolbar {
-  height: 34px;
-  border-bottom: 1px solid;
-  display: flex;
-  align-items: center;
-  box-sizing: border-box;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  border-color: var(--focusBorder);
+    height: 34px;
+    border-bottom: 1px solid;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    border-color: var(--focusBorder);
 }
 
 .item {
-  border-color: var(--focusBorder);
+    border-color: var(--focusBorder);
 }
 
 .header {
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-weight: 600;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-
-  & > div {
-    padding: 0px 10px;
-    border-right-width: 1px;
-    border-right-style: solid;
-    height: 100%;
-    align-items: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 600;
     display: flex;
-    cursor: pointer;
-    width: 50%;
-    color: var(--sideBar-foreground);
-    opacity: 0.4;
-    // background-color: #ffffff10;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    width: 100%;
 
-    &:last-child {
-      border-right: 0;
-    }
+    & > div {
+        padding: 0px 10px;
+        border-right-width: 1px;
+        border-right-style: solid;
+        height: 100%;
+        align-items: center;
+        display: flex;
+        cursor: pointer;
+        width: 50%;
+        color: var(--sideBar-foreground);
+        opacity: 0.4;
+        // background-color: #ffffff10;
 
-    &.isActive {
-      background-color: transparent;
-      opacity: 1;
-    }
+        &:last-child {
+            border-right: 0;
+        }
 
-    &:hover {
-      opacity: 1;
-      background-color: transparent;
+        &.isActive {
+            background-color: transparent;
+            opacity: 1;
+        }
+
+        &:hover {
+            opacity: 1;
+            background-color: transparent;
+        }
     }
-  }
 }

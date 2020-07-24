@@ -6,8 +6,11 @@ import { useRecoilValue } from 'recoil';
 
 import generalScopeManager from '~/state/generalScopes';
 
+import { SEMANTIC_HIGHLIGHTING_TEXTMATE_MAP } from '~/constants';
+
 import getContrastColor from '~/helpers/getContrastColor';
 import ruleMatch from '~/helpers/ruleMatch';
+import getSemanticTokenFallback from '~/helpers/semanticTokenFallback';
 
 import { GeneralScope, Rule } from '~/types';
 
@@ -56,7 +59,15 @@ const SubLine: React.FC<Props> = ({
     }, [_scopes, semanticToken]);
 
     React.useEffect(() => {
-        const activeRule = ruleMatch(rules, scopes);
+        let matchScopes = scopes;
+
+        if (semanticToken && matchScopes.length === 1) {
+            const semanticTokenScope = getSemanticTokenFallback(scopes[0]);
+            console.log({ semanticTokenScope });
+            matchScopes = [semanticTokenScope || ''];
+        }
+
+        const activeRule = ruleMatch(rules, matchScopes);
         setRule(activeRule?.rule || null);
         setActiveScope(activeRule?.query || '');
     }, [scopes, rules, semanticToken]);

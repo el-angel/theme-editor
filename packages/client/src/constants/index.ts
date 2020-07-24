@@ -48,6 +48,7 @@ export const SEMANTIC_HIGHLIGHTING_TEXTMATE_MAP = <const>{
     class: 'entity.name.type.class',
     'class.defaultLibrary': 'support.class',
     interface: 'entity.name.type.interface',
+    'interface.defaultLibrary': 'support.class',
     enum: 'entity.name.type.enum',
     function: 'entity.name.function',
     'function.defaultLibrary': 'support.function',

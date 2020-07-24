@@ -13,11 +13,18 @@ export interface StateMeta {
     };
 }
 
-export interface Rule extends StateMeta {
+interface Base extends StateMeta {
     id: string;
+    settings: Settings;
+}
+
+export interface Rule extends Base {
     name: string;
     scope: string[];
-    settings: Settings;
+}
+
+export interface SemanticToken extends Base {
+    scope: string;
 }
 
 export interface GeneralScope extends StateMeta {

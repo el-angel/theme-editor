@@ -1,9 +1,14 @@
 import { loadWASM } from 'onigasm';
 
-const initialize = async (onigasmUrl: string): Promise<void> => {
-    const response = await fetch(onigasmUrl);
+export const fetchOnigasm = async (url: string): Promise<ArrayBuffer> => {
+    const response = await fetch(url);
     const buffer = await response.arrayBuffer();
-    await loadWASM(buffer);
+
+    return buffer;
+};
+
+const initialize = async (onigasmUrl: string): Promise<void> => {
+    await loadWASM(await fetchOnigasm(onigasmUrl));
 };
 
 export default initialize;

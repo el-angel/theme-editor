@@ -105,7 +105,7 @@ const Info: React.FC = () => {
             return;
         }
 
-        addRule({ scope: [scope] });
+        addRule({ scope: [scope] }, true);
     };
 
     if (!scopes.length) {

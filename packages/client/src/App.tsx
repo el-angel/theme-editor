@@ -23,6 +23,11 @@ import css from './App.module.scss';
 
 const ONIGASM_URL = `${process.env.PUBLIC_URL}/onigasm.wasm`;
 
+// const MyComponent = (props) => <div></div>;
+// const ItemPrice = (props) => {
+//     return <MyComponent { ...props } />;
+// }
+
 const initializeState = ({ set }): void => {
     const keys = storage.keys();
 

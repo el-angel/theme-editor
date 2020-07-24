@@ -8,6 +8,10 @@
     cursor: pointer;
     position: relative;
 
+    &:last-child {
+        border-bottom: 0;
+    }
+
     &.active {
         background-color: #ffffff20;
     }

@@ -4,6 +4,8 @@ export const FONT_STYLE = <const>{
     UNDERLINE: 'underline',
 };
 
+export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
 export const GENERAL_SCOPES = <const>[
     'button.background',
     'button.foreground',
@@ -37,3 +39,26 @@ export const GENERAL_SCOPES = <const>[
     'statusBarItem.activeBackground',
     'statusBarItem.hoverBackground',
 ];
+
+export const SEMANTIC_HIGHLIGHTING_TEXTMATE_MAP = <const>{
+    namespace: 'entity.name.namespace',
+    type: 'entity.name.type',
+    'type.defaultLibrary': 'support.type',
+    struct: 'storage.type.struct',
+    class: 'entity.name.type.class',
+    'class.defaultLibrary': 'support.class',
+    interface: 'entity.name.type.interface',
+    enum: 'entity.name.type.enum',
+    function: 'entity.name.function',
+    'function.defaultLibrary': 'support.function',
+    member: 'entity.name.function.member',
+    macro: 'entity.name.other.preprocessor.macro',
+    variable: 'variable.other.readwrite , entity.name.variable',
+    'variable.readonly': 'variable.other.constant',
+    'variable.readonly.defaultLibrary': 'support.constant',
+    parameter: 'variable.parameter',
+    property: 'variable.other.property',
+    'property.readonly': 'variable.other.constant.property',
+    enumMember: 'variable.other.enummember',
+    event: 'variable.other.event',
+};

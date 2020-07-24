@@ -1,19 +1,11 @@
+import { CodeDocument, Supplier, Position } from '@anche/shared';
 import { IGrammar, Registry } from 'monaco-textmate';
 import initialize from './init';
 
 type Scope = string;
 
-export interface SubLine {
-    content: string;
+export interface TextMateNode extends Position {
     scopes: Scope[];
-}
-export interface Line {
-    number: number;
-    content: SubLine[];
-}
-export interface Code {
-    scopeName: string;
-    lines: Line[];
 }
 
 export interface Options<LanguageScopeNames extends string> {
@@ -22,7 +14,9 @@ export interface Options<LanguageScopeNames extends string> {
     };
 }
 
-class GrammarHelper<LSN extends string> {
+type TextMateParserResult = { code: CodeDocument; tokens: TextMateNode[] };
+
+class TextMateScopesParser<LSN extends string> implements Supplier<TextMateNode> {
     private _filePaths: Record<LSN, string>;
     private _registry: Registry;
 
@@ -35,17 +29,17 @@ class GrammarHelper<LSN extends string> {
     }
 
     private _getGrammarDefinition = async (
-        scope: LSN,
+        scopeName: LSN,
     ): Promise<{ format: 'json'; content: string }> => {
-        const language = await this._getLanguage(scope);
+        const language = await this._getLanguage(scopeName);
         return {
             format: 'json',
             content: language,
         };
     };
 
-    private async _getLanguage(scope: LSN): Promise<string> {
-        const response = await fetch(this._filePaths[scope]);
+    private async _getLanguage(scopeName: LSN): Promise<string> {
+        const response = await fetch(this._filePaths[scopeName]);
 
         if (!response.ok) {
             throw new Error('Something failed when doing a request to fetch the grammar file.');
@@ -56,35 +50,37 @@ class GrammarHelper<LSN extends string> {
         return JSON.parse(grammar);
     }
 
-    private _typeCheck = (scope: string): scope is LSN => {
-        const scopes = Object.keys(this._filePaths);
+    private _typeCheck = (scopeName: string): scopeName is LSN => {
+        const scopeNames = Object.keys(this._filePaths);
 
-        if (scopes.includes(scope)) {
+        if (scopeNames.includes(scopeName)) {
             return true;
         }
 
         return false;
     };
 
-    public async loadGrammar(scope: LSN): Promise<IGrammar> {
-        if (!this._typeCheck(scope)) {
+    public async loadGrammar(scopeName: LSN): Promise<IGrammar> {
+        if (!this._typeCheck(scopeName)) {
             throw new Error(
-                `"${scope}" grammar is not supported. Please add scopename and path to Options.filePaths.`,
+                `"${scopeName}" grammar is not supported. Please add scopename and path to Options.filePaths.`,
             );
         }
 
-        const grammar = await this._registry.loadGrammar(scope);
+        const grammar = await this._registry.loadGrammar(scopeName);
         return grammar;
     }
 
-    public async parse(_code: string, scope: LSN): Promise<Code> {
-        const grammar = await this.loadGrammar(scope);
+    public async parse(_code: string, scopeName: LSN): Promise<TextMateParserResult> {
+        const grammar = await this.loadGrammar(scopeName);
+
+        const codeDocument = new CodeDocument({ code: _code });
 
         const text = _code.split('\n');
 
-        const code: Code = {
-            scopeName: scope,
-            lines: [],
+        const result = {
+            code: codeDocument,
+            tokens: [] as TextMateNode[],
         };
 
         let ruleStack;
@@ -92,30 +88,26 @@ class GrammarHelper<LSN extends string> {
             const line = text[i];
             const lineTokens = grammar!.tokenizeLine(line, ruleStack);
 
-            const formattedLine: Line = {
-                number: i,
-                content: [],
-            };
-
             for (let j = 0; j < lineTokens.tokens.length; j++) {
                 const token = lineTokens.tokens[j];
 
-                const linePart: SubLine = {
-                    content: line.substring(token.startIndex, token.endIndex),
+                const node: TextMateNode = {
+                    start: token.startIndex,
+                    line: i,
+                    length: token.endIndex - token.startIndex,
                     scopes: token.scopes.filter((e, i) => token.scopes.indexOf(e) === i),
                 };
 
-                formattedLine.content.push(linePart);
+                result.tokens.push(node);
             }
-
-            code.lines.push(formattedLine);
 
             ruleStack = lineTokens.ruleStack;
         }
 
-        return code;
+        return result;
     }
 }
 
-export { GrammarHelper };
+export { TextMateParserResult };
+export { TextMateScopesParser };
 export { initialize };

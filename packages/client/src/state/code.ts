@@ -1,4 +1,4 @@
-import { Code } from '@anche/textmate-grammar-parser';
+import { TextMateParserResult } from '@anche/textmate-grammar-parser';
 import { atom, selector } from 'recoil';
 
 import languageService from '~/services/language';
@@ -68,7 +68,7 @@ export const editCodeState = atom<boolean>({
     default: false,
 });
 
-const parsedCode = selector<Code>({
+const parsedCode = selector<TextMateParserResult>({
     key: selectorKey('Code'),
     get: async ({ get }) => {
         const code = get(_rawCode);

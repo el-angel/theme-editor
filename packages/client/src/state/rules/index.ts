@@ -9,10 +9,6 @@ import { Rule } from '~/types';
 const _rulesIdState = atom<string[]>({
     key: atomKey('RulesIds'),
     default: [],
-    // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-    // @ts-ignore
-    // eslint-disable-next-line @typescript-eslint/camelcase
-    persistence_UNSTABLE: true,
 });
 
 export const getRuleIds = selector<string[]>({
@@ -82,7 +78,7 @@ const ruleManager = selectorFamily<Maybe<Rule>, Maybe<string>>({
         }
 
         // delete rule
-        if ((input as Rule)?.__meta?.state === 'deleted') {
+        if ((<Rule>input)?.__meta?.state === 'deleted') {
             set(
                 ruleIds,
                 ids.filter(_id => _id !== id),
@@ -96,7 +92,7 @@ const ruleManager = selectorFamily<Maybe<Rule>, Maybe<string>>({
         }
 
         set(rule, {
-            ...(input as Rule),
+            ...(<Rule>input),
             id,
             __meta: {
                 touched: true,

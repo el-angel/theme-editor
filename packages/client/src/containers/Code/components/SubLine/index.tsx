@@ -1,5 +1,6 @@
 import React from 'react';
-import { SubLine as SubLineType } from '@anche/textmate-grammar-parser';
+import { SemanticToken } from '@anche/semantic-highlighting-parser';
+// import { SubLine as SubLineType } from '@anche/textmate-grammar-parser';
 import cx from 'classnames';
 import { useRecoilValue } from 'recoil';
 
@@ -12,12 +13,15 @@ import { GeneralScope, Rule } from '~/types';
 
 import css from './styles.module.scss';
 
-type Props = SubLineType & {
+type Props = {
+    scopes: string[];
     rules: Rule[];
     id: string;
     selected: boolean;
     onClick: (scopes: string[], rule: Rule, id: string) => void;
     onHover: (scopes: string[]) => void;
+    semanticToken?: SemanticToken;
+    children: string;
 };
 
 const getClass = (scopes: string, empty?: boolean): string => {
@@ -28,21 +32,40 @@ const getClass = (scopes: string, empty?: boolean): string => {
     });
 };
 
-const SubLine: React.FC<Props> = ({ rules, scopes, content, selected, onClick, onHover, id }) => {
+const SubLine: React.FC<Props> = ({
+    rules,
+    scopes: _scopes,
+    selected,
+    onClick,
+    onHover,
+    id,
+    children,
+    semanticToken,
+}) => {
     const [activeScope, setActiveScope] = React.useState('');
     const [rule, setRule] = React.useState<Nullable<Rule>>(null);
+    const [scopes, setScopes] = React.useState<string[]>(_scopes);
+
+    React.useEffect(() => {
+        if (semanticToken) {
+            const token = [semanticToken.type, semanticToken.modifiers].filter(a => !!a).join('.');
+            setScopes([token]);
+        } else {
+            setScopes(_scopes);
+        }
+    }, [_scopes, semanticToken]);
 
     React.useEffect(() => {
         const activeRule = ruleMatch(rules, scopes);
         setRule(activeRule?.rule || null);
         setActiveScope(activeRule?.query || '');
-    }, [scopes, rules]);
+    }, [scopes, rules, semanticToken]);
 
     const editorBackground = useRecoilValue(
         generalScopeManager('editor.background'),
     ) as GeneralScope;
 
-    const empty = !content.trim();
+    const empty = !children.trim();
 
     return (
         <span
@@ -61,7 +84,7 @@ const SubLine: React.FC<Props> = ({ rules, scopes, content, selected, onClick, o
                   }
                 : {})}
         >
-            {content || ' '}
+            {children || ' '}
         </span>
     );
 };

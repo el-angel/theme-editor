@@ -11,7 +11,7 @@
     background: rgba(240, 240, 240, 0.65);
     top: 25px;
     right: 25px;
-    width: 200px;
+    width: 250px;
     border-radius: 4px;
     padding: 4px 0;
     display: none;
@@ -53,6 +53,10 @@
             font-size: 14px;
             line-height: 22px;
             font-weight: 400;
+
+            &:not(.divider) {
+                padding-bottom: 1px;
+            }
 
             &.disabled {
                 cursor: default;

@@ -15,6 +15,11 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/consistent-type-assertions': ['off'],
+    '@typescript-eslint/no-unused-vars': ['error', {
+      'varsIgnorePattern': '^_',
+      'argsIgnorePattern': '^_',
+    }]
   },
   overrides: [
     {

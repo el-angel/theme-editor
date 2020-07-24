@@ -16,6 +16,7 @@ import { GeneralScope } from '~/types';
 import CustomizeCode from './Items/CustomizeCode';
 import Export from './Items/Export';
 import New from './Items/New';
+import SemanticHighlighting from './Items/SemanticHighlighting';
 
 import css from './styles.module.scss';
 
@@ -55,6 +56,7 @@ const SettingsMenu: React.FC = () => {
                     <New />
                     <Open />
                     <li className={css.divider}></li>
+                    <SemanticHighlighting />
                     <CustomizeCode />
                     <li className={css.divider}></li>
                     <Export />

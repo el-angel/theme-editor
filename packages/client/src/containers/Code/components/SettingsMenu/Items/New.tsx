@@ -10,9 +10,12 @@ const New: React.FC = () => {
     const reset = useReset();
 
     const onClick = (): void => {
-        dialog.confirm().then(() => {
-            reset();
-        });
+        dialog
+            .confirm()
+            .then(() => {
+                reset();
+            })
+            .catch(() => null);
     };
     return <SettingsMenuItem onClick={onClick}>New</SettingsMenuItem>;
 };

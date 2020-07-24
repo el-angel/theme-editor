@@ -7,20 +7,22 @@ import createRule from '~/model/rule';
 
 import { Rule } from '~/types';
 
-type ReturnType = (input?: Partial<Rule>) => void;
+type ReturnType = (input: Partial<Rule>, filterScope?: boolean) => void;
 
 const useAddRule = (): ReturnType => {
     const addRule = useRecoilCallback(
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
-        ({ set, snapshot }) => async (input?: Partial<Rule>): Promise<void> => {
-            const filteredScopes = (input?.scope || []).map(scope => {
-                const splitted = scope.split('.');
-                // remove extension from scope to support more language
-                // otherwise theme will only work for this language
-                splitted.pop();
-                return splitted.join('.');
-            });
+        ({ set, snapshot }) => async (input: Partial<Rule>, filterScope = false): Promise<void> => {
+            const filteredScopes = !filterScope
+                ? input?.scope || []
+                : (input?.scope || []).map(scope => {
+                      const splitted = scope.split('.');
+                      // remove extension from scope to support more language
+                      // otherwise theme will only work for this language
+                      splitted.pop();
+                      return splitted.join('.');
+                  });
 
             const ids = await snapshot.getPromise(getRuleIds);
 

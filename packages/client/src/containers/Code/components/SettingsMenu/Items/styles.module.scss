@@ -1,0 +1,34 @@
+/**
+    SemanticHighlighting.tsx
+*/
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.active .status {
+    background: #10a620;
+}
+
+.enabled .status {
+    background: #eead40;
+}
+
+.inactive .status {
+    background: #d91e1e;
+}
+
+.loading {
+    cursor: progress;
+
+    .status {
+        background: #8e9cb7;
+    }
+}

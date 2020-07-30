@@ -7,14 +7,15 @@ import { atom, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 
 import { selector, useRecoilState } from 'recoil';
 
 import parsedCode from '~/state/code';
-import { getAllRules } from '~/state/rules';
-import { semanticTokens } from '~/state/semanticHighlighting';
+import { getRules } from '~/state/rules';
+import { semanticTokens } from '~/state/semanticTokens';
 
 import { infoState } from '~/containers/Code/components/Info';
 import Line from '~/containers/Code/components/Line';
 import SubLine from '~/containers/Code/components/SubLine';
 
-import useViewRule from '~/hooks/useViewRule';
+// import useViewRule from '~/hooks/useViewRule';
+import useViewEntity from '~/hooks/useViewEntity';
 
 import { selectorKey } from '~/helpers/state';
 
@@ -49,7 +50,7 @@ const groupSemanticTokens = (
 };
 
 const hydratedCode = selector({
-    key: selectorKey('TextMateCodeFormat'),
+    key: selectorKey('CodeView', 'Format'),
     get: ({ get }) => {
         const textMateResult = get(parsedCode);
 
@@ -78,11 +79,11 @@ const hydratedCode = selector({
 });
 
 const CodeView: React.FC = () => {
-    const rules = useRecoilValue(getAllRules);
+    const rules = useRecoilValue(getRules);
     const codeObj = useRecoilValue(hydratedCode);
     const [selected] = useRecoilState(sublineSelected);
     const setInfoState = useSetRecoilState(infoState);
-    const viewRule = useViewRule();
+    const viewEntity = useViewEntity();
 
     const tokens = useRecoilValueLoadable(semanticTokens);
     const semanticTokensGrouped =
@@ -99,14 +100,15 @@ const CodeView: React.FC = () => {
 
     const onClickSubline = React.useCallback(
         (scopes: string[], rule: Rule, id: string): void => {
-            viewRule(rule || '');
+            viewEntity(rule);
+            console.log({ rule });
 
             setInfoState({
                 selected: id,
                 scopes,
             });
         },
-        [setInfoState, viewRule],
+        [setInfoState, viewEntity],
     );
 
     return (

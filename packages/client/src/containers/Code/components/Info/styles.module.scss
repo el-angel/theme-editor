@@ -4,6 +4,7 @@
     border-top: 1px solid var(--panel-border);
     padding: 10px 0;
     margin-top: -15px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
 
     & span {
         display: flex;
@@ -23,15 +24,4 @@
     }
 
     padding: 0 10px;
-}
-
-.copied {
-    position: absolute;
-    right: 0;
-    top: 0;
-    font-size: 12px;
-    border-left: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    padding: 2px;
-    top: -19px;
 }

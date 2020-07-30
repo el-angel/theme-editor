@@ -1,7 +1,6 @@
-import { uniqueId } from 'lodash';
 import { useRecoilCallback } from 'recoil';
 
-import ruleManager, { getRuleIds } from '~/state/rules';
+import { getRule, ruleIds } from '~/state/rules';
 
 import createRule from '~/model/rule';
 
@@ -14,31 +13,11 @@ const useAddRule = (): ReturnType => {
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
         ({ set, snapshot }) => async (input: Partial<Rule>, filterScope = false): Promise<void> => {
-            const filteredScopes = !filterScope
-                ? input?.scope || []
-                : (input?.scope || []).map(scope => {
-                      const splitted = scope.split('.');
-                      // remove extension from scope to support more language
-                      // otherwise theme will only work for this language
-                      splitted.pop();
-                      return splitted.join('.');
-                  });
+            const existingIds = await snapshot.getPromise(ruleIds);
 
-            const ids = await snapshot.getPromise(getRuleIds);
+            const rule = createRule(input, { existingIds, filterScope: <boolean>filterScope });
 
-            let id = uniqueId();
-
-            while (ids.includes(id)) {
-                id = uniqueId();
-            }
-
-            const rule = createRule({
-                ...input,
-                id,
-                scope: filteredScopes,
-            });
-
-            set(ruleManager(id), rule);
+            set(getRule(rule.id), rule);
         },
         [],
     );

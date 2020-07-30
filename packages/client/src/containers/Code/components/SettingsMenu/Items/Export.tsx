@@ -1,8 +1,8 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { getAllScopes } from '~/state/generalScopes';
-import { getAllRules } from '~/state/rules';
+import { getGeneralScopes } from '~/state/generalScopes';
+import { getRules } from '~/state/rules';
 import { themeStyle } from '~/state/theme';
 
 import SettingsMenuItem from '~/containers/Code/components/SettingsMenu/Item';
@@ -21,9 +21,9 @@ const ruleTransformer = (rule: Rule): ThemeRule => ({
     name: rule.name,
     scope: rule.scope,
     settings: {
-        ...(rule.settings.fontStyle.length > 0
+        ...(rule.settings.fontStyle!.length > 0
             ? {
-                  fontStyle: rule.settings.fontStyle.join(' '),
+                  fontStyle: rule.settings.fontStyle!.join(' '),
               }
             : {}),
         foreground: rule.settings.foreground,
@@ -34,7 +34,7 @@ const createThemeColorsObj = (scopes: GeneralScope[]): Theme['colors'] => {
     return scopes.reduce(
         (acc, scope) => ({
             ...acc,
-            [scope.scope]: scope.color,
+            [scope.id]: scope.settings.foreground,
         }),
         {},
     );
@@ -43,14 +43,14 @@ const createThemeColorsObj = (scopes: GeneralScope[]): Theme['colors'] => {
 const createTheme = (opts: Options): Theme => ({
     name: opts.name,
     colors: createThemeColorsObj(opts.generalScopes),
-    semanticHighlighting: true,
+    semanticTokens: true,
     tokenColors: opts.rules.map(rule => ruleTransformer(rule)),
     type: opts.type,
 });
 
 const Export: React.FC = () => {
-    const rules = useRecoilValue(getAllRules);
-    const generalScopes = useRecoilValue(getAllScopes);
+    const rules = useRecoilValue(getRules);
+    const generalScopes = useRecoilValue(getGeneralScopes);
     const name = 'by https://github.com/el-angel/tmtheme-editor';
     const type = useRecoilValue(themeStyle);
 

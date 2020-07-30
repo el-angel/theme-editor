@@ -8,6 +8,8 @@ import General from '~/containers/Sidebar/components/General';
 import Rules from '~/containers/Sidebar/components/Rules';
 import Toolbar from '~/containers/Sidebar/components/Toolbar';
 
+import { EntityType } from '~/constants';
+
 import css from './styles.module.scss';
 
 import getGeneralScopesCSS from '~/selectors/generalScopeCSS';
@@ -27,9 +29,9 @@ const Sidebar: React.FC = () => {
                 <style type="text/css">{ruleStyle}</style>
                 <style type="text/css">{generalStyle}</style>
                 <div className={css.rules}>
-                    {currentMode === 'rules' && <Rules />}
+                    {currentMode === EntityType.Rule && <Rules />}
 
-                    {currentMode === 'general' && <General />}
+                    {currentMode === EntityType.GeneralScope && <General />}
                 </div>
                 <Info />
             </div>

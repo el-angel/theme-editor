@@ -3,8 +3,8 @@ import { initialize } from '@anche/textmate-grammar-parser';
 import { RecoilRoot } from 'recoil';
 
 import { rawCode } from '~/state/code';
-import generalScopeManager from '~/state/generalScopes';
-import ruleManager, { ruleIds } from '~/state/rules';
+import { getGeneralScope } from '~/state/generalScopes';
+import { getRule, ruleIds, RULES_STATE_ID } from '~/state/rules';
 import { themeStyle } from '~/state/theme';
 
 import Code from '~/containers/Code';
@@ -23,41 +23,36 @@ import css from './App.module.scss';
 
 const ONIGASM_URL = `${process.env.PUBLIC_URL}/onigasm.wasm`;
 
-// const MyComponent = (props) => <div></div>;
-// const ItemPrice = (props) => {
-//     return <MyComponent { ...props } />;
-// }
-
 const initializeState = ({ set }): void => {
     const keys = storage.keys();
 
-    const ids = storage.get<string[]>(atomKey('RulesIds')) || [];
+    const ids = storage.get<string[]>(atomKey(RULES_STATE_ID, 'Ids')) || [];
     set(ruleIds, ids);
 
     keys.forEach(key => {
-        if (key === atomKey('RulesIds')) {
+        if (key === atomKey(RULES_STATE_ID, 'Ids')) {
             return;
         }
 
-        if (key.includes(atomKey('Rules_'))) {
+        if (key.includes(atomKey(RULES_STATE_ID, 'id__'))) {
             const value = storage.get<Rule>(key)!;
 
             if (ids.includes(value.id)) {
-                set(ruleManager(value.id), value);
+                set(getRule(value.id), value);
             }
         }
 
-        if (key.includes(atomKey('GeneralScopesFamily'))) {
+        if (key.includes(atomKey('GeneralScopes', 'Family'))) {
             const scope = storage.get<GeneralScope>(key)!;
-            set(generalScopeManager(scope.scope), scope);
+            set(getGeneralScope(scope.id), scope);
         }
 
-        if (key.includes(atomKey('RawCode'))) {
+        if (key.includes(atomKey('Code', 'Raw'))) {
             const code = storage.get<string>(key)!;
             set(rawCode, code);
         }
 
-        if (key.includes(atomKey('Theme'))) {
+        if (key.includes(atomKey('Theme', 'Style'))) {
             const theme = storage.get<'light' | 'dark'>(key);
             set(themeStyle, theme);
         }

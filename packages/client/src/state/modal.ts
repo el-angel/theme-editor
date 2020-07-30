@@ -3,17 +3,17 @@ import { atom, atomFamily, selectorFamily } from 'recoil';
 import { atomKey, selectorKey } from '~/helpers/state';
 
 const modalIds = atom<string[]>({
-    key: atomKey('ModalIds'),
+    key: atomKey('Modal', 'Ids'),
     default: [],
 });
 
 const _modalState = atomFamily({
-    key: atomKey('ModalState__Family'),
+    key: atomKey('ModalState', 'Family'),
     default: false,
 });
 
 export const getModalState = selectorFamily<boolean, string>({
-    key: selectorKey('GetModalState__Family'),
+    key: selectorKey('ModalState', 'GetFamily'),
     get: id => ({ get }): boolean => {
         return get(_modalState(id));
     },

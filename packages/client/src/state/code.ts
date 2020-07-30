@@ -44,12 +44,12 @@ export default Viewer;
 `;
 
 const _rawCode = atom<string>({
-    key: atomKey('RawCode'),
+    key: atomKey('Code', 'Raw'),
     default: initCode,
 });
 
 export const rawCode = selector<string>({
-    key: selectorKey('RawCode__Selector'),
+    key: selectorKey('Code', 'RawSelector'),
     get: ({ get }) => {
         return get(_rawCode);
     },
@@ -59,17 +59,17 @@ export const rawCode = selector<string>({
         /**
          * @TODO Replace when Atom Effects is introduced
          */
-        storage.set(atomKey('RawCode'), get(_rawCode));
+        storage.set(atomKey('Code', 'Raw'), get(_rawCode));
     },
 });
 
 export const editCodeState = atom<boolean>({
-    key: atomKey('EditCode'),
+    key: atomKey('Code', 'Edit'),
     default: false,
 });
 
 const parsedCode = selector<TextMateParserResult>({
-    key: selectorKey('Code'),
+    key: selectorKey('Code', 'Parsed'),
     get: async ({ get }) => {
         const code = get(_rawCode);
         const language = get(languageState);
@@ -80,7 +80,7 @@ const parsedCode = selector<TextMateParserResult>({
 });
 
 export const selectedSubline = atom<Nullable<string>>({
-    key: atomKey('SelectedSubline'),
+    key: atomKey('Code', 'SelectedSubline'),
     default: '',
 });
 

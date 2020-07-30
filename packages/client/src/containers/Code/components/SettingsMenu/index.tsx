@@ -3,7 +3,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import cx from 'classnames';
 import { useRecoilValue } from 'recoil';
 
-import generalScopeManager from '~/state/generalScopes';
+import { getGeneralScope } from '~/state/generalScopes';
 
 import Open from '~/containers/Code/components/SettingsMenu/Items/Open';
 
@@ -23,7 +23,7 @@ import css from './styles.module.scss';
 const SettingsMenu: React.FC = () => {
     const [open, setOpen] = React.useState(false);
     const editorBackground: GeneralScope = useRecoilValue(
-        generalScopeManager('editor.background'),
+        getGeneralScope('editor.background'),
     ) as GeneralScope;
     const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -38,7 +38,7 @@ const SettingsMenu: React.FC = () => {
             <div className={css.settingsIcon} onClick={(): void => setOpen(!open)}>
                 <SettingsIcon
                     style={{
-                        color: getContrastColor(editorBackground.color),
+                        color: getContrastColor(editorBackground.settings.foreground),
                         opacity: '0.5',
                     }}
                 />

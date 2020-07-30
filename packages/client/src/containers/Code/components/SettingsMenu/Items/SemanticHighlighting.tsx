@@ -2,7 +2,7 @@ import React from 'react';
 import cx from 'classnames';
 import { useRecoilCallback, useRecoilValue } from 'recoil';
 
-import { semanticState, States } from '~/state/semanticHighlighting';
+import { semanticState, States } from '~/state/semanticTokens';
 
 import SettingsMenuItem from '~/containers/Code/components/SettingsMenu/Item';
 

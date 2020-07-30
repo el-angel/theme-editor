@@ -1,12 +1,9 @@
 import React from 'react';
 import { SemanticToken } from '@anche/semantic-highlighting-parser';
-// import { SubLine as SubLineType } from '@anche/textmate-grammar-parser';
 import cx from 'classnames';
 import { useRecoilValue } from 'recoil';
 
-import generalScopeManager from '~/state/generalScopes';
-
-import { SEMANTIC_HIGHLIGHTING_TEXTMATE_MAP } from '~/constants';
+import { getGeneralScope } from '~/state/generalScopes';
 
 import getContrastColor from '~/helpers/getContrastColor';
 import ruleMatch from '~/helpers/ruleMatch';
@@ -63,18 +60,16 @@ const SubLine: React.FC<Props> = ({
 
         if (semanticToken && matchScopes.length === 1) {
             const semanticTokenScope = getSemanticTokenFallback(scopes[0]);
-            console.log({ semanticTokenScope });
-            matchScopes = [semanticTokenScope || ''];
+            console.log('test');
+            matchScopes = semanticTokenScope;
         }
 
         const activeRule = ruleMatch(rules, matchScopes);
         setRule(activeRule?.rule || null);
         setActiveScope(activeRule?.query || '');
-    }, [scopes, rules, semanticToken]);
+    }, [scopes, rules, semanticToken, children]);
 
-    const editorBackground = useRecoilValue(
-        generalScopeManager('editor.background'),
-    ) as GeneralScope;
+    const editorBackground = useRecoilValue(getGeneralScope('editor.background')) as GeneralScope;
 
     const empty = !children.trim();
 
@@ -84,7 +79,9 @@ const SubLine: React.FC<Props> = ({
             style={
                 selected
                     ? {
-                          backgroundColor: `${getContrastColor(editorBackground.color)}20`,
+                          backgroundColor: `${getContrastColor(
+                              editorBackground.settings.foreground,
+                          )}20`,
                       }
                     : {}
             }

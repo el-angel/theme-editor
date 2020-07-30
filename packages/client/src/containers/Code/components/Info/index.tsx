@@ -9,8 +9,8 @@ import {
     useSetRecoilState,
 } from 'recoil';
 
-import ruleManager, { getAllRules } from '~/state/rules';
-import editRuleState from '~/state/rules/edit';
+import { getRule, getRules } from '~/state/rules';
+import { entitySettingsState } from '~/state/ui';
 
 import { sublineSelected } from '~/containers/Code/components/CodeView';
 
@@ -67,12 +67,12 @@ export const infoState = selector<InfoState>({
 });
 
 const Info: React.FC = () => {
-    const definedRules = useRecoilValue(getAllRules);
+    const definedRules = useRecoilValue(getRules);
     const { scopes } = useRecoilValue(infoState);
     const activateRule = useSetRecoilState(activateRuleByScope);
-    const id = useRecoilValue(editRuleState);
+    const input = useRecoilValue(entitySettingsState);
 
-    const [activeRule, updateRule] = useRecoilState(ruleManager(id));
+    const [activeRule, updateRule] = useRecoilState(getRule(input?.id));
 
     const addRule = useAddRule();
 

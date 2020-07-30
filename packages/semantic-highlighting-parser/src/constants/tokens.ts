@@ -1,13 +1,5 @@
 import { TokenType, TokenModifier } from 'typescript-vscode-sh-plugin/lib/constants';
 
-export enum SemanticMeaning {
-    None = 0,
-    Value = 1,
-    Type = 2,
-    Namespace = 4,
-    All = Value | Type | Namespace,
-}
-
 export const tokenTypes: string[] = [];
 tokenTypes[TokenType.class] = 'class';
 tokenTypes[TokenType.enum] = 'enum';

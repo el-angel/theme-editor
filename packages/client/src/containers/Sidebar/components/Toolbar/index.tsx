@@ -4,6 +4,8 @@ import { useRecoilState } from 'recoil';
 
 import mode from '~/state/mode';
 
+import { EntityType } from '~/constants';
+
 import css from './styles.module.scss';
 
 const Toolbar: React.FC = () => {
@@ -14,19 +16,27 @@ const Toolbar: React.FC = () => {
             <div className={css.header}>
                 <div
                     className={cx(css.item, {
-                        [css.isActive]: currentMode === 'rules',
+                        [css.isActive]: currentMode === EntityType.Rule,
                     })}
-                    onClick={(): void => setMode('rules')}
+                    onClick={(): void => setMode(EntityType.Rule)}
                 >
                     Rules
                 </div>
                 <div
                     className={cx(css.item, {
-                        [css.isActive]: currentMode === 'general',
+                        [css.isActive]: currentMode === EntityType.GeneralScope,
                     })}
-                    onClick={(): void => setMode('general')}
+                    onClick={(): void => setMode(EntityType.GeneralScope)}
                 >
                     General
+                </div>
+                <div
+                    className={cx(css.item, {
+                        [css.isActive]: currentMode === EntityType.SemanticToken,
+                    })}
+                    onClick={(): void => setMode(EntityType.SemanticToken)}
+                >
+                    Semantic
                 </div>
             </div>
         </div>

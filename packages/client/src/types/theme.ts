@@ -12,7 +12,7 @@ export interface Theme {
     colors: {
         [scope: string]: string;
     };
-    semanticHighlighting: boolean;
+    semanticTokens: boolean;
     tokenColors: ThemeRule[];
     type: 'dark' | 'light';
 }

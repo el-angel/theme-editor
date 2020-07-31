@@ -1,5 +1,5 @@
 import React from 'react';
-import { SemanticToken } from '@anche/semantic-highlighting-parser';
+import { SemanticToken as ExternalSemanticToken } from '@anche/semantic-highlighting-parser';
 import { TextMateNode } from '@anche/textmate-grammar-parser';
 import cx from 'classnames';
 import { groupBy, sortBy } from 'lodash';
@@ -8,7 +8,7 @@ import { selector, useRecoilState } from 'recoil';
 
 import parsedCode from '~/state/code';
 import { getRules } from '~/state/rules';
-import { semanticTokens } from '~/state/semanticTokens';
+import { semanticTokens, semanticTokensState } from '~/state/semanticTokens';
 
 import { infoState } from '~/containers/Code/components/Info';
 import Line from '~/containers/Code/components/Line';
@@ -19,6 +19,7 @@ import useViewEntity from '~/hooks/useViewEntity';
 
 import { selectorKey } from '~/helpers/state';
 
+import { SemanticToken } from '~/types';
 import { Rule } from '~/types';
 
 import css from './styles.module.scss';
@@ -33,14 +34,14 @@ interface FormattedNode extends TextMateNode {
 }
 
 const groupSemanticTokens = (
-    array: SemanticToken[],
-): Record<number, Record<number, SemanticToken[]>> => {
+    array: ExternalSemanticToken[],
+): Record<number, Record<number, ExternalSemanticToken[]>> => {
     if (!array.length) {
         return {};
     }
     const _grouped = groupBy(array, 'line');
 
-    const grouped: Record<number, Record<number, SemanticToken[]>> = {};
+    const grouped: Record<number, Record<number, ExternalSemanticToken[]>> = {};
 
     Object.keys(_grouped).forEach(lineNumber => {
         grouped[lineNumber] = groupBy(_grouped[lineNumber], 'start');
@@ -79,7 +80,8 @@ const hydratedCode = selector({
 });
 
 const CodeView: React.FC = () => {
-    const rules = useRecoilValue(getRules);
+    const definedRules = useRecoilValue(getRules);
+    const definedTokens = useRecoilValue(semanticTokensState);
     const codeObj = useRecoilValue(hydratedCode);
     const [selected] = useRecoilState(sublineSelected);
     const setInfoState = useSetRecoilState(infoState);
@@ -90,22 +92,39 @@ const CodeView: React.FC = () => {
         tokens.state === 'hasValue' ? groupSemanticTokens(tokens?.contents?.tokens || []) : {};
 
     const onHoverSubline = React.useCallback(
-        (scopes: string[]): void => {
+        ({
+            textmateScopes,
+            semanticToken,
+        }: {
+            textmateScopes: string[];
+            semanticToken: string;
+        }): void => {
             setInfoState({
-                scopes,
+                textmateScopes,
+                semanticToken,
             });
         },
         [setInfoState],
     );
 
     const onClickSubline = React.useCallback(
-        (scopes: string[], rule: Rule, id: string): void => {
-            viewEntity(rule);
-            console.log({ rule });
+        ({
+            textmateScopes,
+            entity,
+            id,
+            semanticToken,
+        }: {
+            textmateScopes: string[];
+            entity: Rule | SemanticToken | null;
+            id: string;
+            semanticToken: string;
+        }): void => {
+            entity && viewEntity(entity);
 
             setInfoState({
                 selected: id,
-                scopes,
+                textmateScopes,
+                semanticToken,
             });
         },
         [setInfoState, viewEntity],
@@ -128,7 +147,8 @@ const CodeView: React.FC = () => {
 
                             return (
                                 <SubLine
-                                    rules={rules}
+                                    rules={definedRules}
+                                    semanticTokens={definedTokens}
                                     selected={sublineKey === selected}
                                     key={sublineKey}
                                     id={sublineKey}

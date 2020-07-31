@@ -6,7 +6,8 @@ export interface Position {
 
 export interface SemanticToken extends Position {
     type: string;
-    modifiers: string;
+    modifiers: string[];
+    language: string | undefined;
 }
 
 export type Language = 'jsx' | 'js' | 'ts' | 'tsx';

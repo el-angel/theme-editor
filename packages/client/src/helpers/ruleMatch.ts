@@ -122,7 +122,7 @@ export const _match = (queries: string[], scopes: string[]): Nullable<Match> => 
     return winner as Nullable<Match>;
 };
 
-const ruleMatch = (rules: Rule[], scopes: string[]): Nullable<RuleMatch> => {
+const getTextmateScopesRule = (rules: Rule[], scopes: string[]): Nullable<RuleMatch> => {
     const queries = rules.reduce((acc: string[], rule) => [...acc, ...rule.scope], []);
 
     const match = _match(queries, scopes);
@@ -148,4 +148,4 @@ const ruleMatch = (rules: Rule[], scopes: string[]): Nullable<RuleMatch> => {
     return null;
 };
 
-export default ruleMatch;
+export default getTextmateScopesRule;

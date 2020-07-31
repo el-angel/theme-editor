@@ -20,7 +20,8 @@ export enum States {
 
 export const semanticState = atom<States>({
     key: atomKey('semanticTokens', 'State'),
-    default: States.Inactive,
+    // default: States.Inactive,
+    default: States.Active,
 });
 
 export const semanticTokens = selector({
@@ -34,7 +35,7 @@ export const semanticTokens = selector({
 
         const code = get(rawCode);
 
-        const result = await API.getSemanticTokens({
+        const result = await API.semanticTokensState({
             code,
             language: 'tsx',
         });
@@ -45,9 +46,9 @@ export const semanticTokens = selector({
 
 const {
     TREE_ID: SEMANTIC_STATE_ID,
-    getEntities: getSemanticTokens,
-    getEntity: getSemanticToken,
-    entityIds: getSemanticTokenIds,
+    getEntities: semanticTokensState,
+    getEntity: semanticTokenState,
+    entityIds: semanticTokenIds,
 } = factory({
     state: 'semantic',
     default: <SemanticToken>{
@@ -63,4 +64,4 @@ const {
     },
 });
 
-export { SEMANTIC_STATE_ID, getSemanticTokens, getSemanticToken, getSemanticTokenIds };
+export { SEMANTIC_STATE_ID, semanticTokensState, semanticTokenState, semanticTokenIds };

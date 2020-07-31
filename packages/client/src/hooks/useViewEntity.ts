@@ -4,9 +4,9 @@ import { entitySettingsState } from '~/state/ui';
 
 import { Base } from '~/types';
 
-const useViewEntity = (): ((input?: Base) => void) => {
+const useViewEntity = (): (<T extends Base>(input?: T) => void) => {
     const viewEntity = useRecoilCallback(
-        ({ set }) => (input?: Base): void => {
+        ({ set }) => <T extends Base>(input?: T): void => {
             if (input) {
                 set(entitySettingsState, input);
                 return;

@@ -1,14 +1,51 @@
-import { parseSelector } from '../semanicToken';
+import { uniqueId } from 'lodash';
 
-type ParsedSelector = ReturnType<typeof parseSelector>;
+import { EntityType } from '~/constants';
+
+import { SemanticToken } from '~/types';
+
+import { createQuerySelector, getSemanticTokenRule } from '../semanticToken';
+
+type ParsedSelector = ReturnType<typeof createQuerySelector>;
 
 const assertParseSelector = (selector: string, expected: ParsedSelector) => {
-    const actual = parseSelector(selector);
+    const actual = createQuerySelector(selector);
 
     expect(actual).toEqual(expected);
 };
 
+const generateSemanticToken = (scope: string): SemanticToken => ({
+    id: uniqueId(),
+    scope,
+    settings: {
+        foreground: '#000000',
+    },
+    __meta: {
+        type: EntityType.SemanticToken,
+    },
+});
+
+const semanticTokens: SemanticToken[] = [
+    generateSemanticToken('type.declaration'),
+    generateSemanticToken('*.declaration'),
+    generateSemanticToken('function.declaration'),
+    generateSemanticToken('namespace.async'),
+    generateSemanticToken('parameter.readonly'),
+];
+
 describe('SemanticToken', () => {
+    describe('matcher', () => {
+        test('test', () => {
+            const res = getSemanticTokenRule(semanticTokens, 'namespace.async');
+            console.log(res);
+        });
+
+        test('getTokenFallback', () => {
+            const res = getSemanticTokenRule(semanticTokens, 'property.readonly');
+            console.log(res);
+        });
+    });
+
     describe('parseSelector', () => {
         test('variable.defaultLibrary', () => {
             assertParseSelector('variable.defaultLibrary', {

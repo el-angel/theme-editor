@@ -3,14 +3,13 @@ import { useRecoilCallback } from 'recoil';
 
 import SettingsMenuItem from '~/containers/Code/components/SettingsMenu/Item';
 
-import dialog from '~/services/dialog';
+import { confirm } from '~/services/dialog';
 
 import resetState from '~/recoil/snapshot/reset';
 
 const New: React.FC = () => {
     const onClick = useRecoilCallback(({ snapshot, gotoSnapshot }) => (): void => {
-        dialog
-            .confirm()
+        confirm()
             .then(async () => {
                 const newSnapshot = await snapshot.asyncMap(async mutableSnapshot => {
                     await resetState(mutableSnapshot);

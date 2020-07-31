@@ -1,35 +1,34 @@
 import React from 'react';
+import { useRecoilValue } from 'recoil';
 
-// import { getRules } from '~/state/rules';
-// import { editRuleState } from '~/state/rules';
+import { entitySettingsState } from '~/state/ui';
+
 import SidebarItem from '~/components/ui/SidebarItem';
 
-// import useViewRule from '~/hooks/useViewRule';
-// import getExistingScopes from '~/helpers/getExistingScopes';
+import useViewEntity from '~/hooks/useViewEntity';
+
+import { EntityType } from '~/constants';
+
 import { SemanticToken as SemanticTokenType } from '~/types';
 
 const SemanticToken: React.FC<SemanticTokenType> = props => {
-    const { id, settings } = props;
-    // const viewRule = useView();
-    // const rules = useRecoilValue(getRules);
-    // const editingRuleId = useRecoilValue(editRuleState);
-    const editingRuleId = '1';
+    const { id, settings, scope } = props;
+    const viewEntity = useViewEntity();
+    const editingEntity = useRecoilValue(entitySettingsState);
 
-    // const existingScopes = getExistingScopes({ id, name, settings, scope }, rules);
-
-    const isActive = editingRuleId === id;
+    const isActive =
+        editingEntity?.id === id && editingEntity.__meta.type === EntityType.SemanticToken;
 
     return (
         <SidebarItem
             isActive={isActive}
             onClick={(): void => {
                 if (!isActive) {
-                    // viewRule(id);
+                    viewEntity(props);
                 }
             }}
-            title={name}
+            title={scope}
             color={settings.foreground}
-            // showWarning={!!existingScopes.length}
         />
     );
 };

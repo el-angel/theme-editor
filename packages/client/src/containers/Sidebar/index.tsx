@@ -6,6 +6,7 @@ import mode from '~/state/mode';
 import Info from '~/containers/Code/components/Info';
 import General from '~/containers/Sidebar/components/General';
 import Rules from '~/containers/Sidebar/components/Rules';
+import SemanticTokens from '~/containers/Sidebar/components/SemanticTokens';
 import Toolbar from '~/containers/Sidebar/components/Toolbar';
 
 import { EntityType } from '~/constants';
@@ -32,6 +33,8 @@ const Sidebar: React.FC = () => {
                     {currentMode === EntityType.Rule && <Rules />}
 
                     {currentMode === EntityType.GeneralScope && <General />}
+
+                    {currentMode === EntityType.SemanticToken && <SemanticTokens />}
                 </div>
                 <Info />
             </div>

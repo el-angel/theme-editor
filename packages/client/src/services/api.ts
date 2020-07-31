@@ -71,17 +71,17 @@ class APIService {
     }
 }
 
-const _api = new APIService();
+const api = new APIService();
 
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 
 const API = {
-    getSemanticTokens: (body: { code: string; language: 'tsx' | 'ts' }) =>
-        _api.post<ParserResult>('/sh', {
+    semanticTokensState: (body: { code: string; language: 'tsx' | 'ts' }) =>
+        api.post<ParserResult>('/sh', {
             body: JSON.stringify(body),
         }),
 
-    ping: () => _api.get<boolean>('/ping'),
+    ping: () => api.get<boolean>('/ping'),
 };
 
 /* eslint-enable @typescript-eslint/explicit-function-return-type */

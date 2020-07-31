@@ -1,10 +1,14 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 // import { editRuleState } from '~/state/rules';
-import { getSemanticToken } from '~/state/semanticTokens';
+import { semanticTokenState } from '~/state/semanticTokens';
+import { entitySettingsState } from '~/state/ui';
 
 import PanelSettings from '~/components/ui/PanelSettings';
+
+import useDeleteEntity from '~/hooks/useDeleteEntity';
+import useViewEntity from '~/hooks/useViewEntity';
 
 import { FontStyle as FontStyleEnum } from '~/constants';
 
@@ -19,12 +23,10 @@ import { FontStyle as FontStyleEnum } from '~/constants';
 // } as const;
 
 const SemanticTokenSettings: React.FC = () => {
-    // const semanticTokens = useRecoilValue(getEntities);
-    // const deleteRule = useDeleteEntity();
-    // const setViewRule = useViewRule();
-    // const id = useRecoilValue(editId);
-    const id = '1';
-    const [entity, updateEntity] = useRecoilState(getSemanticToken(id));
+    const editingEntity = useRecoilValue(entitySettingsState);
+    const [entity, updateEntity] = useRecoilState(semanticTokenState(editingEntity?.id));
+    const viewEntity = useViewEntity();
+    const deleteEntity = useDeleteEntity();
 
     const toggleFontStyle = React.useCallback(
         (fontStyle: FontStyleEnum) => {
@@ -71,33 +73,15 @@ const SemanticTokenSettings: React.FC = () => {
     return (
         <PanelSettings
             onClose={(): void => {
-                console.log('close');
+                viewEntity();
             }}
-            // onChangeName={(name): void => updateEntity({ ...entity, name })}
-            // existingScopes={getExistingScopes(rule, rules)}
-            scopes={[entity.scope]}
-            // onDeleteScope={(scope: string): void => {
-            //     const index = rule.scope.findIndex(sc => sc === scope);
-            //     const newScopes = [...rule.scope];
-            //     newScopes.splice(index, 1);
-            //     updateRule({
-            //         ...rule,
-            //         scope: newScopes,
-            //     });
-            // }}
-            // onDelete={(): void => deleteRule(rule)}
+            onDelete={(): void => deleteEntity(entity)}
             onChangeColor={onChangeColor}
             onChangeFontStyle={(fontStyle): void => toggleFontStyle(fontStyle)}
             bold={entity.settings.fontStyle?.includes(FontStyleEnum.Bold)}
             italic={entity.settings.fontStyle?.includes(FontStyleEnum.Italic)}
             underline={entity.settings.fontStyle?.includes(FontStyleEnum.Underline)}
             color={entity.settings.foreground}
-            // onAddScope={(scope: string) =>
-            //     updateEntity({
-            //         ...rule!,
-            //         scope: [scope, ...rule!.scope],
-            //     })
-            // }
             name={entity.scope}
         />
     );

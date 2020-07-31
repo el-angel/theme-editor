@@ -10,41 +10,59 @@ import {
 } from 'recoil';
 
 import { getRule, getRules } from '~/state/rules';
+import { semanticTokensState } from '~/state/semanticTokens';
 import { entitySettingsState } from '~/state/ui';
 
 import { sublineSelected } from '~/containers/Code/components/CodeView';
 
-import useAddRule from '~/hooks/useAddRule';
+import { getSemanticTokenRule } from '~/services/semanticToken';
 
-import ruleMatch from '~/helpers/ruleMatch';
+import useAddEntity from '~/hooks/useAddRule';
+import useViewEntity from '~/hooks/useViewEntity';
+
+import { EntityType } from '~/constants';
+
+import getTextmateScopesRule from '~/helpers/ruleMatch';
+import { atomKey, selectorKey } from '~/helpers/state';
+
+import { SemanticToken } from '~/types';
 
 import css from './styles.module.scss';
 
 import { activateRuleByScope } from '~/selectors/activateRule';
 
-export const _infoState = atom<string[]>({
-    key: 'scopesInfoState',
+export const _textmateScopesState = atom<string[]>({
+    key: atomKey('Info', 'TextMateScopes'),
     default: [],
+});
+
+export const _semanticTokenState = atom<string>({
+    key: atomKey('Info', 'SemanticToken'),
+    default: '',
 });
 
 interface InfoState {
     selected?: string;
-    scopes: string[];
+    textmateScopes: string[];
+    semanticToken: string;
 }
 
 export const infoState = selector<InfoState>({
-    key: 'scopesInfoSelector',
+    key: selectorKey('Info', 'Scopes'),
     get: ({ get }) => {
-        const scopes = get(_infoState);
+        const textmateScopes = get(_textmateScopesState);
+        const semanticToken = get(_semanticTokenState);
         const selected = get(sublineSelected);
 
         return {
             selected,
-            scopes,
+            textmateScopes,
+            semanticToken,
         };
     },
     set: ({ set, get, reset }, input) => {
         if (input instanceof DefaultValue) {
+            set(_textmateScopesState, []);
             return;
         }
 
@@ -57,27 +75,49 @@ export const infoState = selector<InfoState>({
         if (selected === input.selected) {
             // deselect
             reset(sublineSelected);
-            reset(_infoState);
+            reset(_textmateScopesState);
             return;
         }
 
         set(sublineSelected, input.selected || '');
-        set(_infoState, input.scopes);
+        set(_textmateScopesState, input.textmateScopes);
+        set(_semanticTokenState, input.semanticToken);
     },
 });
 
 const Info: React.FC = () => {
     const definedRules = useRecoilValue(getRules);
-    const { scopes } = useRecoilValue(infoState);
+    const definedTokens = useRecoilValue(semanticTokensState);
+    const viewEntity = useViewEntity();
+    const { textmateScopes, semanticToken } = useRecoilValue(infoState);
     const activateRule = useSetRecoilState(activateRuleByScope);
     const input = useRecoilValue(entitySettingsState);
 
     const [activeRule, updateRule] = useRecoilState(getRule(input?.id));
 
-    const addRule = useAddRule();
+    const addEntity = useAddEntity();
+
+    const onClickToken = async (token: string): Promise<void> => {
+        const semanticToken = getSemanticTokenRule(definedTokens, token);
+
+        if (!semanticToken?.semanticToken) {
+            const input = {
+                scope: token,
+            };
+
+            const entity = await addEntity<SemanticToken>({
+                input,
+                filterScope: true,
+                type: EntityType.SemanticToken,
+            });
+
+            console.log('semantic token added', entity);
+            viewEntity(entity);
+        }
+    };
 
     const onClickScope = (scope: string): void => {
-        const rule = ruleMatch(definedRules, [scope]);
+        const rule = getTextmateScopesRule(definedRules, [scope]);
 
         if (rule) {
             activateRule(scope);
@@ -85,6 +125,8 @@ const Info: React.FC = () => {
         }
 
         if (activeRule) {
+            // there's a rule active in editing view
+            // add this scope to that rule
             const regex = new RegExp(`^${scope}`);
 
             if (activeRule.scope.some(_scope => regex.test(_scope))) {
@@ -105,28 +147,44 @@ const Info: React.FC = () => {
             return;
         }
 
-        addRule({ scope: [scope] }, true);
+        const input = {
+            scope: [scope],
+        };
+
+        addEntity({ input, filterScope: true, type: EntityType.Rule });
     };
 
-    if (!scopes.length) {
-        return null;
-    }
-
     return (
-        <code className={css.info}>
-            {[...scopes].reverse().map((scope, i) => {
-                const exist = !!ruleMatch(definedRules, [scope]);
-                return (
+        <div className={css.info}>
+            {semanticToken && (
+                <>
+                    <p className={css.header}>semantic token</p>
                     <span
-                        className={cx(css.scope, { [css.exists]: exist })}
-                        onClick={(): void => onClickScope(scope)}
-                        key={`${scope}-${i}`}
+                        className={cx(css.scope, { [css.exists]: false })}
+                        onClick={() => onClickToken(semanticToken)}
                     >
-                        {scope}
+                        {semanticToken}
                     </span>
-                );
-            })}
-        </code>
+                </>
+            )}
+            {textmateScopes.length && (
+                <>
+                    <p className={css.header}>textmate scopes</p>
+                    {[...textmateScopes].reverse().map((scope, i) => {
+                        const exist = !!getTextmateScopesRule(definedRules, [scope]);
+                        return (
+                            <span
+                                className={cx(css.scope, { [css.exists]: exist })}
+                                onClick={(): void => onClickScope(scope)}
+                                key={`${scope}-${i}`}
+                            >
+                                {scope}
+                            </span>
+                        );
+                    })}
+                </>
+            )}
+        </div>
     );
 };
 

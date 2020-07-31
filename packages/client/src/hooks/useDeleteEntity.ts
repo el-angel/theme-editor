@@ -2,7 +2,7 @@ import { useRecoilCallback } from 'recoil';
 
 import mode from '~/state/mode';
 import { getRule } from '~/state/rules';
-import { getSemanticToken } from '~/state/semanticTokens';
+import { semanticTokenState } from '~/state/semanticTokens';
 import { entitySettingsState } from '~/state/ui';
 
 import { isRule, isSemanticToken } from '~/helpers/typeGuards';
@@ -26,7 +26,7 @@ const useDeleteEntity = (): ReturnType => {
             }
 
             if (isSemanticToken(input)) {
-                getter = getSemanticToken;
+                getter = semanticTokenState;
             }
 
             if (!getter) {
@@ -44,9 +44,7 @@ const useDeleteEntity = (): ReturnType => {
                     },
                 };
 
-                // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-                // @ts-ignore
-                set<T>(entityManager(input), deletedEntity);
+                set(getter(input.id), deletedEntity);
             }
 
             if (editEntity?.id === id && currentMode === editEntity.__meta.type) {

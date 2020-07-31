@@ -5,7 +5,7 @@ import { atom, selector } from 'recoil';
 import mode from '~/state/mode';
 import { getRules, RULES_STATE_ID } from '~/state/rules';
 
-import ruleMatch from '~/helpers/ruleMatch';
+import getTextmateScopesRule from '~/helpers/ruleMatch';
 import { selectorKey } from '~/helpers/state';
 
 import { atomKey } from './../helpers/state';
@@ -25,7 +25,7 @@ export const activateRuleByScope = selector<string>({
         set(activeScope, scope);
         const rules = get(getRules);
 
-        const rule = ruleMatch(rules, [scope]);
+        const rule = getTextmateScopesRule(rules, [scope]);
 
         if (rule) {
             set(mode, 'rules');

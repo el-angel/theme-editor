@@ -5,6 +5,7 @@ import { RecoilRoot } from 'recoil';
 import { rawCode } from '~/state/code';
 import { getGeneralScope } from '~/state/generalScopes';
 import { getRule, ruleIds, RULES_STATE_ID } from '~/state/rules';
+import { SEMANTIC_STATE_ID, semanticTokenIds, semanticTokenState } from '~/state/semanticTokens';
 import { themeStyle } from '~/state/theme';
 
 import Code from '~/containers/Code';
@@ -17,7 +18,7 @@ import storage from '~/services/storage';
 
 import { atomKey } from '~/helpers/state';
 
-import { GeneralScope, Rule } from '~/types';
+import { GeneralScope, Rule, SemanticToken } from '~/types';
 
 import css from './App.module.scss';
 
@@ -26,37 +27,52 @@ const ONIGASM_URL = `${process.env.PUBLIC_URL}/onigasm.wasm`;
 const initializeState = ({ set }): void => {
     const keys = storage.keys();
 
-    const ids = storage.get<string[]>(atomKey(RULES_STATE_ID, 'Ids')) || [];
-    set(ruleIds, ids);
+    const ruleIdsArr = storage.get<string[]>(atomKey(RULES_STATE_ID, 'Ids')) || [];
+    set(ruleIds, ruleIdsArr);
 
-    keys.forEach(key => {
-        if (key === atomKey(RULES_STATE_ID, 'Ids')) {
-            return;
-        }
+    const tokenIdsArr = storage.get<string[]>(atomKey(SEMANTIC_STATE_ID, 'Ids')) || [];
+    console.log({ tokenIdsArr });
+    set(semanticTokenIds, tokenIdsArr);
 
+    for (const key of keys) {
         if (key.includes(atomKey(RULES_STATE_ID, 'id__'))) {
             const value = storage.get<Rule>(key)!;
 
-            if (ids.includes(value.id)) {
+            if (ruleIdsArr.includes(value.id)) {
                 set(getRule(value.id), value);
             }
+            continue;
+        }
+
+        console.log(key);
+        if (key.includes(atomKey(SEMANTIC_STATE_ID, 'id__'))) {
+            console.log('yo bitch');
+            const value = storage.get<SemanticToken>(key)!;
+
+            if (tokenIdsArr.includes(value.id)) {
+                set(semanticTokenState(value.id), value);
+            }
+            continue;
         }
 
         if (key.includes(atomKey('GeneralScopes', 'Family'))) {
             const scope = storage.get<GeneralScope>(key)!;
             set(getGeneralScope(scope.id), scope);
+            continue;
         }
 
         if (key.includes(atomKey('Code', 'Raw'))) {
             const code = storage.get<string>(key)!;
             set(rawCode, code);
+            continue;
         }
 
         if (key.includes(atomKey('Theme', 'Style'))) {
             const theme = storage.get<'light' | 'dark'>(key);
             set(themeStyle, theme);
+            continue;
         }
-    });
+    }
 };
 
 const App: React.FC = () => {

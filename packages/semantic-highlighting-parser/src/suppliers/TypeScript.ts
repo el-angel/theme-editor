@@ -73,7 +73,8 @@ const parse: Parser<SemanticToken> = ({ code, language }: Input) => {
             start: position.character,
             length,
             type: tokenTypes[typeIndex],
-            modifiers: tokenModifiers.filter((_, i) => modifierSet & (1 << i)).join('.'),
+            modifiers: tokenModifiers.filter((_, i) => modifierSet & (1 << i)),
+            language: undefined,
         });
     }
 

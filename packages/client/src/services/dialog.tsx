@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import { uniqueId } from 'lodash';
 
 import Confirm from '~/components/ui/Confirm';
-import { _Modal } from '~/components/ui/Modal';
+import Modal from '~/components/ui/Modal';
 
-type ModalProps = React.ComponentProps<typeof _Modal>;
+type ModalProps = React.ComponentProps<typeof Modal>;
 
 export const dialogRootElement = document.querySelector('#modal');
 
@@ -35,21 +35,17 @@ export const confirm = (_content?: React.ReactNode): Promise<void> => {
 
     return new Promise((resolve, reject) => {
         const content = (
-            <_Modal {...props}>
+            <Modal {...props}>
                 <Confirm
                     onConfirm={_unmountWrap(elem, resolve)}
                     onReject={_unmountWrap(elem, reject)}
                 >
                     {_content || 'Are you sure?'}
                 </Confirm>
-            </_Modal>
+            </Modal>
         );
 
         ReactDOM.render(content, elem);
         dialogRootElement?.appendChild(elem);
     });
-};
-
-export default {
-    confirm,
 };

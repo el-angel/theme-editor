@@ -3,8 +3,9 @@ import { initialize } from '@anche/textmate-grammar-parser';
 import { RecoilRoot } from 'recoil';
 
 import { rawCode } from '~/state/code';
-import generalScopeManager from '~/state/generalScopes';
-import ruleManager, { ruleIds } from '~/state/rules';
+import { getGeneralScope } from '~/state/generalScopes';
+import { getRule, ruleIds, RULES_STATE_ID } from '~/state/rules';
+import { SEMANTIC_STATE_ID, semanticTokenIds, semanticTokenState } from '~/state/semanticTokens';
 import { themeStyle } from '~/state/theme';
 
 import Code from '~/containers/Code';
@@ -17,7 +18,7 @@ import storage from '~/services/storage';
 
 import { atomKey } from '~/helpers/state';
 
-import { GeneralScope, Rule } from '~/types';
+import { GeneralScope, Rule, SemanticToken } from '~/types';
 
 import css from './App.module.scss';
 
@@ -26,37 +27,50 @@ const ONIGASM_URL = `${process.env.PUBLIC_URL}/onigasm.wasm`;
 const initializeState = ({ set }): void => {
     const keys = storage.keys();
 
-    const ids = storage.get<string[]>(atomKey('RulesIds')) || [];
-    set(ruleIds, ids);
+    const ruleIdsArr = storage.get<string[]>(atomKey(RULES_STATE_ID, 'Ids')) || [];
+    set(ruleIds, ruleIdsArr);
 
-    keys.forEach(key => {
-        if (key === atomKey('RulesIds')) {
-            return;
-        }
+    const tokenIdsArr = storage.get<string[]>(atomKey(SEMANTIC_STATE_ID, 'Ids')) || [];
 
-        if (key.includes(atomKey('Rules_'))) {
+    set(semanticTokenIds, tokenIdsArr);
+
+    for (const key of keys) {
+        if (key.includes(atomKey(RULES_STATE_ID, 'id__'))) {
             const value = storage.get<Rule>(key)!;
 
-            if (ids.includes(value.id)) {
-                set(ruleManager(value.id), value);
+            if (ruleIdsArr.includes(value.id)) {
+                set(getRule(value.id), value);
             }
+            continue;
         }
 
-        if (key.includes(atomKey('GeneralScopesFamily'))) {
+        if (key.includes(atomKey(SEMANTIC_STATE_ID, 'id__'))) {
+            const value = storage.get<SemanticToken>(key)!;
+
+            if (tokenIdsArr.includes(value.id)) {
+                set(semanticTokenState(value.id), value);
+            }
+            continue;
+        }
+
+        if (key.includes(atomKey('GeneralScopes', 'Family'))) {
             const scope = storage.get<GeneralScope>(key)!;
-            set(generalScopeManager(scope.scope), scope);
+            set(getGeneralScope(scope.id), scope);
+            continue;
         }
 
-        if (key.includes(atomKey('RawCode'))) {
+        if (key.includes(atomKey('Code', 'Raw'))) {
             const code = storage.get<string>(key)!;
             set(rawCode, code);
+            continue;
         }
 
-        if (key.includes(atomKey('Theme'))) {
+        if (key.includes(atomKey('Theme', 'Style'))) {
             const theme = storage.get<'light' | 'dark'>(key);
             set(themeStyle, theme);
+            continue;
         }
-    });
+    }
 };
 
 const App: React.FC = () => {

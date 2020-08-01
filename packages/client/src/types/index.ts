@@ -1,29 +1,41 @@
-import { FONT_STYLE } from '~/constants';
+import SemanticToken from '~/containers/Sidebar/components/SemanticToken';
+
+import { EntityType, FontStyle } from '~/constants';
 
 export interface Settings {
     foreground: string;
     background?: string;
-    fontStyle: typeof FONT_STYLE[keyof typeof FONT_STYLE][];
+    fontStyle?: FontStyle[];
 }
 
-export interface StateMeta {
-    __meta?: {
+export interface StateMeta<T extends EntityType> {
+    __meta: {
         state?: 'deleted';
         touched?: boolean;
+        type: T;
     };
 }
 
-export interface Rule extends StateMeta {
+export interface Base<T extends EntityType = EntityType> extends StateMeta<T> {
     id: string;
-    name: string;
-    scope: string[];
+    scope: string[] | string;
     settings: Settings;
 }
 
-export interface GeneralScope extends StateMeta {
-    scope: string;
-    color: string;
+export interface Rule extends Base<EntityType.Rule> {
+    name: string;
+    scope: string[];
 }
+
+export interface SemanticToken extends Base<EntityType.SemanticToken> {
+    scope: string;
+}
+
+export interface GeneralScope extends Base<EntityType.GeneralScope> {
+    scope: string;
+}
+
+export type Entity = GeneralScope | Rule | SemanticToken;
 
 export interface CSS {
     [classname: string]: React.CSSProperties;

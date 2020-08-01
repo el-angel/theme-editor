@@ -1,47 +1,53 @@
-import { uniqueId } from 'lodash';
 import { useRecoilCallback } from 'recoil';
 
-import ruleManager, { getRuleIds } from '~/state/rules';
+import { getRule, ruleIds } from '~/state/rules';
+import { semanticTokenIds, semanticTokenState } from '~/state/semanticTokens';
+
+import { EntityType } from '~/constants';
 
 import createRule from '~/model/rule';
+import createSemanticToken from '~/model/semanticToken';
 
-import { Rule } from '~/types';
+import { Rule, SemanticToken } from '~/types';
 
-type ReturnType = (input?: Partial<Rule>) => void;
+type AddEntityFunction<T> = (_0: {
+    input: Partial<T>;
+    filterScope?: boolean;
+    type: EntityType.Rule | EntityType.SemanticToken;
+}) => Promise<T>;
 
-const useAddRule = (): ReturnType => {
-    const addRule = useRecoilCallback(
+const useAddEntity = () => {
+    const addEntity = useRecoilCallback(
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
-        ({ set, snapshot }) => async (input?: Partial<Rule>): Promise<void> => {
-            const filteredScopes = (input?.scope || []).map(scope => {
-                const splitted = scope.split('.');
-                // remove extension from scope to support more language
-                // otherwise theme will only work for this language
-                splitted.pop();
-                return splitted.join('.');
-            });
+        ({ set, snapshot }) => async <T>({ input, filterScope, type }): Promise<T> => {
+            let entity;
+            if (type === EntityType.Rule) {
+                const existingIds = await snapshot.getPromise(ruleIds);
+                entity = createRule(<Partial<Rule>>input, {
+                    existingIds,
+                    filterScope: filterScope,
+                });
 
-            const ids = await snapshot.getPromise(getRuleIds);
-
-            let id = uniqueId();
-
-            while (ids.includes(id)) {
-                id = uniqueId();
+                set(getRule(entity.id), entity);
             }
 
-            const rule = createRule({
-                ...input,
-                id,
-                scope: filteredScopes,
-            });
+            if (type === EntityType.SemanticToken) {
+                console.log('input st', input);
+                const existingIds = await snapshot.getPromise(semanticTokenIds);
+                entity = createSemanticToken(<Partial<SemanticToken>>input, {
+                    existingIds,
+                });
 
-            set(ruleManager(id), rule);
+                set(semanticTokenState(entity.id), entity);
+            }
+
+            return entity;
         },
         [],
     );
 
-    return addRule;
+    return addEntity;
 };
 
-export default useAddRule;
+export default useAddEntity;

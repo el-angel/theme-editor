@@ -1,5 +1,10 @@
 {
-  "eslint.enable": true,
-  "scss.validate": false,
-  "css.validate": false
+    "eslint.enable": true,
+    "scss.validate": false,
+    "css.validate": false,
+    "editor.detectIndentation": false,
+    "editor.tabSize": 4,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    }
 }

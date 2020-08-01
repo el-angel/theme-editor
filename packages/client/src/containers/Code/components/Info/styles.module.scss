@@ -2,35 +2,31 @@
     display: flex;
     flex-direction: column;
     border-top: 1px solid var(--panel-border);
-    padding: 10px 0;
+    padding: 10px 10px;
+    margin-top: -15px;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    font-family: var(--font-code);
+}
 
-    & span {
-        display: flex;
-        font-size: 13px;
-        line-height: 23px;
-        cursor: copy;
-
-        &.exists {
-            cursor: alias;
-        }
-    }
+.header {
+    font-family: var(--font-primary);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.6;
+    font-size: 11px;
 }
 
 .scope {
+    display: flex;
+    font-size: 13px;
+    line-height: 23px;
+    cursor: copy;
+
+    &.exists {
+        cursor: alias;
+    }
+
     &:hover {
         background-color: var(--button-hoverBackground);
     }
-
-    padding: 0 10px;
-}
-
-.copied {
-    position: absolute;
-    right: 0;
-    top: 0;
-    font-size: 12px;
-    border-left: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    padding: 2px;
-    top: -19px;
 }

@@ -1,67 +1,129 @@
 import React from 'react';
-import { SubLine as SubLineType } from '@anche/textmate-grammar-parser';
+import { SemanticToken as ExternalSemanticToken } from '@anche/semantic-highlighting-parser';
 import cx from 'classnames';
 import { useRecoilValue } from 'recoil';
 
-import generalScopeManager from '~/state/generalScopes';
+import { getGeneralScope } from '~/state/generalScopes';
+
+import { createTokenString, getSemanticTokenRule } from '~/services/semanticToken';
+
+import { FontStyle } from '~/constants';
 
 import getContrastColor from '~/helpers/getContrastColor';
-import ruleMatch from '~/helpers/ruleMatch';
+import getTextmateScopesRule from '~/helpers/ruleMatch';
 
-import { GeneralScope, Rule } from '~/types';
+import { GeneralScope, Rule, SemanticToken } from '~/types';
 
 import css from './styles.module.scss';
 
-type Props = SubLineType & {
+type Props = {
+    scopes: string[];
     rules: Rule[];
+    semanticTokens: SemanticToken[];
     id: string;
     selected: boolean;
-    onClick: (scopes: string[], rule: Rule, id: string) => void;
-    onHover: (scopes: string[]) => void;
+    onClick: (args: {
+        textmateScopes: string[];
+        semanticToken: string;
+        entity: Rule | SemanticToken | null;
+        id: string;
+    }) => void;
+    onHover: (args: { textmateScopes: string[]; semanticToken: string }) => void;
+    semanticToken?: ExternalSemanticToken;
+    children: string;
 };
 
-const getClass = (scopes: string, empty?: boolean): string => {
-    const scopesSplit = (scopes || '').split('.');
+const getClass = (empty?: boolean): string => {
+    // const scopesSplit = (scopes || '').split('.');
 
-    return cx(...scopesSplit, css.subline, {
+    return cx(css.subline, {
         [css.empty]: empty,
     });
 };
 
-const SubLine: React.FC<Props> = ({ rules, scopes, content, selected, onClick, onHover, id }) => {
-    const [activeScope, setActiveScope] = React.useState('');
-    const [rule, setRule] = React.useState<Nullable<Rule>>(null);
+const SubLine: React.FC<Props> = ({
+    rules,
+    scopes: _scopes,
+    selected,
+    onClick,
+    onHover,
+    id,
+    children,
+    semanticToken,
+    semanticTokens,
+}) => {
+    const [entity, setEntity] = React.useState<Nullable<Rule | SemanticToken>>(null);
+    const [scopes, setScopes] = React.useState<string[]>(_scopes);
 
     React.useEffect(() => {
-        const activeRule = ruleMatch(rules, scopes);
-        setRule(activeRule?.rule || null);
-        setActiveScope(activeRule?.query || '');
-    }, [scopes, rules]);
+        if (semanticToken) {
+            const token = createTokenString(semanticToken);
+            setScopes([token]);
+        } else {
+            setScopes(_scopes);
+        }
+    }, [_scopes, semanticToken]);
 
-    const editorBackground = useRecoilValue(
-        generalScopeManager('editor.background'),
-    ) as GeneralScope;
+    React.useEffect(() => {
+        let matchScopes = scopes;
 
-    const empty = !content.trim();
+        if (semanticToken) {
+            const semanticTokenScope = getSemanticTokenRule(semanticTokens, scopes[0]);
+            if (semanticTokenScope?.semanticToken) {
+                setEntity(semanticTokenScope.semanticToken);
+                return;
+            }
+
+            if (semanticTokenScope?.fallbackScopes) {
+                matchScopes = semanticTokenScope?.fallbackScopes;
+            }
+        }
+
+        const activeRule = getTextmateScopesRule(rules, matchScopes);
+        setEntity(activeRule?.rule || null);
+    }, [scopes, rules, semanticToken, children, semanticTokens]);
+
+    const editorBackground = useRecoilValue(getGeneralScope('editor.background')) as GeneralScope;
+
+    const empty = !children.trim();
+    const semanticTokenStr = semanticToken ? createTokenString(semanticToken) : '';
+
+    const style: React.CSSProperties = {
+        color: entity?.settings.foreground,
+        fontWeight: entity?.settings.fontStyle?.includes(FontStyle.Bold) ? 'bold' : 'normal',
+        fontStyle: entity?.settings.fontStyle?.includes(FontStyle.Italic) ? 'italic' : 'normal',
+        textDecoration: entity?.settings.fontStyle?.includes(FontStyle.Underline)
+            ? 'underline'
+            : 'none',
+        ...(selected
+            ? {
+                  backgroundColor: `${getContrastColor(editorBackground.settings.foreground)}20`,
+              }
+            : {}),
+    };
 
     return (
         <span
-            className={cx(getClass(activeScope, empty))}
-            style={
-                selected
-                    ? {
-                          backgroundColor: `${getContrastColor(editorBackground.color)}20`,
-                      }
-                    : {}
-            }
+            className={cx(getClass(empty))}
+            style={style}
             {...(!empty
                 ? {
-                      onClick: (): void => onClick(scopes, rule!, id),
-                      onMouseEnter: (): void => onHover(scopes),
+                      onClick: (): void =>
+                          onClick({
+                              textmateScopes: _scopes,
+                              entity,
+                              id,
+                              semanticToken: semanticTokenStr,
+                          }),
+                      onMouseEnter: (): void =>
+                          onHover({
+                              textmateScopes: _scopes,
+                              semanticToken: semanticTokenStr,
+                          }),
                   }
                 : {})}
         >
-            {content || ' '}
+            {children || ' '}
         </span>
     );
 };

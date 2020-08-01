@@ -1,8 +1,16 @@
-export const FONT_STYLE = <const>{
-    BOLD: 'bold',
-    ITALIC: 'italic',
-    UNDERLINE: 'underline',
-};
+export enum FontStyle {
+    Bold,
+    Italic,
+    Underline,
+}
+
+export enum EntityType {
+    SemanticToken,
+    Rule,
+    GeneralScope,
+}
+
+export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export const GENERAL_SCOPES = <const>[
     'button.background',
@@ -37,3 +45,40 @@ export const GENERAL_SCOPES = <const>[
     'statusBarItem.activeBackground',
     'statusBarItem.hoverBackground',
 ];
+
+export const SEMANTIC_HIGHLIGHTING_TEXTMATE_MAP = <const>{
+    namespace: ['entity.name.namespace', 'entity.name.type.module'],
+
+    type: ['entity.name.type'],
+    'type.defaultLibrary': ['support.type'],
+
+    struct: ['storage.type.struct'],
+
+    class: ['entity.name.type.class'],
+    'class.defaultLibrary': ['support.class'],
+
+    interface: ['entity.name.type.interface'],
+    'interface.defaultLibrary': ['support.class'],
+
+    function: ['entity.name.function'],
+    'function.defaultLibrary': ['support.function'],
+
+    member: ['entity.name.function.member'],
+
+    macro: ['entity.name.other.preprocessor.macro'],
+
+    variable: ['entity.name.variable', 'variable.other.readwrite'],
+    'variable.defaultLibrary': ['support.variable'],
+    'variable.readonly': ['variable.other.constant'],
+    'variable.readonly.defaultLibrary': ['support.constant'],
+
+    parameter: ['variable.parameter'],
+
+    property: ['variable.other.property'],
+    'property.readonly': ['variable.other.constant.property'],
+
+    enum: ['entity.name.type.enum'],
+    enumMember: ['variable.other.enummember'],
+
+    event: ['variable.other.event'],
+};

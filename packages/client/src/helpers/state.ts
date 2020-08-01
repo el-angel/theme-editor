@@ -1,5 +1,6 @@
-const stateKey = (type: 'atom' | 'selector', name: string): string =>
-    `${type.toUpperCase()}/${name}`;
+const stateKey = (type: 'atom' | 'selector', scope: string, name: string): string =>
+    `${type.toUpperCase()}/${scope}/${name}`;
 
-export const atomKey = (name: string): string => stateKey('atom', name);
-export const selectorKey = (name: string): string => stateKey('selector', name);
+export const atomKey = (scope: string, name: string): string => stateKey('atom', scope, name);
+export const selectorKey = (scope: string, name: string): string =>
+    stateKey('selector', scope, name);

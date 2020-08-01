@@ -1,23 +1,21 @@
 import { atom, selector } from 'recoil';
 
-import editGeneralScopeState from '~/state/generalScopes/edit';
-import editRuleState from '~/state/rules/edit';
+import { entitySettingsState } from '~/state/ui';
 
-import { atomKey, selectorKey } from './../helpers/state';
+import { atomKey, selectorKey } from '~/helpers/state';
 
-type Mode = 'rules' | 'general';
+import { EntityType } from './../constants/index';
 
-const _mode = atom<Mode>({
-    key: atomKey('Mode'),
-    default: 'rules',
+const _mode = atom<EntityType>({
+    key: atomKey('Mode', '_'),
+    default: EntityType.Rule,
 });
 
-const mode = selector<Mode>({
-    key: selectorKey('Mode'),
+const mode = selector<EntityType>({
+    key: selectorKey('Mode', 'Value'),
     get: ({ get }) => get(_mode),
     set: ({ set }, newMode) => {
-        set(editRuleState, '');
-        set(editGeneralScopeState, '');
+        set(entitySettingsState, undefined);
 
         set(_mode, newMode);
     },

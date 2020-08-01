@@ -4,20 +4,18 @@ import ItalicIcon from '@material-ui/icons/FormatItalic';
 import UnderlineIcon from '@material-ui/icons/FormatUnderlined';
 import cx from 'classnames';
 
-import { FONT_STYLE } from '~/constants';
+import { FontStyle as FontStyleEnum } from '~/constants';
 
 import css from './styles.module.scss';
 
 const TYPE_MAP = {
-    [FONT_STYLE.BOLD]: BoldIcon,
-    [FONT_STYLE.ITALIC]: ItalicIcon,
-    [FONT_STYLE.UNDERLINE]: UnderlineIcon,
+    [FontStyleEnum.Bold]: BoldIcon,
+    [FontStyleEnum.Italic]: ItalicIcon,
+    [FontStyleEnum.Underline]: UnderlineIcon,
 };
 
-type FontStyle = typeof FONT_STYLE[keyof typeof FONT_STYLE];
-
 interface Props {
-    type: FontStyle;
+    type: FontStyleEnum;
     onClick: () => void;
     enabled: boolean;
 }

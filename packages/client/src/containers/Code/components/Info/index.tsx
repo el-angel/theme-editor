@@ -167,7 +167,7 @@ const Info: React.FC = () => {
                     </span>
                 </>
             )}
-            {textmateScopes.length && (
+            {!!textmateScopes.length && (
                 <>
                     <p className={css.header}>textmate scopes</p>
                     {[...textmateScopes].reverse().map((scope, i) => {

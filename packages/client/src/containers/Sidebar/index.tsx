@@ -14,11 +14,9 @@ import { EntityType } from '~/constants';
 import css from './styles.module.scss';
 
 import getGeneralScopesCSS from '~/selectors/generalScopeCSS';
-import { getRulesCSS } from '~/selectors/rulesCSS';
 
 const Sidebar: React.FC = () => {
     const currentMode = useRecoilValue(mode);
-    const ruleStyle = useRecoilValue(getRulesCSS);
     const generalStyle = useRecoilValue(getGeneralScopesCSS);
 
     return (
@@ -27,7 +25,6 @@ const Sidebar: React.FC = () => {
                 <Toolbar />
             </div>
             <div className={css.content}>
-                <style type="text/css">{ruleStyle}</style>
                 <style type="text/css">{generalStyle}</style>
                 <div className={css.rules}>
                     {currentMode === EntityType.Rule && <Rules />}

@@ -31,7 +31,7 @@ const initializeState = ({ set }): void => {
     set(ruleIds, ruleIdsArr);
 
     const tokenIdsArr = storage.get<string[]>(atomKey(SEMANTIC_STATE_ID, 'Ids')) || [];
-    console.log({ tokenIdsArr });
+
     set(semanticTokenIds, tokenIdsArr);
 
     for (const key of keys) {
@@ -44,9 +44,7 @@ const initializeState = ({ set }): void => {
             continue;
         }
 
-        console.log(key);
         if (key.includes(atomKey(SEMANTIC_STATE_ID, 'id__'))) {
-            console.log('yo bitch');
             const value = storage.get<SemanticToken>(key)!;
 
             if (tokenIdsArr.includes(value.id)) {

@@ -1,52 +1,55 @@
 {
-  "name": "tmtheme-anche",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "git@github.com:el-angel/tmtheme-editor.git",
-  "author": "Angelo Abdoelsamath <angelo.a@me.com>",
-  "license": "MIT",
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
-  },
-  "private": true,
-  "scripts": {
-    "start": "yarn p:client run build && yarn start:editor",
-    "start:editor": "yarn workspace @anche/tmtheme-client run start",
-    "watch": "lerna run watch --stream",
-    "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,scss,js,json}\"",
-    "deploy": "yarn p:parser build && yarn p:client deploy",
-    "p:client": "yarn workspace @anche/tmtheme-client",
-    "p:parser": "yarn workspace @anche/textmate-grammar-parser"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lerna run --concurrency 1 --stream precommit --since HEAD --exclude-dependents"
-    }
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^2.10.0",
-    "@typescript-eslint/parser": "^2.10.0",
-    "babel-eslint": "10.1.0",
-    "eslint": "6",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-config-react-app": "^5.2.1",
-    "eslint-plugin-import": "2.20.1",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-prettier": "^3.1.4",
-    "eslint-plugin-react": "7.19.0",
-    "eslint-plugin-react-hooks": "^1.6.1",
-    "eslint-plugin-simple-import-sort": "^5.0.3",
-    "husky": "^4.2.5",
-    "lerna": "^3.22.0",
-    "lint-staged": "^10.2.11",
-    "prettier": "^2.0.5",
-    "pretty-quick": "^2.0.1",
-    "stylelint": "^13.6.1",
-    "stylelint-config-prettier": "^8.0.2",
-    "stylelint-scss": "^3.18.0",
-    "typescript": "3.9.6"
-  },
-  "dependencies": {}
+    "name": "tmtheme-anche",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:el-angel/tmtheme-editor.git",
+    "author": "Angelo Abdoelsamath <angelo.a@me.com>",
+    "license": "MIT",
+    "workspaces": {
+        "packages": [
+            "packages/*"
+        ]
+    },
+    "private": true,
+    "scripts": {
+        "start": "concurrently \"yarn p:textmate run build\" \"yarn p:semantic run build\" && yarn start:editor",
+        "start:editor": "yarn workspace @anche/tmtheme-client run start",
+        "watch": "concurrently \"yarn p:textmate run watch\" \"yarn p:semantic run watch\"",
+        "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,scss,js,json}\"",
+        "deploy": "lerna run build --stream && yarn p:client deploy",
+        "p:server": "yarn workspace @anche/tmtheme-server",
+        "p:client": "yarn workspace @anche/tmtheme-client",
+        "p:textmate": "yarn workspace @anche/textmate-grammar-parser",
+        "p:semantic": "yarn workspace @anche/semantic-highlighting-parser"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lerna run --concurrency 2 --stream precommit --since HEAD --exclude-dependents"
+        }
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^2.10.0",
+        "@typescript-eslint/parser": "^2.10.0",
+        "babel-eslint": "10.1.0",
+        "concurrently": "^5.2.0",
+        "eslint": "6",
+        "eslint-config-prettier": "^6.11.0",
+        "eslint-config-react-app": "^5.2.1",
+        "eslint-plugin-import": "2.20.1",
+        "eslint-plugin-jsx-a11y": "6.2.3",
+        "eslint-plugin-prettier": "^3.1.4",
+        "eslint-plugin-react": "7.19.0",
+        "eslint-plugin-react-hooks": "^1.6.1",
+        "eslint-plugin-simple-import-sort": "^5.0.3",
+        "husky": "^4.2.5",
+        "lerna": "^3.22.0",
+        "lint-staged": "^10.2.11",
+        "prettier": "^2.0.5",
+        "pretty-quick": "^2.0.1",
+        "stylelint": "^13.6.1",
+        "stylelint-config-prettier": "^8.0.2",
+        "stylelint-scss": "^3.18.0",
+        "typescript": "3.9.6"
+    },
+    "dependencies": {}
 }

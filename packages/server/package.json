@@ -24,18 +24,14 @@
     "type": "module",
     "scripts": {
         "watch": "ts-node-dev --respawn ./src/index.ts",
-        "start": "node ",
-        "build": "node ./scripts/build.js",
+        "start": "ts-node-dev ./src/index.ts",
         "lint": "eslint src --ext .ts,.tsx .",
         "precommit": "tsc --noEmit && lint-staged",
-        "predeploy": "yarn build",
-        "test": "jest",
         "typecheck": "yarn tsc --noEmit"
     },
     "lint-staged": {
         "src/**/*.ts": [
-            "pretty-quick --staged",
-            "eslint --fix"
+            "pretty-quick --staged"
         ]
     }
 }

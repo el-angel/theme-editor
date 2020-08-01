@@ -40,7 +40,7 @@ class SemanticTokenRegistry {
     private _tokenModifiers: Record<TokenModifier['id'], TokenModifier> = {};
     private _tokenDefaultStyles: TokenFallback[] = [];
 
-    constructor() {}
+    // constructor() {}
 
     public registerTokenType(id: string): void {
         if (!id.match(typeAndModifierIdPattern)) {
@@ -260,9 +260,9 @@ export const getSelectorFallback = (
 
 export const getSemanticTokenRule = (
     tokens: SemanticToken[],
-    queryString: string,
+    selector: string | TokenSelector,
 ): { semanticToken?: SemanticToken; fallbackScopes?: string[] } | undefined => {
-    const querySelector = createQuerySelector(queryString);
+    const querySelector = typeof selector === 'string' ? createQuerySelector(selector) : selector;
 
     const winner: Maybe<TokenWinner<SemanticToken>> = match(tokens, querySelector);
 

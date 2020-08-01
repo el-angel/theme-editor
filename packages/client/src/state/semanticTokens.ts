@@ -1,3 +1,5 @@
+import { SemanticToken as ExternalSemanticToken } from '@anche/semantic-highlighting-parser';
+import { groupBy } from 'lodash';
 import { atom, selector } from 'recoil';
 
 import { rawCode } from '~/state/code';
@@ -40,7 +42,17 @@ export const semanticTokens = selector({
             language: 'tsx',
         });
 
-        return result;
+        const _grouped = groupBy(result?.tokens, 'line');
+
+        const grouped: Record<number, Record<number, ExternalSemanticToken[]>> = {};
+
+        Object.keys(_grouped).forEach(lineNumber => {
+            grouped[lineNumber] = groupBy(_grouped[lineNumber], 'start');
+        });
+
+        return grouped;
+
+        // return result;
     },
 });
 

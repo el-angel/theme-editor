@@ -1,9 +1,7 @@
 import React from 'react';
-import { SemanticToken as ExternalSemanticToken } from '@anche/semantic-highlighting-parser';
-import { TextMateNode } from '@anche/textmate-grammar-parser';
 import cx from 'classnames';
-import { groupBy, sortBy } from 'lodash';
-import { atom, useRecoilValue, useRecoilValueLoadable, useSetRecoilState } from 'recoil';
+import { sortBy } from 'lodash';
+import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { selector, useRecoilState } from 'recoil';
 
 import parsedCode from '~/state/code';
@@ -12,15 +10,15 @@ import { semanticTokens, semanticTokensState } from '~/state/semanticTokens';
 
 import { infoState } from '~/containers/Code/components/Info';
 import Line from '~/containers/Code/components/Line';
-import SubLine from '~/containers/Code/components/SubLine';
+import SubLine, { SubLineCallback } from '~/containers/Code/components/SubLine';
+
+import { getSemanticTokenRule } from '~/services/semanticToken';
 
 // import useViewRule from '~/hooks/useViewRule';
 import useViewEntity from '~/hooks/useViewEntity';
 
+import getTextmateScopesRule from '~/helpers/ruleMatch';
 import { selectorKey } from '~/helpers/state';
-
-import { SemanticToken } from '~/types';
-import { Rule } from '~/types';
 
 import css from './styles.module.scss';
 
@@ -29,50 +27,54 @@ export const sublineSelected = atom<string>({
     default: '',
 });
 
-interface FormattedNode extends TextMateNode {
-    content: string;
-}
-
-const groupSemanticTokens = (
-    array: ExternalSemanticToken[],
-): Record<number, Record<number, ExternalSemanticToken[]>> => {
-    if (!array.length) {
-        return {};
-    }
-    const _grouped = groupBy(array, 'line');
-
-    const grouped: Record<number, Record<number, ExternalSemanticToken[]>> = {};
-
-    Object.keys(_grouped).forEach(lineNumber => {
-        grouped[lineNumber] = groupBy(_grouped[lineNumber], 'start');
-    });
-
-    return grouped;
-};
+type FormattedNode = Pick<
+    React.ComponentProps<typeof SubLine>,
+    'children' | 'semanticTokenStateId' | 'ruleStateId' | 'scopes' | 'semanticToken'
+>;
 
 const hydratedCode = selector({
     key: selectorKey('CodeView', 'Format'),
     get: ({ get }) => {
         const textMateResult = get(parsedCode);
+        const semanticTokenResult = get(semanticTokens);
+        const definedRules = get(getRules);
+        const definedTokens = get(semanticTokensState);
 
         const lines = textMateResult.code.getLines();
         const sorted = sortBy(textMateResult.tokens, ['line', 'start']);
 
         const formatted: FormattedNode[][] = [];
 
-        sorted.forEach(token => {
-            const line = lines[token.line];
+        sorted.forEach(textMateScope => {
+            const line = lines[textMateScope.line];
+
+            const semanticToken =
+                semanticTokenResult &&
+                semanticTokenResult[textMateScope.line] &&
+                semanticTokenResult[textMateScope.line][textMateScope.start];
+
+            const semanticTokenScope =
+                semanticToken && getSemanticTokenRule(definedTokens, semanticToken[0]);
+
+            const textmateScopes: string[] =
+                semanticTokenScope?.fallbackScopes || textMateScope.scopes;
+
+            const rule = getTextmateScopesRule(definedRules, textmateScopes);
 
             const subline: FormattedNode = {
-                ...token,
-                content: line.substr(token.start, token.length),
+                ...textMateScope,
+                children: line.substr(textMateScope.start, textMateScope.length),
+                // add state ids so SubLine component can subscribe to those recoil values
+                semanticToken,
+                semanticTokenStateId: semanticTokenScope?.semanticToken?.id,
+                ruleStateId: rule?.rule.id,
             };
 
-            if (!formatted[token.line]) {
-                formatted[token.line] = [];
+            if (!formatted[textMateScope.line]) {
+                formatted[textMateScope.line] = [];
             }
 
-            formatted[token.line].push(subline);
+            formatted[textMateScope.line].push(subline);
         });
 
         return formatted;
@@ -80,47 +82,14 @@ const hydratedCode = selector({
 });
 
 const CodeView: React.FC = () => {
-    const definedRules = useRecoilValue(getRules);
-    const definedTokens = useRecoilValue(semanticTokensState);
     const codeObj = useRecoilValue(hydratedCode);
     const [selected] = useRecoilState(sublineSelected);
     const setInfoState = useSetRecoilState(infoState);
     const viewEntity = useViewEntity();
 
-    const tokens = useRecoilValueLoadable(semanticTokens);
-    const semanticTokensGrouped =
-        tokens.state === 'hasValue' ? groupSemanticTokens(tokens?.contents?.tokens || []) : {};
-
-    const onHoverSubline = React.useCallback(
-        ({
-            textmateScopes,
-            semanticToken,
-        }: {
-            textmateScopes: string[];
-            semanticToken: string;
-        }): void => {
-            setInfoState({
-                textmateScopes,
-                semanticToken,
-            });
-        },
-        [setInfoState],
-    );
-
-    const onClickSubline = React.useCallback(
-        ({
-            textmateScopes,
-            entity,
-            id,
-            semanticToken,
-        }: {
-            textmateScopes: string[];
-            entity: Rule | SemanticToken | null;
-            id: string;
-            semanticToken: string;
-        }): void => {
+    const subLineCallback: SubLineCallback = React.useCallback(
+        ({ textmateScopes, semanticToken, id, entity }) => {
             entity && viewEntity(entity);
-
             setInfoState({
                 selected: id,
                 textmateScopes,
@@ -141,23 +110,18 @@ const CodeView: React.FC = () => {
                 {codeObj.map((line, i) => (
                     <Line key={i} lineNumber={i}>
                         {line.map((subline, j) => {
-                            const semanticToken =
-                                semanticTokensGrouped[i] && semanticTokensGrouped[i][subline.start];
-                            const sublineKey = `${i}-"${subline.content}"-${j}`;
+                            const sublineKey = `${i}-"${subline.children}"-${j}`;
 
                             return (
                                 <SubLine
-                                    rules={definedRules}
-                                    semanticTokens={definedTokens}
                                     selected={sublineKey === selected}
                                     key={sublineKey}
                                     id={sublineKey}
-                                    onHover={onHoverSubline}
-                                    onClick={onClickSubline}
-                                    semanticToken={semanticToken && semanticToken[0]}
+                                    onHover={subLineCallback}
+                                    onClick={subLineCallback}
                                     {...subline}
                                 >
-                                    {subline.content}
+                                    {subline.children || ''}
                                 </SubLine>
                             );
                         })}

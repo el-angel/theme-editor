@@ -1,4 +1,4 @@
-import { GrammarHelper } from '@anche/textmate-grammar-parser';
+import { TextMateScopesParser } from '@anche/textmate-grammar-parser';
 
 export const Languages = {
     'source.ts': 'TypeScript',
@@ -12,7 +12,7 @@ export const Languages = {
 
 const getUrl = (file: string): string => `${process.env.PUBLIC_URL}/grammar/${file}`;
 
-const languageService = new GrammarHelper({
+const languageService = new TextMateScopesParser({
     filePaths: {
         'source.ts': getUrl('typescript.json'),
         'source.tsx': getUrl('typescriptreact.json'),

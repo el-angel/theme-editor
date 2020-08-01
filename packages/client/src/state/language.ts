@@ -5,12 +5,12 @@ import { Languages } from '~/services/language';
 import { atomKey, selectorKey } from '~/helpers/state';
 
 export const languageState = atom<keyof typeof Languages>({
-    key: atomKey('Language'),
+    key: atomKey('Language', 'lang'),
     default: 'source.tsx',
 });
 
 export const readibleLanguage = selector({
-    key: selectorKey('ReadibleLanguage'),
+    key: selectorKey('Language', 'Processed'),
     get: ({ get }) => {
         const language = get(languageState);
         return Languages[language];

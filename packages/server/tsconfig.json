@@ -1,0 +1,33 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "target": "es5",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "resolveJsonModule": true,
+        "noEmit": true,
+        "baseUrl": "./",
+        "isolatedModules": false,
+        "downlevelIteration": true,
+        "types": ["jest", "node"],
+        "paths": {
+            "~/*": ["./src/*"],
+            "@anche/*": ["../../packages/*/src"]
+        }
+    },
+    "references": [
+        { "path": "../../packages/semantic-highlighting-parser" },
+        { "path": "../../packages/textmate-grammar-parser" }
+    ],
+    "include": ["./src"],
+    "exclude": ["./node_modules"]
+}

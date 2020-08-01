@@ -1,15 +1,19 @@
 import React, { ChangeEvent } from 'react';
 import { useRecoilCallback } from 'recoil';
 
-import generalScopeManager from '~/state/generalScopes';
+import { getGeneralScope } from '~/state/generalScopes';
+import { getRule, ruleIds } from '~/state/rules';
 
 import SettingsMenuItem from '~/containers/Code/components/SettingsMenu/Item';
 
-import useAddRule from '~/hooks/useAddRule';
-import useReset from '~/hooks/useReset';
+import generalScopesDefault from '~/helpers/generalScopesDefault';
 
-import { GeneralScope, Rule } from '~/types';
+import createRule from '~/model/rule';
+
+import { Rule } from '~/types';
 import isTheme from '~/types/theme.guard';
+
+import resetState from '~/recoil/snapshot/reset';
 
 const getFileJson = (event: ChangeEvent<HTMLInputElement>): Promise<Record<string, unknown>> => {
     const input = event.target;
@@ -33,49 +37,63 @@ const getFileJson = (event: ChangeEvent<HTMLInputElement>): Promise<Record<strin
 
 const Open: React.FC = () => {
     const inputRef = React.useRef<HTMLInputElement>(null);
-    const reset = useReset();
 
     const onClick = (): void => {
         inputRef.current?.click();
     };
 
-    const setGeneralScope = useRecoilCallback(({ set }) => (input: GeneralScope): void => {
-        set(generalScopeManager(input.scope), input);
-    });
+    const onSelectFile = useRecoilCallback(
+        ({ snapshot, gotoSnapshot }) => async (
+            event: ChangeEvent<HTMLInputElement>,
+        ): Promise<void> => {
+            const json = await getFileJson(event);
 
-    const addRule = useAddRule();
+            if (!isTheme(json)) {
+                return;
+            }
 
-    const onSelectFile = async (event: ChangeEvent<HTMLInputElement>): Promise<void> => {
-        const json = await getFileJson(event);
+            const existingIds = await snapshot.getPromise(ruleIds);
 
-        if (!isTheme(json)) {
-            return;
-        }
+            const newSnapshot = await snapshot.asyncMap(async mutableSnapshot => {
+                await resetState(mutableSnapshot);
 
-        reset();
+                const { set } = mutableSnapshot;
 
-        Object.keys(json.colors).map(scope => {
-            setGeneralScope({
-                scope,
-                color: json.colors[scope],
+                Object.keys(json.colors).map(scope => {
+                    if (generalScopesDefault[scope]) {
+                        set(getGeneralScope(scope), {
+                            scope,
+                            color: json.colors[scope],
+                        });
+                    }
+                });
+
+                json.tokenColors.forEach(tokenColor => {
+                    const input: Partial<Rule> = {
+                        ...tokenColor,
+                        scope: Array.isArray(tokenColor.scope)
+                            ? tokenColor.scope
+                            : [tokenColor.scope],
+                        settings: {
+                            ...tokenColor.settings,
+                            fontStyle: [],
+                            // fontStyle: (tokenColor.settings.fontStyle
+                            //     ? [tokenColor.settings.fontStyle]
+                            //     : []) as Font[],
+                        },
+                    };
+
+                    const rule = createRule(input, { existingIds });
+
+                    set(getRule(rule.id), rule);
+                });
             });
-        });
 
-        json.tokenColors.forEach(tokenColor => {
-            const rule: Partial<Rule> = {
-                ...tokenColor,
-                scope: Array.isArray(tokenColor.scope) ? tokenColor.scope : [tokenColor.scope],
-                settings: {
-                    ...tokenColor.settings,
-                    fontStyle: (tokenColor.settings.fontStyle
-                        ? [tokenColor.settings.fontStyle]
-                        : []) as ('bold' | 'italic' | 'underline')[],
-                },
-            };
+            inputRef.current!.value = '';
 
-            addRule(rule);
-        });
-    };
+            gotoSnapshot(newSnapshot);
+        },
+    );
 
     return (
         <>

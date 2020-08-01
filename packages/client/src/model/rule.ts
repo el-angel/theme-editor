@@ -1,3 +1,7 @@
+import { uniqueId } from 'lodash';
+
+import { EntityType } from '~/constants';
+
 import { Rule } from '~/types';
 
 const createName = (input?: Partial<Rule>): string => {
@@ -20,14 +24,40 @@ const createName = (input?: Partial<Rule>): string => {
     return '';
 };
 
-const createRule = (input: Partial<Rule> & { id: string }): Rule => {
-    const rule = {
-        id: input.id,
+interface Options {
+    existingIds: string[];
+    filterScope?: boolean;
+}
+
+const createRule = (input: Partial<Rule>, options: Options): Rule => {
+    const { existingIds, filterScope = false } = options;
+
+    const filteredScopes = !filterScope
+        ? input?.scope || []
+        : (input?.scope || []).map(scope => {
+              const splitted = scope.split('.');
+              // remove extension from scope to support more language
+              // otherwise theme will only work for this language
+              splitted.pop();
+              return splitted.join('.');
+          });
+
+    let id = uniqueId();
+
+    while (existingIds.includes(id)) {
+        id = uniqueId();
+    }
+
+    const rule: Rule = {
+        id,
         name: createName(input),
-        scope: input?.scope || [],
+        scope: filteredScopes,
         settings: {
             foreground: input?.settings?.foreground || '#a0988a',
             fontStyle: input?.settings?.fontStyle || [],
+        },
+        __meta: {
+            type: EntityType.Rule,
         },
     };
 

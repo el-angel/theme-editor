@@ -1,12 +1,12 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { getAllRules } from '~/state/rules';
+import { getRules } from '~/state/rules';
 
 import Rule from '~/containers/Sidebar/components/Rule';
 
 const Rules: React.FC = () => {
-    const rules = useRecoilValue(getAllRules);
+    const rules = useRecoilValue(getRules);
 
     return (
         <>

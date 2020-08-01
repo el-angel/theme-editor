@@ -1,34 +1,36 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
-import { unstable_trace as trace } from 'scheduler/tracing';
 
-import { getAllRules } from '~/state/rules';
-import editRuleState from '~/state/rules/edit';
+import { getRules } from '~/state/rules';
+import { entitySettingsState } from '~/state/ui';
 
+// import { editRuleState } from '~/state/rules';
 import SidebarItem from '~/components/ui/SidebarItem';
 
-import useViewRule from '~/hooks/useViewRule';
+import useViewEntity from '~/hooks/useViewEntity';
 
+// import useViewRule from '~/hooks/useViewRule';
 import getExistingScopes from '~/helpers/getExistingScopes';
 
 import { Rule as RuleType } from '~/types';
 
 const Rule: React.FC<RuleType> = props => {
-    const { id, name, settings, scope } = props;
-    const viewRule = useViewRule();
-    const rules = useRecoilValue(getAllRules);
-    const editingRuleId = useRecoilValue(editRuleState);
+    const { id, name, settings } = props;
+    const viewEntity = useViewEntity();
+    const rules = useRecoilValue(getRules);
 
-    const existingScopes = getExistingScopes({ id, name, settings, scope }, rules);
+    const editingEntity = useRecoilValue(entitySettingsState);
 
-    const isActive = editingRuleId === id;
+    const existingScopes = getExistingScopes(props, rules);
+
+    const isActive = editingEntity?.id === id;
 
     return (
         <SidebarItem
             isActive={isActive}
             onClick={(): void => {
                 if (!isActive) {
-                    viewRule(id);
+                    viewEntity(props);
                 }
             }}
             title={name}

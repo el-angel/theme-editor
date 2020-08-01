@@ -26,9 +26,9 @@ const SidebarItem: React.FC<Props> = ({
             })}
             onClick={onClick}
         >
-            <div>
+            <div className={css.nameContainer}>
                 {showWarning && <span className={css.warning}>❗️</span>}
-                <code className={css.name}>{title}</code>
+                <div className={css.name}>{title}</div>
             </div>
             <div className={css.color} style={{ backgroundColor: color }}></div>
         </div>

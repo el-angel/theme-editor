@@ -8,6 +8,10 @@
     cursor: pointer;
     position: relative;
 
+    &:last-child {
+        border-bottom: 0;
+    }
+
     &.active {
         background-color: #ffffff20;
     }
@@ -21,13 +25,23 @@
 .warning {
     font-family: var(--font-primary);
     margin-right: 10px;
+    font-size: 9px;
+}
+
+.nameContainer {
+    width: 90%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .name {
-    max-width: 90%;
+    width: 100%;
     text-overflow: ellipsis;
     overflow: auto;
-    font-size: 14px;
+    font-size: 13px;
+    white-space: nowrap;
+    font-family: var(--font-code);
 }
 
 .color {

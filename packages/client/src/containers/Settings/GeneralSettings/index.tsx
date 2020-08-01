@@ -1,51 +1,42 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
-import generalScopeManager from '~/state/generalScopes';
-import editGeneralScopeState from '~/state/generalScopes/edit';
+import { getGeneralScope } from '~/state/generalScopes';
+import { entitySettingsState } from '~/state/ui';
 
-import ColorPicker from '~/containers/Settings/components/ColorPicker';
-import NameInput from '~/containers/Settings/components/NameInput';
-import Swatches from '~/containers/Settings/components/Swatches';
+// import editGeneralScopeState from '~/state/generalScopes/edit';
+import PanelSettings from '~/components/ui/PanelSettings';
 
-import Panel from '~/components/ui/Panel';
-
-import css from './styles.module.scss';
+import useViewEntity from '~/hooks/useViewEntity';
 
 const GeneralSettings: React.FC = () => {
-    const [scope, setScope] = useRecoilState(editGeneralScopeState);
-
-    const [generalScope, updateGeneralScope] = useRecoilState(generalScopeManager(scope));
+    const input = useRecoilValue(entitySettingsState);
+    const viewEntity = useViewEntity();
+    const [generalScope, updateGeneralScope] = useRecoilState(getGeneralScope(input?.id));
 
     const onChangeColor = React.useCallback(
         (color: string) => {
             updateGeneralScope({
                 ...generalScope!,
-                color,
+                settings: {
+                    foreground: color,
+                },
             });
         },
         [updateGeneralScope, generalScope],
     );
 
-    if (!generalScope || !scope) {
+    if (!generalScope) {
         return null;
     }
 
     return (
-        <Panel onClose={(): void => setScope(undefined)}>
-            <div className={css.left}>
-                <NameInput readonly value={generalScope.scope} />
-            </div>
-            <div className={css.tools}>
-                <ColorPicker value={generalScope.color} onChange={onChangeColor} />
-            </div>
-            <div className={css.colorContainer}>
-                <Swatches
-                    color={generalScope.color}
-                    onColorSelect={(color): void => onChangeColor(color)}
-                />
-            </div>
-        </Panel>
+        <PanelSettings
+            onClose={(): void => viewEntity()}
+            onChangeColor={onChangeColor}
+            color={generalScope.settings.foreground}
+            name={generalScope.id}
+        />
     );
 };
 export default GeneralSettings;

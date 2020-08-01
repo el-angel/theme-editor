@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "target": "es5",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "baseUrl": "./",
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "composite": true,
+        "outDir": "lib",
+        "rootDir": "src",
+        "paths": {
+            "~/*": ["./src/*"]
+        },
+        "plugins": [
+            {
+                "transform": "@zerollup/ts-transform-paths",
+                "exclude": ["*"]
+            }
+        ]
+    },
+    "include": ["./src"]
+}

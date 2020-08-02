@@ -3,6 +3,8 @@ import { useRecoilCallback } from 'recoil';
 import { getRule, ruleIds } from '~/state/rules';
 import { semanticTokenIds, semanticTokenState } from '~/state/semanticTokens';
 
+import { confirm } from '~/services/dialog';
+
 import { EntityType } from '~/constants';
 
 import createRule from '~/model/rule';
@@ -10,17 +12,13 @@ import createSemanticToken from '~/model/semanticToken';
 
 import { Rule, SemanticToken } from '~/types';
 
-type AddEntityFunction<T> = (_0: {
-    input: Partial<T>;
-    filterScope?: boolean;
-    type: EntityType.Rule | EntityType.SemanticToken;
-}) => Promise<T>;
-
 const useAddEntity = () => {
     const addEntity = useRecoilCallback(
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        ({ set, snapshot }) => async <T>({ input, filterScope, type }): Promise<T> => {
+        ({ set, snapshot }) => async <T>({
+            input,
+            filterScope = false,
+            type,
+        }): Promise<T | undefined> => {
             let entity;
             if (type === EntityType.Rule) {
                 const existingIds = await snapshot.getPromise(ruleIds);
@@ -33,11 +31,16 @@ const useAddEntity = () => {
             }
 
             if (type === EntityType.SemanticToken) {
-                console.log('input st', input);
                 const existingIds = await snapshot.getPromise(semanticTokenIds);
-                entity = createSemanticToken(<Partial<SemanticToken>>input, {
-                    existingIds,
-                });
+                let entity;
+                try {
+                    entity = createSemanticToken(<Partial<SemanticToken>>input, {
+                        existingIds,
+                    });
+                } catch (_e) {
+                    confirm(_e.message);
+                    return;
+                }
 
                 set(semanticTokenState(entity.id), entity);
             }

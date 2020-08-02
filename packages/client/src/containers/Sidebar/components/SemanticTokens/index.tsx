@@ -1,12 +1,12 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { semanticTokensState } from '~/state/semanticTokens';
+import { sidebarSemanticTokens } from '~/state/sidebar';
 
 import SemanticToken from '~/containers/Sidebar/components/SemanticToken';
 
 const SemanticTokens: React.FC = () => {
-    const semanticTokens = useRecoilValue(semanticTokensState);
+    const semanticTokens = useRecoilValue(sidebarSemanticTokens);
 
     return (
         <>

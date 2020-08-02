@@ -78,6 +78,14 @@ class SemanticTokenRegistry {
     public getTokenDefaultStyles(): TokenFallback[] {
         return this._tokenDefaultStyles;
     }
+
+    public getTokenTypes(): TokenType[] {
+        return Object.keys(this._tokenTypes).map(id => this._tokenTypes[id]);
+    }
+
+    public getTokenModifiers(): TokenModifier[] {
+        return Object.keys(this._tokenModifiers).map(id => this._tokenModifiers[id]);
+    }
 }
 
 export const registry = new SemanticTokenRegistry();
@@ -170,6 +178,21 @@ export function createQuerySelector(queryString: string): TokenSelector {
     }
 
     const type = queryString.substring(0, j);
+
+    const tokenTypes = registry.getTokenTypes();
+
+    if (!tokenTypes.some(tokenType => tokenType.id === type)) {
+        throw new Error(`${type} is not a valid token type`);
+    }
+
+    const tokenModifiers = registry.getTokenModifiers();
+
+    if (
+        modifiers &&
+        !modifiers.every(mod => tokenModifiers.some(tokenMod => tokenMod.id === mod))
+    ) {
+        throw new Error(`You supplied an invalid token modifier.`);
+    }
 
     return {
         type,

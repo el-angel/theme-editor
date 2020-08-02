@@ -96,13 +96,10 @@ const factory = <T extends Base>(opts: Options<T>) => {
 
             // delete entity
             if (input?.__meta?.state === 'deleted') {
-                console.log('SHLL WE DELETE?');
                 set(
                     entityIds,
                     idArr.filter(_id => _id !== id),
                 );
-
-                console.log(atomKey(TREE_ID, `id__"${id}"`));
 
                 /**
                  * @TODO Replace when Atom Effects is introduced

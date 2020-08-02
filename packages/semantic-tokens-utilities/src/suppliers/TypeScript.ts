@@ -22,11 +22,11 @@ const _createTypeScript = ({
         language,
     });
 
-    const languageService = ts.createLanguageService(host);
+    const textmateService = ts.createtextmateService(host);
     return {
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
-        service: initPlugin({ typescript: ts }).decorate(languageService),
+        service: initPlugin({ typescript: ts }).decorate(textmateService),
         host,
     };
 };

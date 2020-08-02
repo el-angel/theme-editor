@@ -1,4 +1,4 @@
-import { ParserResult } from '@anche/semantic-highlighting-parser';
+import { ParserResult } from '@anche/semantic-tokens-utilities';
 
 import { BACKEND_URL } from '~/constants';
 

@@ -10,7 +10,7 @@ import Item from '~/containers/StatusBar/components/Item';
 import LanguageSwitcher from '~/components/LanguageSwitcher';
 import ThemeStyleSwitcher from '~/components/ThemeStyleSwitcher';
 
-import { Languages } from '~/services/language';
+import { Languages } from '~/services/textmate';
 
 import css from './styles.module.scss';
 

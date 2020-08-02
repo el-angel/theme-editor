@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 
-import { Languages } from '~/services/language';
+import { Languages } from '~/services/textmate';
 
 import { atomKey, selectorKey } from '~/helpers/state';
 

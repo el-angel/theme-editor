@@ -1,5 +1,5 @@
 import React from 'react';
-import { initialize } from '@anche/textmate-grammar-parser';
+import { initialize } from '@anche/textmate-utilities';
 import { RecoilRoot } from 'recoil';
 
 import { rawCode } from '~/state/code';

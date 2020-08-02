@@ -1,4 +1,4 @@
-# `textmate-grammar-parser`
+# `textmate-utilities`
 
 This package is just a small wrapper around onigasm and monaco-textmate to be used together to read textmate grammar files and parse raw code strings into Code type objects.
 
@@ -6,15 +6,15 @@ This package is just a small wrapper around onigasm and monaco-textmate to be us
 type Scope = string;
 
 interface SubLine {
-  text: string;
-  scopes: Scope[];
+    text: string;
+    scopes: Scope[];
 }
 interface Line {
-  number: number;
-  content: SubLine[];
+    number: number;
+    content: SubLine[];
 }
 interface Code {
-  lines: Line[];
+    lines: Line[];
 }
 ```
 
@@ -22,8 +22,8 @@ interface Code {
 
 First copy the following files into your applications static folder (which should be accessable via `window.fetch`):
 
-- all the wanted grammar files from `./grammar`
-- `onigasm.wasm` (https://github.com/NeekSandhu/onigasm), also in `./node_modules/lib/onigasm.wasm`
+-   all the wanted grammar files from `./grammar`
+-   `onigasm.wasm` (https://github.com/NeekSandhu/onigasm), also in `./node_modules/lib/onigasm.wasm`
 
 Before you can use the helper, you should bootstrap your app with the init module
 
@@ -33,21 +33,21 @@ import { initialize } from '@anche/textmate-grammar-helper';
 const ONIGASM_URL = '/public/static/onigasm.wasm';
 
 (async () => {
-  await initialize(ONIGASM_URL);
-  App.start();
+    await initialize(ONIGASM_URL);
+    App.start();
 })();
 ```
 
 GrammarHelper setup
 
 ```typescript
-import GrammarHelper from '@anche/textmate-grammar-parser';
+import GrammarHelper from '@anche/textmate-utilities';
 
 const grammar = new GrammarHelper({
-  filePaths: {
-    // [languageScope]: path to your static folder
-    'source.tsx': '/grammar/typescriptreact.json',
-  },
+    filePaths: {
+        // [languageScope]: path to your static folder
+        'source.tsx': '/grammar/typescriptreact.json',
+    },
 });
 
 const rawCode = `

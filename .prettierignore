@@ -27,5 +27,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-textmate-grammar-parser/cjs
-textmate-grammar-parser/esm
+textmate-utilities/cjs
+textmate-utilities/esm

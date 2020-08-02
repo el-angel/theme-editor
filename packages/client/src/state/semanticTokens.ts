@@ -1,4 +1,4 @@
-import { SemanticToken as ExternalSemanticToken } from '@anche/semantic-highlighting-parser';
+import { SemanticToken as ExternalSemanticToken } from '@anche/semantic-tokens-utilities';
 import { groupBy } from 'lodash';
 import { atom, selector } from 'recoil';
 

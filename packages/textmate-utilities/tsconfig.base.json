@@ -15,10 +15,10 @@
         "resolveJsonModule": true,
         "baseUrl": "./",
         "declaration": true,
-        "declarationDir": "./lib/semantic-highlighting-parser",
+        "declarationDir": "./lib/textmate-utilities",
         "declarationMap": true,
         "downlevelIteration": true,
-        "types": ["node", "jest"],
+        "types": ["node"],
         "paths": {
             "~/*": ["./src/*"],
             "@anche/*": ["../../packages/*/src"]
@@ -31,6 +31,5 @@
             }
         ]
     },
-    "include": ["./src", "../shared/src"],
-    "exclude": ["./src/__tests__"]
+    "include": ["./src", "../../packages/shared"]
 }

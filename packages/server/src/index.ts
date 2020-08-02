@@ -1,5 +1,5 @@
 import express from 'express';
-import { semanticTokenParser } from '@anche/semantic-highlighting-parser';
+import { semanticTokenParser } from '@anche/semantic-tokens-utilities';
 
 const app = express();
 

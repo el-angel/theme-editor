@@ -1,10 +1,10 @@
 {
-    "name": "@anche/textmate-grammar-parser",
+    "name": "@anche/textmate-utilities",
     "version": "0.0.0",
     "description": "TextMate Grammar Parser",
     "main": "lib/index.js",
     "module": "lib/index.es.js",
-    "types": "lib/textmate-grammar-parser/src/index.d.ts",
+    "types": "lib/textmate-utilities/src/index.d.ts",
     "keywords": [
         "textmate",
         "tmtheme",

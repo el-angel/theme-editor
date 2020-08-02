@@ -15,10 +15,10 @@
         "resolveJsonModule": true,
         "baseUrl": "./",
         "declaration": true,
-        "declarationDir": "./lib/textmate-grammar-parser",
+        "declarationDir": "./lib/semantic-tokens-utilities",
         "declarationMap": true,
         "downlevelIteration": true,
-        "types": ["node"],
+        "types": ["node", "jest"],
         "paths": {
             "~/*": ["./src/*"],
             "@anche/*": ["../../packages/*/src"]
@@ -31,5 +31,6 @@
             }
         ]
     },
-    "include": ["./src", "../../packages/shared"]
+    "include": ["./src", "../shared/src"],
+    "exclude": ["./src/__tests__"]
 }

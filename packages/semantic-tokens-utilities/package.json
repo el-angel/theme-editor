@@ -1,13 +1,16 @@
 {
-    "name": "@anche/semantic-highlighting-parser",
+    "name": "@anche/semantic-tokens-utilities",
     "version": "0.0.0",
-    "description": "VSCode Semantic Highlighting Parser",
+    "description": "Semantic Tokens Utilities",
     "main": "lib/index.js",
     "module": "lib/index.es.js",
-    "typings": "lib/semantic-highlighting-parser/src/index.d.ts",
+    "typings": "lib/semantic-tokens-utilities/src/index.d.ts",
     "keywords": [
-        "textmate",
-        "tmtheme",
+        "semantic",
+        "highlighting",
+        "tokens",
+        "vscode",
+        "theme",
         "grammar",
         "parser"
     ],

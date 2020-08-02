@@ -1,5 +1,5 @@
 import React from 'react';
-import { SemanticToken as ExternalSemanticToken } from '@anche/semantic-highlighting-parser';
+import { SemanticToken as ExternalSemanticToken } from '@anche/semantic-tokens-utilities';
 import cx from 'classnames';
 import { selectorFamily, useRecoilValue } from 'recoil';
 

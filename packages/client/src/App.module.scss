@@ -1,7 +1,7 @@
 .container {
     height: 100vh;
     display: grid;
-    grid-template-columns: 30% 70%;
+    grid-template-columns: minmax(300px, auto) 70%;
     grid-template-rows: 1fr 22px;
 
     grid-template-areas: 'sidebar main' 'statusbar statusbar';

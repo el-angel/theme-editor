@@ -17,7 +17,7 @@ import { sublineSelected } from '~/containers/Code/components/CodeView';
 
 import { getSemanticTokenRule } from '~/services/semanticToken';
 
-import useAddEntity from '~/hooks/useAddRule';
+import useAddEntity from '~/hooks/useAddEntity';
 import useViewEntity from '~/hooks/useViewEntity';
 
 import { EntityType } from '~/constants';

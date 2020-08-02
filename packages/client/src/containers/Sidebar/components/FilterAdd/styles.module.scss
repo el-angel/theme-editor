@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid var(--focusBorder);
+}
+
+.input {
+    box-sizing: border-box;
+    background: none;
+    border: 0;
+    color: white;
+    outline: 0;
+    font-size: 14px;
+    padding: 8px 10px;
+    width: 100%;
+    font-family: var(--font-code);
+}
+
+.addButton {
+    color: var(--button-background);
+    padding: 0;
+    background: transparent;
+    border-left: 1px solid var(--focusBorder);
+    width: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+        background: transparent;
+    }
+}

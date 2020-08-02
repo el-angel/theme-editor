@@ -4,7 +4,8 @@ import { useRecoilValue } from 'recoil';
 import mode from '~/state/mode';
 
 import Info from '~/containers/Code/components/Info';
-import General from '~/containers/Sidebar/components/General';
+import FilterAdd from '~/containers/Sidebar/components/FilterAdd';
+import GeneralScopes from '~/containers/Sidebar/components/GeneralScopes';
 import Rules from '~/containers/Sidebar/components/Rules';
 import SemanticTokens from '~/containers/Sidebar/components/SemanticTokens';
 import Toolbar from '~/containers/Sidebar/components/Toolbar';
@@ -24,12 +25,13 @@ const Sidebar: React.FC = () => {
             <div>
                 <Toolbar />
             </div>
+            <FilterAdd />
             <div className={css.content}>
                 <style type="text/css">{generalStyle}</style>
                 <div className={css.rules}>
                     {currentMode === EntityType.Rule && <Rules />}
 
-                    {currentMode === EntityType.GeneralScope && <General />}
+                    {currentMode === EntityType.GeneralScope && <GeneralScopes />}
 
                     {currentMode === EntityType.SemanticToken && <SemanticTokens />}
                 </div>

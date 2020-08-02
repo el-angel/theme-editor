@@ -1,5 +1,7 @@
 import { uniqueId } from 'lodash';
 
+import { createQuerySelector } from '~/services/semanticToken';
+
 import { EntityType } from '~/constants';
 
 import { SemanticToken } from '~/types';
@@ -8,10 +10,16 @@ interface Options {
     existingIds: string[];
 }
 
-const createSemanticToken = (input: Partial<SemanticToken>, options: Options): SemanticToken => {
+const createSemanticToken = (
+    input: Partial<SemanticToken>,
+    options: Options,
+): SemanticToken | undefined => {
     if (!input.scope) {
         throw new Error("Can't create token without a scope");
     }
+
+    // check if the scope is valid using the registry
+    createQuerySelector(input.scope);
 
     const { existingIds } = options;
 

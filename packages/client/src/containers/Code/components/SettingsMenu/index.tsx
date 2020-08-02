@@ -38,7 +38,7 @@ const SettingsMenu: React.FC = () => {
             <div className={css.settingsIcon} onClick={(): void => setOpen(!open)}>
                 <SettingsIcon
                     style={{
-                        color: getContrastColor(editorBackground.settings.foreground),
+                        color: getContrastColor(editorBackground?.settings?.foreground),
                         opacity: '0.5',
                     }}
                 />

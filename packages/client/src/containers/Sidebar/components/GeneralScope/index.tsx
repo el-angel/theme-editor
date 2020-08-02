@@ -1,7 +1,7 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
-import { getGeneralScope } from '~/state/generalScopes';
+import { entitySettingsState } from '~/state/ui';
 
 import SidebarItem from '~/components/ui/SidebarItem';
 
@@ -9,19 +9,16 @@ import useViewEntity from '~/hooks/useViewEntity';
 
 import { GeneralScope as GeneralScopeType } from '~/types';
 
-interface Props {
-    scope: string;
-}
+const GeneralScope: React.FC<GeneralScopeType> = props => {
+    const { id, settings } = props;
 
-const GeneralScope: React.FC<Props> = ({ scope }) => {
-    const [generalScope] = useRecoilState(getGeneralScope(scope));
     const viewEntity = useViewEntity();
 
-    // const [editingScope, editScope] = useRecoilState(editGeneralScopeState);
+    const editingEntity = useRecoilValue(entitySettingsState);
 
-    const isActive = (generalScope as GeneralScopeType)?.id === '1';
+    const isActive = id === editingEntity?.id;
 
-    if (!generalScope) {
+    if (!props.id) {
         return null;
     }
 
@@ -29,9 +26,9 @@ const GeneralScope: React.FC<Props> = ({ scope }) => {
         <>
             <SidebarItem
                 isActive={isActive}
-                onClick={(): void => viewEntity(generalScope)}
-                title={generalScope.id}
-                color={generalScope.settings.foreground}
+                onClick={(): void => viewEntity(props)}
+                title={id}
+                color={settings.foreground}
             />
         </>
     );

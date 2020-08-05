@@ -1,6 +1,6 @@
 {
     "name": "@anche/semantic-tokens-utilities",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "description": "Semantic Tokens Utilities",
     "main": "lib/index.js",
     "module": "lib/index.es.js",

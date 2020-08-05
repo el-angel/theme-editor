@@ -1,6 +1,5 @@
 {
     "name": "@anche/theme-server",
-    "version": "1.0.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/el-angel/theme-editor.git"

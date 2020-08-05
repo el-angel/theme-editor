@@ -1,7 +1,6 @@
 {
     "name": "@anche/shared",
-    "version": "1.0.0",
-    "description": "> TODO: description",
+    "description": "Shared",
     "author": "Angelo Abdoelsamath <angelo.a@me.com>",
     "homepage": "https://github.com/el-angel/theme-editor#readme",
     "license": "MIT",

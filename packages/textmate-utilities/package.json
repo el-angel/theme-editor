@@ -1,6 +1,6 @@
 {
     "name": "@anche/textmate-utilities",
-    "version": "1.0.0",
+    "version": "0.0.0",
     "description": "TextMate Grammar Parser",
     "main": "lib/index.js",
     "module": "lib/index.es.js",

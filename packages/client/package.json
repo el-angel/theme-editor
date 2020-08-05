@@ -5,6 +5,10 @@
         "type": "git",
         "url": "https://github.com/el-angel/theme-editor.git"
     },
+    "publishConfig": {
+        "access": "public",
+        "registry": "https://registry.npmjs.org/"
+    },
     "homepage": "https://el-angel.github.io/theme-editor",
     "dependencies": {
         "@anche/textmate-utilities": "^1.0.0",

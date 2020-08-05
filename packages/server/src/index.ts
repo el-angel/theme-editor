@@ -1,5 +1,5 @@
 import express from 'express';
-import { semanticTokenParser } from '@anche/semantic-highlighting-parser';
+import { parser } from '@anche/semantic-tokens-utilities';
 
 const app = express();
 
@@ -24,7 +24,7 @@ app.post('/sh', (req, res) => {
     const body = req.body;
     const code = body.code || '';
 
-    const result = semanticTokenParser({ code, language: 'tsx' });
+    const result = parser({ code, language: 'tsx' });
 
     res.send(result);
 });

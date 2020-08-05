@@ -1,11 +1,9 @@
-import { isNullOrUndefined } from 'util';
-
+import { match } from '@anche/textmate-utilities';
 import { atom, selector } from 'recoil';
 
 import mode from '~/state/mode';
 import { getRules, RULES_STATE_ID } from '~/state/rules';
 
-import getTextmateScopesRule from '~/helpers/ruleMatch';
 import { selectorKey } from '~/helpers/state';
 
 import { atomKey } from './../helpers/state';
@@ -25,7 +23,10 @@ export const activateRuleByScope = selector<string>({
         set(activeScope, scope);
         const rules = get(getRules);
 
-        const rule = getTextmateScopesRule(rules, [scope]);
+        const rule = match(
+            scope,
+            rules.map(r => ({ rule: r, scopes: r.scope })),
+        );
 
         if (rule) {
             set(mode, 'rules');

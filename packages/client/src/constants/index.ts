@@ -1,7 +1,7 @@
 export enum FontStyle {
-    Bold,
-    Italic,
-    Underline,
+    Bold = 'bold',
+    Italic = 'italic',
+    Underline = 'underline',
 }
 
 export enum EntityType {

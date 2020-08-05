@@ -1,6 +1,5 @@
+import { createToken } from '@anche/semantic-tokens-utilities';
 import { uniqueId } from 'lodash';
-
-import { createQuerySelector } from '~/services/semanticToken';
 
 import { EntityType } from '~/constants';
 
@@ -19,7 +18,7 @@ const createSemanticToken = (
     }
 
     // check if the scope is valid using the registry
-    createQuerySelector(input.scope);
+    const _token = createToken(input.scope);
 
     const { existingIds } = options;
 

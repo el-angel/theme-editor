@@ -1,9 +1,14 @@
 import { Rule } from '~/types';
 
-const getDefinedScopes = (rules: Rule[]): string[] =>
-    rules.reduce((scopes: string[], rule) => {
-        return [...scopes, ...rule.scope];
-    }, []);
+const getDefinedScopes = (rules: Rule[]): string[] => {
+    let scopes: string[] = [];
+
+    for (let i = 0; i < rules.length; i++) {
+        scopes = [...scopes, ...rules[i].scope];
+    }
+
+    return scopes;
+};
 
 const isDefined = (selector: string, scopes: string[]): boolean => {
     const occurrences = scopes.filter(scope => scope === selector).length;

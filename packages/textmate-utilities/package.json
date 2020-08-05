@@ -1,6 +1,6 @@
 {
     "name": "@anche/textmate-utilities",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "description": "TextMate Grammar Parser",
     "main": "lib/index.js",
     "module": "lib/index.es.js",
@@ -50,7 +50,7 @@
         "url": "https://github.com/el-angel/theme-editor/issues"
     },
     "dependencies": {
-        "@anche/shared": "0.0.0",
+        "@anche/shared": "^1.0.0",
         "monaco-textmate": "^3.0.1",
         "onigasm": "^2.2.4"
     },

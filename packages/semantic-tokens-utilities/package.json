@@ -1,6 +1,6 @@
 {
     "name": "@anche/semantic-tokens-utilities",
-    "version": "0.0.0",
+    "version": "1.0.0",
     "description": "Semantic Tokens Utilities",
     "main": "lib/index.js",
     "module": "lib/index.es.js",
@@ -53,7 +53,7 @@
         "url": "https://github.com/el-angel/theme-editor/issues"
     },
     "dependencies": {
-        "@anche/shared": "0.0.0",
+        "@anche/shared": "^1.0.0",
         "typescript": "^3.9.7",
         "typescript-vscode-sh-plugin": "^0.6.14"
     },

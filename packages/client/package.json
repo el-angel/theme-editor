@@ -1,13 +1,13 @@
 {
     "name": "@anche/theme-editor",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "repository": {
         "type": "git",
         "url": "https://github.com/el-angel/theme-editor.git"
     },
     "homepage": "https://el-angel.github.io/theme-editor",
     "dependencies": {
-        "@anche/textmate-utilities": "^0.0.0",
+        "@anche/textmate-utilities": "^1.0.0",
         "@material-ui/core": "^4.11.0",
         "@material-ui/icons": "^4.9.1",
         "body-parser": "^1.19.0",

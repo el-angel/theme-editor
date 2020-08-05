@@ -1,4 +1,6 @@
 import React from 'react';
+import { createToken, matcher } from '@anche/semantic-tokens-utilities';
+import { match } from '@anche/textmate-utilities';
 import cx from 'classnames';
 import {
     atom,
@@ -15,14 +17,11 @@ import { entitySettingsState } from '~/state/ui';
 
 import { sublineSelected } from '~/containers/Code/components/CodeView';
 
-import { getSemanticTokenRule } from '~/services/semanticToken';
-
 import useAddEntity from '~/hooks/useAddEntity';
 import useViewEntity from '~/hooks/useViewEntity';
 
 import { EntityType } from '~/constants';
 
-import getTextmateScopesRule from '~/helpers/ruleMatch';
 import { atomKey, selectorKey } from '~/helpers/state';
 
 import { SemanticToken } from '~/types';
@@ -98,9 +97,13 @@ const Info: React.FC = () => {
     const addEntity = useAddEntity();
 
     const onClickToken = async (token: string): Promise<void> => {
-        const semanticToken = getSemanticTokenRule(definedTokens, token);
+        const _tokens = definedTokens.map(_token => ({
+            ..._token,
+            ...createToken(_token.scope),
+        }));
+        const semanticToken = matcher.matchToken(token, _tokens);
 
-        if (!semanticToken?.semanticToken) {
+        if (!semanticToken?.token) {
             const input = {
                 scope: token,
             };
@@ -117,7 +120,10 @@ const Info: React.FC = () => {
     };
 
     const onClickScope = (scope: string): void => {
-        const rule = getTextmateScopesRule(definedRules, [scope]);
+        const rule = match(
+            scope,
+            definedRules.map(r => ({ rule: r, scopes: r.scope })),
+        );
 
         if (rule) {
             activateRule(scope);
@@ -171,7 +177,10 @@ const Info: React.FC = () => {
                 <>
                     <p className={css.header}>textmate scopes</p>
                     {[...textmateScopes].reverse().map((scope, i) => {
-                        const exist = !!getTextmateScopesRule(definedRules, [scope]);
+                        const exist = !!match(
+                            scope,
+                            definedRules.map(r => ({ rule: r, scopes: r.scope })),
+                        );
                         return (
                             <span
                                 className={cx(css.scope, { [css.exists]: exist })}

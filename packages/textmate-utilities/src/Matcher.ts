@@ -1,15 +1,10 @@
-import { Rule } from '~/types';
+import { TextMateRule } from '~/types';
 
 interface Match {
     query: string;
     parents: string[];
     scope: string;
     matchIndexes: number[];
-}
-
-interface RuleMatch {
-    rule: Rule;
-    query: string;
 }
 
 const _isDescendant = (query: string, scope: string): boolean => {
@@ -33,8 +28,8 @@ const _isDescendant = (query: string, scope: string): boolean => {
     return affix === scope.substr(0, affix.length);
 };
 
-const _create = (query: string, scopes: string[]): Nullable<Match> => {
-    const _scopes = [...scopes];
+const _createCandidate = (nodeScopes: string[], query: string): Match | null => {
+    const _scopes = [...nodeScopes];
 
     const queryScopes = query.split(/ /g);
 
@@ -89,19 +84,22 @@ const _compare = (a: Match, b: Match): number => {
     return 0;
 };
 
-export const _match = (queries: string[], scopes: string[]): Nullable<Match> => {
-    let winner: Nullable<Match> = null;
+const scopeMatch = (nodeScopes: string[], definedScopes: string[]): Match | null => {
+    let winner: Match | null = null;
 
-    queries.forEach(query => {
-        const candidate = _create(query, scopes);
+    let i = 0;
+    const length = definedScopes.length;
+
+    for (; i < length; i++) {
+        const candidate = _createCandidate(nodeScopes, definedScopes[i]);
 
         if (!candidate) {
-            return;
+            continue;
         }
 
         if (!winner) {
             winner = candidate;
-            return;
+            continue;
         }
 
         const winnerLast = winner.matchIndexes[winner.matchIndexes.length - 1];
@@ -109,7 +107,7 @@ export const _match = (queries: string[], scopes: string[]): Nullable<Match> => 
 
         if (candidateLast > winnerLast) {
             winner = candidate;
-            return;
+            continue;
         }
 
         if (winnerLast === candidateLast) {
@@ -117,20 +115,33 @@ export const _match = (queries: string[], scopes: string[]): Nullable<Match> => 
                 winner = candidate;
             }
         }
-    });
+    }
 
-    return winner as Nullable<Match>;
+    return winner as Match | null;
 };
 
-const getTextmateScopesRule = (rules: Rule[], scopes: string[]): Nullable<RuleMatch> => {
-    const queries = rules.reduce((acc: string[], rule) => [...acc, ...rule.scope], []);
+const match = <T extends TextMateRule>(nodeScopes: string | string[], rules: T[]): T | null => {
+    const _nodeScopes = typeof nodeScopes === 'string' ? [nodeScopes] : nodeScopes;
 
-    const match = _match(queries, scopes);
+    let queries: string[] = [];
 
-    let rule: Nullable<Rule> = null;
+    let i = 0;
+    const length = rules.length;
+
+    for (; i < length; i++) {
+        queries = [...queries, ...rules[i].scopes];
+    }
+
+    const match = scopeMatch(_nodeScopes, queries);
+
+    if (!match) {
+        return null;
+    }
+
+    let rule: T | null = null;
 
     rules.some(_rule => {
-        if (match?.query && _rule.scope.includes(match.query)) {
+        if (_rule.scopes.includes(match.query)) {
             rule = _rule;
             return true;
         }
@@ -138,14 +149,7 @@ const getTextmateScopesRule = (rules: Rule[], scopes: string[]): Nullable<RuleMa
         return false;
     });
 
-    if (rule) {
-        return {
-            rule,
-            query: match!.query,
-        };
-    }
-
-    return null;
+    return rule;
 };
 
-export default getTextmateScopesRule;
+export default match;

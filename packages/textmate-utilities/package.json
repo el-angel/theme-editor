@@ -29,7 +29,7 @@
         "url": "git+https://github.com/el-angel/tmtheme-editor.git"
     },
     "scripts": {
-        "test": "echo \"Error: run tests from root\" && exit 1",
+        "test": "jest",
         "test:watch": "jest --watch",
         "clean": "rimraf ./lib ./esm",
         "prebuild": "yarn clean",
@@ -38,7 +38,7 @@
         "watch": "rollup --watch -c",
         "typecheck": "tsc --noEmit",
         "lint": "eslint src --ext .ts,.tsx .",
-        "precommit": "tsc --noEmit && lint-staged"
+        "precommit": "yarn test && tsc --noEmit --composite false && lint-staged"
     },
     "lint-staged": {
         "src/**/*.{ts,tsx}": [
@@ -57,10 +57,13 @@
     "devDependencies": {
         "@rollup/plugin-commonjs": "^14.0.0",
         "@rollup/plugin-node-resolve": "^8.4.0",
+        "@types/jest": "^26.0.8",
         "@zerollup/ts-transform-paths": "^1.7.18",
+        "jest": "^26.2.2",
         "rimraf": "^3.0.2",
         "rollup": "^2.22.1",
         "rollup-plugin-typescript2": "^0.27.1",
+        "ts-jest": "^26.1.4",
         "ttypescript": "^1.5.10"
     }
 }

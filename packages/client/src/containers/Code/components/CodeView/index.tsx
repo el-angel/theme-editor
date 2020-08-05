@@ -1,4 +1,6 @@
 import React from 'react';
+import { createToken, matcher } from '@anche/semantic-tokens-utilities';
+import { match } from '@anche/textmate-utilities';
 import cx from 'classnames';
 import { sortBy } from 'lodash';
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
@@ -12,12 +14,9 @@ import { infoState } from '~/containers/Code/components/Info';
 import Line from '~/containers/Code/components/Line';
 import SubLine, { SubLineCallback } from '~/containers/Code/components/SubLine';
 
-import { getSemanticTokenRule } from '~/services/semanticToken';
-
 // import useViewRule from '~/hooks/useViewRule';
 import useViewEntity from '~/hooks/useViewEntity';
 
-import getTextmateScopesRule from '~/helpers/ruleMatch';
 import { selectorKey } from '~/helpers/state';
 
 import css from './styles.module.scss';
@@ -53,20 +52,27 @@ const hydratedCode = selector({
                 semanticTokenResult[textMateScope.line] &&
                 semanticTokenResult[textMateScope.line][textMateScope.start];
 
+            const tokens = definedTokens.map(_token => ({
+                ..._token,
+                ...createToken(_token.scope),
+            }));
+
             const semanticTokenScope =
-                semanticToken && getSemanticTokenRule(definedTokens, semanticToken[0]);
+                semanticToken && matcher.matchToken(semanticToken[0], tokens);
 
-            const textmateScopes: string[] =
-                semanticTokenScope?.fallbackScopes || textMateScope.scopes;
+            const nodeScopes: string[] = semanticTokenScope?.fallbackScopes || textMateScope.scopes;
 
-            const rule = getTextmateScopesRule(definedRules, textmateScopes);
+            const rule = match(
+                nodeScopes,
+                definedRules.map(r => ({ rule: r, scopes: r.scope })),
+            );
 
             const subline: FormattedNode = {
                 ...textMateScope,
                 children: line.substr(textMateScope.start, textMateScope.length),
                 // add state ids so SubLine component can subscribe to those recoil values
                 semanticToken,
-                semanticTokenStateId: semanticTokenScope?.semanticToken?.id,
+                semanticTokenStateId: semanticTokenScope?.token?.id,
                 ruleStateId: rule?.rule.id,
             };
 

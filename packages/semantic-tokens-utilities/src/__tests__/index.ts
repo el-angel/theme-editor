@@ -3,8 +3,8 @@
  * Copied and slighty modified under MIT license, which can be found in the project root
  *--------------------------------------------------------------------------------------------*/
 
-import parser from '~/suppliers/TypeScript';
-import { Language } from '~/types';
+import parser from '../Parser';
+import { Language } from '../types';
 
 const json = obj => JSON.stringify(obj);
 
@@ -15,12 +15,12 @@ const t = (line, start, length, _token) => {
         start,
         length,
         type: token.shift(),
-        modifiers: token.join('.'),
+        modifiers: token,
     };
 };
 
 const compare = (code: string, language: Language, expected: ReturnType<typeof t>[]): void => {
-    const tokens = parser({ code, language });
+    const { tokens } = parser({ code, language });
 
     expect(json(tokens)).toBe(json(expected));
 };

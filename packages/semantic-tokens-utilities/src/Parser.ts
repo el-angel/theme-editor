@@ -1,12 +1,12 @@
+import { CodeDocument, Parser } from '@anche/shared';
 import ts from 'typescript/lib/tsserverlibrary';
 import { TokenEncodingConsts } from 'typescript-vscode-sh-plugin/lib/constants';
 import initPlugin from 'typescript-vscode-sh-plugin';
 
-import createTypeScriptService from '~/services/typescript';
-import { CodeDocument, Parser } from '@anche/shared';
+import createTypeScriptService from './TypeScriptService';
 
-import { tokenTypes, tokenModifiers } from '~/constants/tokens';
-import { SemanticToken, Language } from '~/types';
+import { tokenTypes, tokenModifiers } from './constants/tokens';
+import { SemanticToken, Language } from './types';
 
 export interface Input {
     code: string;
@@ -22,7 +22,7 @@ const _createTypeScript = ({
         language,
     });
 
-    const textmateService = ts.createtextmateService(host);
+    const textmateService = ts.createLanguageService(host);
     return {
         // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
         // @ts-ignore
@@ -41,7 +41,7 @@ const _getTokenTypeIndex = (classification: number): number | undefined => {
 const _getTokenModifierSet = (classification: number): number =>
     classification & TokenEncodingConsts.modifierMask;
 
-const parse: Parser<SemanticToken> = ({ code, language }: Input) => {
+const Parser: Parser<SemanticToken> = ({ code, language }: Input) => {
     const codeDocument = new CodeDocument({ code });
 
     const { service, host } = _createTypeScript({ code, language });
@@ -49,7 +49,6 @@ const parse: Parser<SemanticToken> = ({ code, language }: Input) => {
     const program = service.getProgram();
 
     const fileName = host.getScriptFileNames()[0];
-
     const sourceFile = program.getSourceFile(fileName);
 
     const span = { start: 0, length: codeDocument.length() };
@@ -84,7 +83,7 @@ const parse: Parser<SemanticToken> = ({ code, language }: Input) => {
     };
 };
 
-type ParserResult = ReturnType<Parser<SemanticToken>>;
-export { ParserResult };
+type SemanticTokensParserResult = ReturnType<Parser<SemanticToken>>;
+export { SemanticTokensParserResult };
 
-export default parse;
+export default Parser;

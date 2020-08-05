@@ -1,13 +1,14 @@
 import React from 'react';
-import { SemanticToken as ExternalSemanticToken } from '@anche/semantic-tokens-utilities';
+import {
+    createTokenString,
+    SemanticToken as ExternalSemanticToken,
+} from '@anche/semantic-tokens-utilities';
 import cx from 'classnames';
 import { selectorFamily, useRecoilValue } from 'recoil';
 
 import { getGeneralScope } from '~/state/generalScopes';
 import { getRule } from '~/state/rules';
 import { semanticTokenState } from '~/state/semanticTokens';
-
-import { createTokenString } from '~/services/semanticToken';
 
 import { EntityType, FontStyle } from '~/constants';
 

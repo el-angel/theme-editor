@@ -25,5 +25,11 @@
     },
     "bugs": {
         "url": "https://github.com/el-angel/textmate-editor/issues"
+    },
+    "lint-staged": {
+        "src/**/*.ts": [
+            "pretty-quick --staged",
+            "ts --noEmit"
+        ]
     }
 }

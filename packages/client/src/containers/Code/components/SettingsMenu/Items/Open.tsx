@@ -5,6 +5,7 @@ import { getGeneralScope } from '~/state/generalScopes';
 import { getRule, ruleIds } from '~/state/rules';
 
 import SettingsMenuItem from '~/containers/Code/components/SettingsMenu/Item';
+import FontStyle from '~/containers/Settings/components/FontStyle';
 
 import generalScopesDefault from '~/helpers/generalScopesDefault';
 
@@ -63,7 +64,9 @@ const Open: React.FC = () => {
                     if (generalScopesDefault[scope]) {
                         set(getGeneralScope(scope), {
                             scope,
-                            color: json.colors[scope],
+                            settings: {
+                                foreground: json.colors[scope],
+                            },
                         });
                     }
                 });
@@ -76,10 +79,9 @@ const Open: React.FC = () => {
                             : [tokenColor.scope],
                         settings: {
                             ...tokenColor.settings,
-                            fontStyle: [],
-                            // fontStyle: (tokenColor.settings.fontStyle
-                            //     ? [tokenColor.settings.fontStyle]
-                            //     : []) as Font[],
+                            fontStyle: (tokenColor.settings.fontStyle || '')
+                                .split(' ')
+                                .map(style => FontStyle[style]),
                         },
                     };
 

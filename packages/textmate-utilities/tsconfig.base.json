@@ -18,7 +18,7 @@
         "declarationDir": "./lib/textmate-utilities",
         "declarationMap": true,
         "downlevelIteration": true,
-        "types": ["node"],
+        "types": ["node", "jest"],
         "paths": {
             "~/*": ["./src/*"],
             "@anche/*": ["../../packages/*/src"]
@@ -31,5 +31,6 @@
             }
         ]
     },
-    "include": ["./src", "../../packages/shared"]
+    "include": ["./src", "../../packages/shared"],
+    "exclude": ["./src/__tests__"]
 }

@@ -35,7 +35,10 @@
         cursor: pointer;
         width: 50%;
         color: var(--sideBar-foreground);
-        opacity: 0.4;
+
+        & > span {
+            opacity: 0.4;
+        }
         // background-color: #ffffff10;
 
         &:last-child {
@@ -44,11 +47,16 @@
 
         &.isActive {
             background-color: transparent;
-            opacity: 1;
+
+            & > span {
+                opacity: 1;
+            }
         }
 
         &:hover {
-            opacity: 1;
+            & > span {
+                opacity: 1;
+            }
             background-color: transparent;
         }
     }

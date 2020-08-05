@@ -1,15 +1,14 @@
 import { TextMateParserResult } from '@anche/textmate-utilities';
 import { atom, selector } from 'recoil';
 
-import textmateService from '~/services/textmate';
 import storage from '~/services/storage';
+import textmateService from '~/services/textmate';
 
 import { atomKey, selectorKey } from '~/helpers/state';
 
 import languageState from './language';
 
-const initCode = `
-import React from 'react';
+const initCode = `import React from 'react';
 import main from '~/state/main';
 import { getAll } from '~/helpers/getAll';
 import Button from '../../component/Button';

@@ -1,72 +1,148 @@
-# `textmate-utilities`
+# `semantic-tokens-utilities`
 
-This package is just a small wrapper around onigasm and monaco-textmate to be used together to read textmate grammar files and parse raw code strings into Code type objects.
+This package exposes several utilities that help with Semantic Tokens.
 
 ```typescript
-type Scope = string;
+interface Position {
+    line: number;
+    start: number;
+    length: number;
+}
 
-interface SubLine {
-    text: string;
-    scopes: Scope[];
+interface Token {
+    type: string;
+    modifiers: string[];
+    language?: string;
 }
-interface Line {
-    number: number;
-    content: SubLine[];
-}
-interface Code {
-    lines: Line[];
-}
+
+interface SemanticToken extends Position, Token {}
 ```
 
 ## Usage
 
-First copy the following files into your applications static folder (which should be accessable via `window.fetch`):
+First you should/could initialize the match helper with the scope fallbacks before you use the match utility from this package. Those fallbacks are TextMate scopes. (https://code.visualstudio.com/api/language-extensions/semantic-highlight-guide).
 
--   all the wanted grammar files from `./grammar`
--   `onigasm.wasm` (https://github.com/NeekSandhu/onigasm), also in `./node_modules/lib/onigasm.wasm`
-
-Before you can use the helper, you should bootstrap your app with the init module
+(You could call the initialize module before starting your app)
 
 ```typescript
-import { initialize } from '@anche/textmate-grammar-helper';
+import { initialize } from '@anche/semantic-tokens-utilities';
 
-const ONIGASM_URL = '/public/static/onigasm.wasm';
+export type FallbackRegister = (tokenString: string, fallbackScopes: string[]) => void;
 
-(async () => {
-    await initialize(ONIGASM_URL);
+(() => {
+    initialize((registerTokenFallback: FallbackRegister) => {
+        // Define your fallbacks:
+
+        registerTokenFallback('namespace', 'entity.name.namespace');
+    });
     App.start();
 })();
 ```
 
-GrammarHelper setup
+```typescript
+// If you want to have the same fallbacks as VSCode
+import { initialize, Presets } from '@anche/semantic-tokens-utilities';
+
+initialize(Presets.vscode);
+```
+
+## Parser
+
+The parser transforms a string into a CodeDocument and returns an array of Semantic Tokens
 
 ```typescript
-import GrammarHelper from '@anche/textmate-utilities';
+interface CodeDocument {
+    getTextAtPosition(position: Position): string;
+    getLines(): string[];
+    getRaw(): string;
+}
 
-const grammar = new GrammarHelper({
-    filePaths: {
-        // [languageScope]: path to your static folder
-        'source.tsx': '/grammar/typescriptreact.json',
-    },
-});
+type SemanticTokensParserResult = <T extends Position>{
+    code: CodeDocument;
+    tokens: T[];
+}
 
-const rawCode = `
-  import React from 'react';
+import { parser } from '@anche/semantic-tokens-utilities';
 
-  interface Props {
-    onClick: () => void;
-  };
+const rawCode = `const semanticTokens = () => {}`;
 
-  const Button: React.FC<Props> = ({ onClick, children }) => {
-    return (
-      <button type="button" onClick={onClick}>
-        {children}
-      </button>
-    );
-  };
+const parserResult = parser({ code: rawCode, language: 'tsx' })
+;
 
-  export default Button;
-`;
+const firstNode = parserResult.tokens[0];
+// `semanticTokens` is a Semantic Token:
+// {
+//     line: 0,
+//     start: 6,
+//     length: 13,
+//     type: 'function',
+//     modifiers: ['declaration', 'readonly'],
+//     language: undefined
+// }
+```
 
-const code = grammar.parse(rawCode, 'source.tsx' /* key of filePaths: languageScope */);
+### Matcher
+
+```typescript
+interface Token {
+    type: string;
+    modifiers: string[];
+    language?: string;
+}
+
+interface TokenFallback {
+    token: Token;
+    fallbackScopes: string[];
+}
+
+interface TokenWinner<T extends Token> {
+    token: T;
+    score: number;
+}
+
+interface Matcher {
+    // returns a Semantic Token or TextMate fallback scopes
+    matchToken: <T extends Token>(
+        token: string | Token,
+        semanticTokens: T[],
+    ) =>
+        | {
+              token?: T;
+              fallbackScopes: string[];
+          }
+        | undefined;
+
+    //  will return TextMate fallback scopes defined during initialization
+    getFallback: (token: Token) => TokenFallback | undefined;
+
+    // will return a matching Semantic Token or undefined
+    getMatch: <T extends Token>(token: Token, semanticTokens: T[]) => TokenWinner<T> | undefined;
+}
+
+// Defined Semantic Tokens
+const semanticTokens = [
+    { scope: 'member.defaultLibrary', color: '#000000' }
+    { scope: 'variable.declaration.readonly', color: '#ff00ff'
+    { scope: 'function', color: '#00ff00' }
+];
+
+const code = `const semanticTokens = () => {};`;
+
+// after parsing you have the node for `semanticTokens`:
+const firstNode = parserResult.tokens[0];
+// {
+//     line: 0,
+//     start: 6,
+//     length: 13,
+//     type: 'function',
+//     modifiers: ['declaration', 'readonly'],
+//     language: undefined
+// }
+
+import { Matcher } from '@anche/semantic-tokens-utilities';
+
+// semanticTokens[2] will return
+const rule = Matcher.matchToken(firstNode, semanticTokens);
+
+
 ```

@@ -14,13 +14,13 @@ const getUrl = (file: string): string => `${process.env.PUBLIC_URL}/grammar/${fi
 
 const textmateService = new TextMateScopesParser({
     filePaths: {
-        'source.ts': getUrl('typescript.json'),
-        'source.tsx': getUrl('typescriptreact.json'),
-        'source.js': getUrl('javascript.json'),
-        'source.jsx': getUrl('javascriptreact.json'),
-        'source.css': getUrl('css.json'),
-        'text.html.basic': getUrl('html.json'),
-        'source.json': getUrl('json.json'),
+        'source.ts': getUrl('TypeScript.tmLanguage.json'),
+        'source.tsx': getUrl('TypeScriptReact.tmLanguage.json'),
+        'source.js': getUrl('JavaScript.tmLanguage.json'),
+        'source.jsx': getUrl('JavaScriptReact.tmLanguage.json'),
+        'source.css': getUrl('css.tmLanguage.json'),
+        'text.html.basic': getUrl('html.tmLanguage.json'),
+        'source.json': getUrl('JSON.tmLanguage.json'),
     },
 });
 

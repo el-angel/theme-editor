@@ -12,10 +12,11 @@ const getGeneralScopesCSS = selector<string>({
         const scopes = GENERAL_SCOPES;
 
         const css = scopes.reduce((acc, name) => {
+            const generalScope = get(getGeneralScope(name))!;
             const {
                 id,
                 settings: { foreground },
-            } = get(getGeneralScope(name))!;
+            } = generalScope;
 
             const formatted = `--${id.replace(/\./, '-')}`;
 

@@ -50,6 +50,8 @@ initialize(Presets.vscode);
 
 The parser transforms a string into a CodeDocument and returns an array of Semantic Tokens
 
+(This can only be executed on a node server)
+
 ```typescript
 interface CodeDocument {
     getTextAtPosition(position: Position): string;

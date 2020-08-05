@@ -1,6 +1,6 @@
 import { SemanticToken as ExternalSemanticToken } from '@anche/semantic-tokens-utilities';
 import { groupBy } from 'lodash';
-import { atom, selector } from 'recoil';
+import { atom, selector, useRecoilCallback, useRecoilValue } from 'recoil';
 
 import { rawCode } from '~/state/code';
 
@@ -20,11 +20,42 @@ export enum States {
     Loading,
 }
 
-export const semanticState = atom<States>({
-    key: atomKey('semanticTokens', 'State'),
+const semanticState = atom<States>({
+    key: atomKey('semanticTokens', '_State'),
     // default: States.Inactive,
     default: States.Active,
 });
+
+export const useSemanticHighlighting = (): [States, (nextState?: States) => void] => {
+    const state = useRecoilValue(semanticState);
+    const toggleSemanticHighlighting = useRecoilCallback(
+        ({ set }) => (nextState?: States): void => {
+            if (state === States.Loading) {
+                return;
+            }
+
+            if (
+                nextState === States.Inactive ||
+                (nextState !== States.Active && state !== States.Inactive)
+            ) {
+                set(semanticState, States.Inactive);
+                return;
+            }
+
+            set(semanticState, States.Loading);
+
+            API.ping()
+                .then(() => {
+                    set(semanticState, States.Active);
+                })
+                .catch(() => {
+                    set(semanticState, States.Enabled);
+                });
+        },
+    );
+
+    return [state, toggleSemanticHighlighting];
+};
 
 export const semanticTokens = selector({
     key: selectorKey('semanticTokens', 'Tokens'),
@@ -37,22 +68,24 @@ export const semanticTokens = selector({
 
         const code = get(rawCode);
 
-        const result = await API.semanticTokensState({
-            code,
-            language: 'tsx',
-        });
+        try {
+            const result = await API.semanticTokensState({
+                code,
+                language: 'tsx',
+            });
 
-        const _grouped = groupBy(result?.tokens, 'line');
+            const _grouped = groupBy(result?.tokens, 'line');
 
-        const grouped: Record<number, Record<number, ExternalSemanticToken[]>> = {};
+            const grouped: Record<number, Record<number, ExternalSemanticToken[]>> = {};
 
-        Object.keys(_grouped).forEach(lineNumber => {
-            grouped[lineNumber] = groupBy(_grouped[lineNumber], 'start');
-        });
+            Object.keys(_grouped).forEach(lineNumber => {
+                grouped[lineNumber] = groupBy(_grouped[lineNumber], 'start');
+            });
 
-        return grouped;
-
-        // return result;
+            return grouped;
+        } catch (e) {
+            return undefined;
+        }
     },
 });
 

@@ -1,5 +1,5 @@
 {
-    "name": "@anche/tmtheme-server",
+    "name": "@anche/theme-server",
     "version": "0.1.0",
     "repository": {
         "type": "git",
@@ -27,7 +27,7 @@
         "start": "ts-node-dev ./src/index.ts",
         "lint": "eslint src --ext .ts,.tsx .",
         "precommit": "tsc --noEmit && lint-staged",
-        "typecheck": "yarn tsc --noEmit"
+        "typecheck": "tsc --noEmit"
     },
     "lint-staged": {
         "src/**/*.ts": [

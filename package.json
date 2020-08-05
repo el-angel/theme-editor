@@ -13,12 +13,12 @@
     "private": true,
     "scripts": {
         "start": "concurrently \"yarn p:textmate run build\" \"yarn p:semantic run build\" && yarn start:editor",
-        "start:editor": "yarn workspace @anche/tmtheme-client run start",
+        "start:editor": "yarn workspace @anche/theme-editor run start",
         "watch": "concurrently \"yarn p:textmate run watch\" \"yarn p:semantic run watch\"",
         "format": "prettier --write \"packages/*/src/**/*.{ts,tsx,scss,js,json}\"",
         "deploy": "lerna run build --stream && yarn p:client deploy",
         "p:server": "yarn workspace @anche/tmtheme-server",
-        "p:client": "yarn workspace @anche/tmtheme-client",
+        "p:client": "yarn workspace @anche/theme-editor",
         "p:textmate": "yarn workspace @anche/textmate-utilities",
         "p:semantic": "yarn workspace @anche/semantic-tokens-utilities"
     },

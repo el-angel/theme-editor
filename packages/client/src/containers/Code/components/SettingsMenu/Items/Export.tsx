@@ -1,23 +1,42 @@
 import React from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilCallback } from 'recoil';
 
-import { getGeneralScopes } from '~/state/generalScopes';
-import { getRules } from '~/state/rules';
+import { generalScopesState } from '~/state/generalScopes';
+import { rulesState } from '~/state/rules';
+import { semanticTokensState } from '~/state/semanticTokens';
 import { themeStyle } from '~/state/theme';
 
 import SettingsMenuItem from '~/containers/Code/components/SettingsMenu/Item';
 
-import { GeneralScope, Rule } from '~/types';
-import { Theme, ThemeRule } from '~/types/theme';
+import { GeneralScope, Rule, SemanticToken } from '~/types';
+import { SemanticTokenRules, TextMateRule, Theme } from '~/types/theme';
 
 interface Options {
+    semanticTokens: SemanticToken[];
     name: string;
     generalScopes: GeneralScope[];
     rules: Rule[];
     type: 'dark' | 'light';
 }
 
-const ruleTransformer = (rule: Rule): ThemeRule => ({
+const createSemanticTokensObj = (tokens: SemanticToken[]): SemanticTokenRules => {
+    return tokens.reduce(
+        (acc: SemanticTokenRules, token) => ({
+            ...acc,
+            [token.scope]: {
+                foreground: token.settings.foreground,
+                ...(token.settings.fontStyle!.length > 0
+                    ? {
+                          fontStyle: token.settings.fontStyle!.join(' '),
+                      }
+                    : {}),
+            },
+        }),
+        {},
+    );
+};
+
+const ruleTransformer = (rule: Rule): TextMateRule => ({
     name: rule.name,
     scope: rule.scope,
     settings: {
@@ -43,31 +62,36 @@ const createThemeColorsObj = (scopes: GeneralScope[]): Theme['colors'] => {
 const createTheme = (opts: Options): Theme => ({
     name: opts.name,
     colors: createThemeColorsObj(opts.generalScopes),
-    semanticTokens: true,
-    tokenColors: opts.rules.map(rule => ruleTransformer(rule)),
+    semanticHighlighting: opts.semanticTokens.length > 0,
+    tokenColors: opts.rules.map(ruleTransformer),
     type: opts.type,
+    semanticTokenColors: createSemanticTokensObj(opts.semanticTokens),
 });
 
 const Export: React.FC = () => {
-    const rules = useRecoilValue(getRules);
-    const generalScopes = useRecoilValue(getGeneralScopes);
     const name = 'by https://github.com/el-angel/theme-editor';
-    const type = useRecoilValue(themeStyle);
 
-    const download = (): void => {
-        const theme = createTheme({ rules, generalScopes, name, type });
-        const json = JSON.stringify(theme, null, 2);
+    const download = useRecoilCallback(
+        ({ snapshot }) => async () => {
+            const rules = await snapshot.getPromise(rulesState);
+            const semanticTokens = await snapshot.getPromise(semanticTokensState);
+            const generalScopes = await snapshot.getPromise(generalScopesState);
+            const type = await snapshot.getPromise(themeStyle);
+            const theme = createTheme({ rules, generalScopes, name, type, semanticTokens });
+            const json = JSON.stringify(theme, null, 2);
 
-        const elem = document.createElement('a');
-        const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(json);
+            const elem = document.createElement('a');
+            const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(json);
 
-        elem.setAttribute('href', dataStr);
-        elem.setAttribute('download', 'theme.json');
-        elem.setAttribute('style', 'display: none;');
-        document.body.appendChild(elem);
-        elem.click();
-        elem.remove();
-    };
+            elem.setAttribute('href', dataStr);
+            elem.setAttribute('download', 'theme.json');
+            elem.setAttribute('style', 'display: none;');
+            document.body.appendChild(elem);
+            elem.click();
+            elem.remove();
+        },
+        [],
+    );
 
     return <SettingsMenuItem onClick={download}>Export</SettingsMenuItem>;
 };

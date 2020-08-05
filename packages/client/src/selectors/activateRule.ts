@@ -2,7 +2,7 @@ import { match } from '@anche/textmate-utilities';
 import { atom, selector } from 'recoil';
 
 import mode from '~/state/mode';
-import { getRules, RULES_STATE_ID } from '~/state/rules';
+import { RULES_STATE_ID, rulesState } from '~/state/rules';
 
 import { selectorKey } from '~/helpers/state';
 
@@ -21,7 +21,7 @@ export const activateRuleByScope = selector<string>({
         const scope = input as string;
 
         set(activeScope, scope);
-        const rules = get(getRules);
+        const rules = get(rulesState);
 
         const rule = match(
             scope,

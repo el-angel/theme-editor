@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 
-import { getGeneralScope } from '~/state/generalScopes';
+import { generalScopeState } from '~/state/generalScopes';
 import { entitySettingsState } from '~/state/ui';
 
 // import editGeneralScopeState from '~/state/generalScopes/edit';
@@ -12,7 +12,7 @@ import useViewEntity from '~/hooks/useViewEntity';
 const GeneralSettings: React.FC = () => {
     const input = useRecoilValue(entitySettingsState);
     const viewEntity = useViewEntity();
-    const [generalScope, updateGeneralScope] = useRecoilState(getGeneralScope(input?.id));
+    const [generalScope, updateGeneralScope] = useRecoilState(generalScopeState(input?.id));
 
     const onChangeColor = React.useCallback(
         (color: string) => {

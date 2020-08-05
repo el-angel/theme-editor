@@ -7,7 +7,7 @@ import { atom, useRecoilValue, useSetRecoilState } from 'recoil';
 import { selector, useRecoilState } from 'recoil';
 
 import parsedCode from '~/state/code';
-import { getRules } from '~/state/rules';
+import { rulesState } from '~/state/rules';
 import { semanticTokens, semanticTokensState } from '~/state/semanticTokens';
 
 import { infoState } from '~/containers/Code/components/Info';
@@ -36,7 +36,7 @@ const hydratedCode = selector({
     get: ({ get }) => {
         const textMateResult = get(parsedCode);
         const semanticTokenResult = get(semanticTokens);
-        const definedRules = get(getRules);
+        const definedRules = get(rulesState);
         const definedTokens = get(semanticTokensState);
 
         const lines = textMateResult.code.getLines();

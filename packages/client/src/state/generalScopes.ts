@@ -39,11 +39,11 @@ const _default = selectorFamily({
 
 const {
     TREE_ID: GENERAL_SCOPE_STATE_ID,
-    getEntities: getGeneralScopes,
-    getEntity: getGeneralScope,
+    getEntities: generalScopesState,
+    getEntity: generalScopeState,
 } = factory({
     state: 'GeneralScopes',
     default: _default,
 });
 
-export { GENERAL_SCOPE_STATE_ID, getGeneralScopes, getGeneralScope };
+export { GENERAL_SCOPE_STATE_ID, generalScopesState, generalScopeState };

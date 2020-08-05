@@ -6,8 +6,8 @@ import {
 import cx from 'classnames';
 import { selectorFamily, useRecoilValue } from 'recoil';
 
-import { getGeneralScope } from '~/state/generalScopes';
-import { getRule } from '~/state/rules';
+import { generalScopeState } from '~/state/generalScopes';
+import { ruleState } from '~/state/rules';
 import { semanticTokenState } from '~/state/semanticTokens';
 
 import { EntityType, FontStyle } from '~/constants';
@@ -54,7 +54,7 @@ const entitySelector = selectorFamily<
             return get(semanticTokenState(id));
         }
 
-        return get(getRule(id || ''));
+        return get(ruleState(id || ''));
     },
 });
 
@@ -76,7 +76,7 @@ const SubLine: React.FC<Props> = ({
         }),
     );
 
-    const editorBackground = useRecoilValue(getGeneralScope('editor.background')) as GeneralScope;
+    const editorBackground = useRecoilValue(generalScopeState('editor.background')) as GeneralScope;
 
     const empty = !children.trim();
     const semanticTokenStr = semanticToken ? createTokenString(semanticToken[0]) : '';

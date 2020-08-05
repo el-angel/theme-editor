@@ -11,7 +11,7 @@ import {
     useSetRecoilState,
 } from 'recoil';
 
-import { getRule, getRules } from '~/state/rules';
+import { rulesState, ruleState } from '~/state/rules';
 import { semanticTokensState } from '~/state/semanticTokens';
 import { entitySettingsState } from '~/state/ui';
 
@@ -85,14 +85,14 @@ export const infoState = selector<InfoState>({
 });
 
 const Info: React.FC = () => {
-    const definedRules = useRecoilValue(getRules);
+    const definedRules = useRecoilValue(rulesState);
     const definedTokens = useRecoilValue(semanticTokensState);
     const viewEntity = useViewEntity();
     const { textmateScopes, semanticToken } = useRecoilValue(infoState);
     const activateRule = useSetRecoilState(activateRuleByScope);
     const input = useRecoilValue(entitySettingsState);
 
-    const [activeRule, updateRule] = useRecoilState(getRule(input?.id));
+    const [activeRule, updateRule] = useRecoilState(ruleState(input?.id));
 
     const addEntity = useAddEntity();
 

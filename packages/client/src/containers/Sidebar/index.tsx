@@ -14,11 +14,11 @@ import { EntityType } from '~/constants';
 
 import css from './styles.module.scss';
 
-import getGeneralScopesCSS from '~/selectors/generalScopeCSS';
+import generalScopesStateCSS from '~/selectors/generalScopeCSS';
 
 const Sidebar: React.FC = () => {
     const currentMode = useRecoilValue(mode);
-    const generalStyle = useRecoilValue(getGeneralScopesCSS);
+    const generalStyle = useRecoilValue(generalScopesStateCSS);
 
     return (
         <>

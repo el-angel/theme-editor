@@ -1,8 +1,8 @@
 import React, { ChangeEvent } from 'react';
 import { useRecoilCallback } from 'recoil';
 
-import { getGeneralScope } from '~/state/generalScopes';
-import { getRule, ruleIds } from '~/state/rules';
+import { generalScopeState } from '~/state/generalScopes';
+import { ruleIds, ruleState } from '~/state/rules';
 
 import SettingsMenuItem from '~/containers/Code/components/SettingsMenu/Item';
 import FontStyle from '~/containers/Settings/components/FontStyle';
@@ -62,7 +62,7 @@ const Open: React.FC = () => {
 
                 Object.keys(json.colors).map(scope => {
                     if (generalScopesDefault[scope]) {
-                        set(getGeneralScope(scope), {
+                        set(generalScopeState(scope), {
                             scope,
                             settings: {
                                 foreground: json.colors[scope],
@@ -87,7 +87,7 @@ const Open: React.FC = () => {
 
                     const rule = createRule(input, { existingIds });
 
-                    set(getRule(rule.id), rule);
+                    set(ruleState(rule.id), rule);
                 });
             });
 

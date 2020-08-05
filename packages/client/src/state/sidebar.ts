@@ -1,7 +1,7 @@
 import { atom, selector } from 'recoil';
 
-import { getGeneralScope } from '~/state/generalScopes';
-import { getRules } from '~/state/rules';
+import { generalScopeState } from '~/state/generalScopes';
+import { rulesState } from '~/state/rules';
 import { semanticTokensState } from '~/state/semanticTokens';
 
 import { GENERAL_SCOPES } from '~/constants';
@@ -17,7 +17,7 @@ export const sidebarRules = selector({
     key: selectorKey('Sidebar', 'FilteredRules'),
     get: ({ get }) => {
         const query = get(filter).toLowerCase();
-        const rules = get(getRules);
+        const rules = get(rulesState);
 
         return rules.filter(rule => {
             return (
@@ -33,7 +33,7 @@ export const sidebarGeneralScopes = selector({
     get: ({ get }) => {
         const query = get(filter).toLowerCase();
 
-        const scopes = GENERAL_SCOPES.map(scope => get(getGeneralScope(scope)));
+        const scopes = GENERAL_SCOPES.map(scope => get(generalScopeState(scope)));
 
         return scopes.filter(generalScope => {
             return generalScope.id.toLowerCase().indexOf(query) !== -1;

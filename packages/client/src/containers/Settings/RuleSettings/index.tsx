@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 
-import { getRule, getRules } from '~/state/rules';
+import { rulesState, ruleState } from '~/state/rules';
 import { entitySettingsState } from '~/state/ui';
 
 import PanelSettings from '~/components/ui/PanelSettings';
@@ -15,13 +15,13 @@ import { FontStyle as FontStyleEnum } from '~/constants';
 import getExistingScopes from '~/helpers/getExistingScopes';
 
 const RuleSettings: React.FC = () => {
-    const rules = useRecoilValue(getRules);
+    const rules = useRecoilValue(rulesState);
     const deleteEntity = useDeleteEntity();
     const viewEntity = useViewEntity();
     const entity = useRecoilValue(entitySettingsState);
-    const rule = useRecoilValue(getRule(entity?.id));
+    const rule = useRecoilValue(ruleState(entity?.id));
 
-    const updateRule = useSetRecoilState(getRule(entity?.id));
+    const updateRule = useSetRecoilState(ruleState(entity?.id));
 
     const toggleFontStyle = React.useCallback(
         (fontStyle: FontStyleEnum) => {
@@ -87,7 +87,7 @@ const RuleSettings: React.FC = () => {
             italic={rule.settings.fontStyle?.includes(FontStyleEnum.Italic)}
             underline={rule.settings.fontStyle?.includes(FontStyleEnum.Underline)}
             color={rule.settings.foreground}
-            onAddScope={(scope: string) =>
+            onAddScope={(scope: string): void =>
                 updateRule({
                     ...rule!,
                     scope: [scope, ...rule!.scope],

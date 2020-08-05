@@ -1,7 +1,7 @@
 import { useRecoilCallback } from 'recoil';
 
 import mode from '~/state/mode';
-import { getRule } from '~/state/rules';
+import { ruleState } from '~/state/rules';
 import { semanticTokenState } from '~/state/semanticTokens';
 import { entitySettingsState } from '~/state/ui';
 
@@ -22,7 +22,7 @@ const useDeleteEntity = (): ReturnType => {
             let getter;
 
             if (isRule(input)) {
-                getter = getRule;
+                getter = ruleState;
             }
 
             if (isSemanticToken(input)) {

@@ -6,8 +6,8 @@ import { Rule } from '~/types';
 
 const {
     TREE_ID: RULES_STATE_ID,
-    getEntities: getRules,
-    getEntity: getRule,
+    getEntities: rulesState,
+    getEntity: ruleState,
     entityIds: ruleIds,
 } = factory({
     state: 'rules',
@@ -25,4 +25,4 @@ const {
     },
 });
 
-export { RULES_STATE_ID, getRules, getRule, ruleIds };
+export { RULES_STATE_ID, rulesState, ruleState, ruleIds };

@@ -1,6 +1,6 @@
 import { useRecoilCallback } from 'recoil';
 
-import { getRule, ruleIds } from '~/state/rules';
+import { ruleIds, ruleState } from '~/state/rules';
 import { semanticTokenIds, semanticTokenState } from '~/state/semanticTokens';
 
 import { confirm } from '~/services/dialog';
@@ -27,7 +27,7 @@ const useAddEntity = () => {
                     filterScope: filterScope,
                 });
 
-                set(getRule(entity.id), entity);
+                set(ruleState(entity.id), entity);
             }
 
             if (type === EntityType.SemanticToken) {

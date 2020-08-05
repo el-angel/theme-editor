@@ -1,9 +1,17 @@
-export interface ThemeRule {
+type Color = string;
+export interface TextMateRule {
     name: string;
     scope: string[] | string;
     settings: {
         fontStyle?: string;
-        foreground: string;
+        foreground: Color;
+    };
+}
+
+export interface SemanticTokenRules {
+    [key: string]: {
+        foreground?: Color;
+        fontStyle?: string;
     };
 }
 
@@ -12,7 +20,8 @@ export interface Theme {
     colors: {
         [scope: string]: string;
     };
-    semanticTokens: boolean;
-    tokenColors: ThemeRule[];
+    semanticHighlighting: boolean;
+    tokenColors: TextMateRule[];
+    semanticTokenColors: SemanticTokenRules;
     type: 'dark' | 'light';
 }

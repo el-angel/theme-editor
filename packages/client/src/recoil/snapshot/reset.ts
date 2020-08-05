@@ -1,7 +1,7 @@
 import { MutableSnapshot } from 'recoil';
 
-import { getGeneralScope } from '~/state/generalScopes';
-import { getRule, ruleIds } from '~/state/rules';
+import { generalScopeState } from '~/state/generalScopes';
+import { ruleIds, ruleState } from '~/state/rules';
 import { semanticTokenIds, semanticTokenState } from '~/state/semanticTokens';
 import { themeStyle } from '~/state/theme';
 
@@ -11,7 +11,7 @@ import { Rule, SemanticToken } from '~/types';
 
 const resetState = async (snapshot: MutableSnapshot): Promise<void> => {
     snapshot.reset(themeStyle);
-    GENERAL_SCOPES.map(name => snapshot.reset(getGeneralScope(name)));
+    GENERAL_SCOPES.map(name => snapshot.reset(generalScopeState(name)));
 
     const ids = await snapshot.getPromise(ruleIds);
     let length = ids.length,
@@ -19,7 +19,7 @@ const resetState = async (snapshot: MutableSnapshot): Promise<void> => {
 
     for (i = 0; i < length; i++) {
         const id = ids[i];
-        const state = await snapshot.getPromise(getRule(id));
+        const state = await snapshot.getPromise(ruleState(id));
 
         if (state) {
             const updated: Rule = {
@@ -30,7 +30,7 @@ const resetState = async (snapshot: MutableSnapshot): Promise<void> => {
                 },
             };
 
-            snapshot.set(getRule(id), updated);
+            snapshot.set(ruleState(id), updated);
         }
     }
 

@@ -4,8 +4,8 @@ import { initialize as initTextMate } from '@anche/textmate-utilities';
 import { RecoilRoot } from 'recoil';
 
 import { rawCode } from '~/state/code';
-import { GENERAL_SCOPE_STATE_ID, getGeneralScope } from '~/state/generalScopes';
-import { getRule, ruleIds, RULES_STATE_ID } from '~/state/rules';
+import { GENERAL_SCOPE_STATE_ID, generalScopeState } from '~/state/generalScopes';
+import { ruleIds, RULES_STATE_ID, ruleState } from '~/state/rules';
 import { SEMANTIC_STATE_ID, semanticTokenIds, semanticTokenState } from '~/state/semanticTokens';
 import { themeStyle } from '~/state/theme';
 
@@ -40,7 +40,7 @@ const initializeState = ({ set }): void => {
             const value = storage.get<Rule>(key)!;
 
             if (ruleIdsArr.includes(value.id)) {
-                set(getRule(value.id), value);
+                set(ruleState(value.id), value);
             }
             continue;
         }
@@ -56,7 +56,7 @@ const initializeState = ({ set }): void => {
 
         if (key.includes(atomKey(GENERAL_SCOPE_STATE_ID, 'id__'))) {
             const scope = storage.get<GeneralScope>(key)!;
-            set(getGeneralScope(scope.id), scope);
+            set(generalScopeState(scope.id), scope);
             continue;
         }
 

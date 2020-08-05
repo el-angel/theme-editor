@@ -4,7 +4,7 @@ Customize or create VSCode themes using TextMate scopes and Semantic Highlightin
 
 Try out: http://el-angel.github.io/theme-editor (Semantic Highlighting not available)
 
-![](./screen.png 'Theme Editor')
+![](./screenshot.png 'Theme Editor')
 
 ## Installation
 

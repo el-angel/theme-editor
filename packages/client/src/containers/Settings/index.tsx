@@ -11,7 +11,7 @@ import SemanticTokenSettings from '~/containers/Settings/SemanticTokenSettings';
 import { EntityType } from '~/constants';
 
 const Settings: React.FC = () => {
-    // const rules = useRecoilValue(getRules);
+    // const rules = useRecoilValue(rulesState);
     // const deleteRule = useDeleteEntity();
     // const setViewRule = useViewRule();
     // const id = useRecoilValue(editRuleState);

@@ -1,18 +1,18 @@
 import { selector } from 'recoil';
 
-import { getGeneralScope } from '~/state/generalScopes';
+import { generalScopeState } from '~/state/generalScopes';
 
 import { GENERAL_SCOPES } from '~/constants';
 
 import { selectorKey } from '~/helpers/state';
 
-const getGeneralScopesCSS = selector<string>({
+const generalScopesStateCSS = selector<string>({
     key: selectorKey('GeneralScopes', 'CSS'),
     get: ({ get }) => {
         const scopes = GENERAL_SCOPES;
 
         const css = scopes.reduce((acc, name) => {
-            const generalScope = get(getGeneralScope(name))!;
+            const generalScope = get(generalScopeState(name))!;
             const {
                 id,
                 settings: { foreground },
@@ -34,4 +34,4 @@ const getGeneralScopesCSS = selector<string>({
     },
 });
 
-export default getGeneralScopesCSS;
+export default generalScopesStateCSS;

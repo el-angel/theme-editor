@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 
-import { getRules } from '~/state/rules';
+import { rulesState } from '~/state/rules';
 import { entitySettingsState } from '~/state/ui';
 
 // import { editRuleState } from '~/state/rules';
@@ -17,7 +17,7 @@ import { Rule as RuleType } from '~/types';
 const Rule: React.FC<RuleType> = props => {
     const { id, name, settings } = props;
     const viewEntity = useViewEntity();
-    const rules = useRecoilValue(getRules);
+    const rules = useRecoilValue(rulesState);
 
     const editingEntity = useRecoilValue(entitySettingsState);
 

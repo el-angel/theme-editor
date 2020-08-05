@@ -1,5 +1,6 @@
 import React from 'react';
-import { initialize } from '@anche/textmate-grammar-parser';
+import { initialize as initSemantic, Presets } from '@anche/semantic-tokens-utilities';
+import { initialize as initTextMate } from '@anche/textmate-utilities';
 import { RecoilRoot } from 'recoil';
 
 import { rawCode } from '~/state/code';
@@ -82,9 +83,12 @@ const App: React.FC = () => {
             body.setAttribute('style', `overflow: hidden`);
         }
 
+        // initialize fallback scopes for semantic highlighting
+        initSemantic(Presets.vscode);
+
         if (!ready) {
             (async (): Promise<void> => {
-                await initialize(ONIGASM_URL);
+                await initTextMate(ONIGASM_URL);
                 setReady(true);
             })();
         }

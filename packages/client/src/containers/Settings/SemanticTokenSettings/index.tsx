@@ -12,16 +12,6 @@ import useViewEntity from '~/hooks/useViewEntity';
 
 import { FontStyle as FontStyleEnum } from '~/constants';
 
-// import getExistingScopes from '~/helpers/getExistingScopes';
-
-// import css from './styles.module.scss';
-
-// const fontStyleMap = {
-//     [FontStyleEnum.Bold]: 'bold',
-//     [FontStyleEnum.Italic]: 'italic',
-//     [FontStyleEnum.Underline]: 'underline',
-// } as const;
-
 const SemanticTokenSettings: React.FC = () => {
     const editingEntity = useRecoilValue(entitySettingsState);
     const [entity, updateEntity] = useRecoilState(semanticTokenState(editingEntity?.id));

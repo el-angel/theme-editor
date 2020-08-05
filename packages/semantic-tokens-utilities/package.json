@@ -1,0 +1,72 @@
+{
+    "name": "@anche/semantic-tokens-utilities",
+    "version": "0.0.0",
+    "description": "Semantic Tokens Utilities",
+    "main": "lib/index.js",
+    "module": "lib/index.es.js",
+    "typings": "lib/semantic-tokens-utilities/src/index.d.ts",
+    "keywords": [
+        "semantic",
+        "highlighting",
+        "tokens",
+        "vscode",
+        "theme",
+        "grammar",
+        "parser"
+    ],
+    "author": "Angelo Abdoelsamath <angelo.a@me.com>",
+    "homepage": "https://github.com/el-angel/tmtheme-editor#readme",
+    "license": "MIT",
+    "directories": {
+        "lib": "lib",
+        "test": "__tests__"
+    },
+    "files": [
+        "lib"
+    ],
+    "publishConfig": {
+        "registry": "https://registry.yarnpkg.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/el-angel/tmtheme-editor.git"
+    },
+    "scripts": {
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "clean": "rimraf ./lib",
+        "prebuild": "yarn clean",
+        "build": "rollup -c",
+        "prepack": "yarn build",
+        "watch": "rollup --watch -c",
+        "typecheck": "tsc --noEmit",
+        "lint": "eslint src --ext .ts,.tsx .",
+        "precommit": "yarn test && tsc --noEmit --composite false && lint-staged"
+    },
+    "lint-staged": {
+        "src/**/*.{ts,tsx}": [
+            "pretty-quick --staged",
+            "eslint --fix"
+        ]
+    },
+    "bugs": {
+        "url": "https://github.com/el-angel/tmtheme-editor/issues"
+    },
+    "dependencies": {
+        "@anche/shared": "0.0.0",
+        "typescript": "^3.9.7",
+        "typescript-vscode-sh-plugin": "^0.6.14"
+    },
+    "devDependencies": {
+        "@rollup/plugin-commonjs": "^14.0.0",
+        "@rollup/plugin-node-resolve": "^8.4.0",
+        "@types/jest": "^26.0.5",
+        "@zerollup/ts-transform-paths": "^1.7.18",
+        "jest": "^26.1.0",
+        "rimraf": "^3.0.2",
+        "rollup": "^2.22.1",
+        "rollup-plugin-typescript2": "^0.27.1",
+        "ts-jest": "^26.1.3",
+        "ttypescript": "^1.5.10"
+    }
+}

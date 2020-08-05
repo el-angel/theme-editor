@@ -1,4 +1,4 @@
-import { ParserResult } from '@anche/semantic-highlighting-parser';
+import { SemanticTokensParserResult } from '@anche/semantic-tokens-utilities';
 
 import { BACKEND_URL } from '~/constants';
 
@@ -77,7 +77,7 @@ const api = new APIService();
 
 const API = {
     semanticTokensState: (body: { code: string; language: 'tsx' | 'ts' }) =>
-        api.post<ParserResult>('/sh', {
+        api.post<SemanticTokensParserResult>('/sh', {
             body: JSON.stringify(body),
         }),
 

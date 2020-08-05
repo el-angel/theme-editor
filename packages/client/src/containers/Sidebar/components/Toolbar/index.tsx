@@ -20,15 +20,7 @@ const Toolbar: React.FC = () => {
                     })}
                     onClick={(): void => setMode(EntityType.Rule)}
                 >
-                    Rules
-                </div>
-                <div
-                    className={cx(css.item, {
-                        [css.isActive]: currentMode === EntityType.GeneralScope,
-                    })}
-                    onClick={(): void => setMode(EntityType.GeneralScope)}
-                >
-                    General
+                    <span>Rules</span>
                 </div>
                 <div
                     className={cx(css.item, {
@@ -36,7 +28,15 @@ const Toolbar: React.FC = () => {
                     })}
                     onClick={(): void => setMode(EntityType.SemanticToken)}
                 >
-                    Semantic
+                    <span>Semantic</span>
+                </div>
+                <div
+                    className={cx(css.item, {
+                        [css.isActive]: currentMode === EntityType.GeneralScope,
+                    })}
+                    onClick={(): void => setMode(EntityType.GeneralScope)}
+                >
+                    <span>General</span>
                 </div>
             </div>
         </div>

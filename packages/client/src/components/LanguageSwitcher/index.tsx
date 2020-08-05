@@ -7,7 +7,7 @@ import { getModalState } from '~/state/modal';
 import Modal from '~/components/ui/Modal';
 import QuickInput from '~/components/ui/QuickInput';
 
-import { Languages } from '~/services/language';
+import { Languages } from '~/services/textmate';
 
 interface Option {
     value: keyof typeof Languages;

@@ -1,15 +1,14 @@
-import { TextMateParserResult } from '@anche/textmate-grammar-parser';
+import { TextMateParserResult } from '@anche/textmate-utilities';
 import { atom, selector } from 'recoil';
 
-import languageService from '~/services/language';
 import storage from '~/services/storage';
+import textmateService from '~/services/textmate';
 
 import { atomKey, selectorKey } from '~/helpers/state';
 
 import languageState from './language';
 
-const initCode = `
-import React from 'react';
+const initCode = `import React from 'react';
 import main from '~/state/main';
 import { getAll } from '~/helpers/getAll';
 import Button from '../../component/Button';
@@ -73,7 +72,7 @@ const parsedCode = selector<TextMateParserResult>({
     get: async ({ get }) => {
         const code = get(_rawCode);
         const language = get(languageState);
-        const response = await languageService.parse(code, language);
+        const response = await textmateService.parse(code, language);
 
         return response;
     },

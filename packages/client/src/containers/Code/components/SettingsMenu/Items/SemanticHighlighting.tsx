@@ -1,12 +1,9 @@
 import React from 'react';
 import cx from 'classnames';
-import { useRecoilCallback, useRecoilValue } from 'recoil';
 
-import { semanticState, States } from '~/state/semanticTokens';
+import { States, useSemanticHighlighting } from '~/state/semanticTokens';
 
 import SettingsMenuItem from '~/containers/Code/components/SettingsMenu/Item';
-
-import API from '~/services/api';
 
 import css from './styles.module.scss';
 
@@ -18,27 +15,12 @@ const classMap = {
 };
 
 const SemanticHighlighting: React.FC = () => {
-    const state = useRecoilValue(semanticState);
-    const toggleSemanticHighlighting = useRecoilCallback(({ set }) => (): void => {
-        if (state === States.Loading) {
-            return;
-        }
+    const [state, toggleSemanticHighlighting] = useSemanticHighlighting();
 
-        if (state === States.Active) {
-            set(semanticState, States.Inactive);
-            return;
-        }
-
-        set(semanticState, States.Loading);
-
-        API.ping()
-            .then(() => {
-                set(semanticState, States.Active);
-            })
-            .catch(() => {
-                set(semanticState, States.Enabled);
-            });
-    });
+    React.useEffect(() => {
+        toggleSemanticHighlighting(States.Active);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <SettingsMenuItem onClick={toggleSemanticHighlighting}>

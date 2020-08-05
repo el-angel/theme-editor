@@ -2,23 +2,27 @@ import { MutableSnapshot } from 'recoil';
 
 import { getGeneralScope } from '~/state/generalScopes';
 import { getRule, ruleIds } from '~/state/rules';
+import { semanticTokenIds, semanticTokenState } from '~/state/semanticTokens';
 import { themeStyle } from '~/state/theme';
 
 import { GENERAL_SCOPES } from '~/constants';
 
-import { Rule } from '~/types';
+import { Rule, SemanticToken } from '~/types';
 
 const resetState = async (snapshot: MutableSnapshot): Promise<void> => {
     snapshot.reset(themeStyle);
     GENERAL_SCOPES.map(name => snapshot.reset(getGeneralScope(name)));
 
     const ids = await snapshot.getPromise(ruleIds);
+    let length = ids.length,
+        i = 0;
 
-    ids.forEach(async id => {
+    for (i = 0; i < length; i++) {
+        const id = ids[i];
         const state = await snapshot.getPromise(getRule(id));
 
         if (state) {
-            const updatedRule: Rule = {
+            const updated: Rule = {
                 ...state,
                 __meta: {
                     ...state.__meta!,
@@ -26,11 +30,32 @@ const resetState = async (snapshot: MutableSnapshot): Promise<void> => {
                 },
             };
 
-            snapshot.set(getRule(id), updatedRule);
+            snapshot.set(getRule(id), updated);
         }
-    });
+    }
 
-    snapshot.set(ruleIds, []);
+    const tokenIds = await snapshot.getPromise(semanticTokenIds);
+    length = tokenIds.length;
+    i = 0;
+
+    for (let i = 0; i < length; i++) {
+        const id = ids[i];
+        const state = await snapshot.getPromise(semanticTokenState(id));
+
+        if (state) {
+            const updated: SemanticToken = {
+                ...state,
+                __meta: {
+                    ...state.__meta!,
+                    state: 'deleted',
+                },
+            };
+
+            snapshot.set(semanticTokenState(id), updated);
+        }
+    }
+
+    snapshot.set(semanticTokenIds, []);
 };
 
 export default resetState;

@@ -1,22 +1,23 @@
 {
   "files": {
-    "main.css": "/textmate-editor/static/css/main.5c6afd9f.chunk.css",
-    "main.js": "/textmate-editor/static/js/main.fbfbf591.chunk.js",
-    "main.js.map": "/textmate-editor/static/js/main.fbfbf591.chunk.js.map",
-    "runtime-main.js": "/textmate-editor/static/js/runtime-main.2300c17e.js",
-    "runtime-main.js.map": "/textmate-editor/static/js/runtime-main.2300c17e.js.map",
-    "static/js/2.6f8c5d60.chunk.js": "/textmate-editor/static/js/2.6f8c5d60.chunk.js",
-    "static/js/2.6f8c5d60.chunk.js.map": "/textmate-editor/static/js/2.6f8c5d60.chunk.js.map",
-    "index.html": "/textmate-editor/index.html",
-    "precache-manifest.e072c92ee3a5a26d25945acfafd64dc7.js": "/textmate-editor/precache-manifest.e072c92ee3a5a26d25945acfafd64dc7.js",
-    "service-worker.js": "/textmate-editor/service-worker.js",
-    "static/css/main.5c6afd9f.chunk.css.map": "/textmate-editor/static/css/main.5c6afd9f.chunk.css.map",
-    "static/js/2.6f8c5d60.chunk.js.LICENSE.txt": "/textmate-editor/static/js/2.6f8c5d60.chunk.js.LICENSE.txt"
+    "main.css": "/theme-editor/static/css/main.416d9b3c.chunk.css",
+    "main.js": "/theme-editor/static/js/main.b3a0874e.chunk.js",
+    "main.js.map": "/theme-editor/static/js/main.b3a0874e.chunk.js.map",
+    "runtime-main.js": "/theme-editor/static/js/runtime-main.5f0efb11.js",
+    "runtime-main.js.map": "/theme-editor/static/js/runtime-main.5f0efb11.js.map",
+    "static/js/2.a0ed23bc.chunk.js": "/theme-editor/static/js/2.a0ed23bc.chunk.js",
+    "static/js/2.a0ed23bc.chunk.js.map": "/theme-editor/static/js/2.a0ed23bc.chunk.js.map",
+    "index.html": "/theme-editor/index.html",
+    "precache-manifest.a1b86f0fe1b921f93815839bfcea46cb.js": "/theme-editor/precache-manifest.a1b86f0fe1b921f93815839bfcea46cb.js",
+    "service-worker.js": "/theme-editor/service-worker.js",
+    "static/css/main.416d9b3c.chunk.css.map": "/theme-editor/static/css/main.416d9b3c.chunk.css.map",
+    "static/js/2.a0ed23bc.chunk.js.LICENSE.txt": "/theme-editor/static/js/2.a0ed23bc.chunk.js.LICENSE.txt",
+    "static/js/main.b3a0874e.chunk.js.LICENSE.txt": "/theme-editor/static/js/main.b3a0874e.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.2300c17e.js",
-    "static/js/2.6f8c5d60.chunk.js",
-    "static/css/main.5c6afd9f.chunk.css",
-    "static/js/main.fbfbf591.chunk.js"
+    "static/js/runtime-main.5f0efb11.js",
+    "static/js/2.a0ed23bc.chunk.js",
+    "static/css/main.416d9b3c.chunk.css",
+    "static/js/main.b3a0874e.chunk.js"
   ]
 }

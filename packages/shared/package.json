@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "description": "> TODO: description",
     "author": "Angelo Abdoelsamath <angelo.a@me.com>",
-    "homepage": "https://github.com/el-angel/textmate-editor#readme",
+    "homepage": "https://github.com/el-angel/theme-editor#readme",
     "license": "MIT",
     "main": "src/index.ts",
     "types": "src/index.ts",
@@ -18,13 +18,13 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/el-angel/textmate-editor.git"
+        "url": "git+https://github.com/el-angel/theme-editor.git"
     },
     "scripts": {
         "test": "echo \"Error: run tests from root\" && exit 1"
     },
     "bugs": {
-        "url": "https://github.com/el-angel/textmate-editor/issues"
+        "url": "https://github.com/el-angel/theme-editor/issues"
     },
     "lint-staged": {
         "src/**/*.ts": [

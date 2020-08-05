@@ -15,7 +15,7 @@
         "parser"
     ],
     "author": "Angelo Abdoelsamath <angelo.a@me.com>",
-    "homepage": "https://github.com/el-angel/tmtheme-editor#readme",
+    "homepage": "https://github.com/el-angel/theme-editor#readme",
     "license": "MIT",
     "directories": {
         "lib": "lib",
@@ -29,7 +29,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/el-angel/tmtheme-editor.git"
+        "url": "git+https://github.com/el-angel/theme-editor.git"
     },
     "scripts": {
         "test": "jest",
@@ -50,7 +50,7 @@
         ]
     },
     "bugs": {
-        "url": "https://github.com/el-angel/tmtheme-editor/issues"
+        "url": "https://github.com/el-angel/theme-editor/issues"
     },
     "dependencies": {
         "@anche/shared": "0.0.0",

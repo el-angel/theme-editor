@@ -51,7 +51,7 @@ const createTheme = (opts: Options): Theme => ({
 const Export: React.FC = () => {
     const rules = useRecoilValue(getRules);
     const generalScopes = useRecoilValue(getGeneralScopes);
-    const name = 'by https://github.com/el-angel/tmtheme-editor';
+    const name = 'by https://github.com/el-angel/theme-editor';
     const type = useRecoilValue(themeStyle);
 
     const download = (): void => {

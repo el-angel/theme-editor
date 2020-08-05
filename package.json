@@ -2,7 +2,7 @@
     "name": "tmtheme-anche",
     "version": "1.0.0",
     "main": "index.js",
-    "repository": "git@github.com:el-angel/tmtheme-editor.git",
+    "repository": "git@github.com:el-angel/theme-editor.git",
     "author": "Angelo Abdoelsamath <angelo.a@me.com>",
     "license": "MIT",
     "workspaces": {

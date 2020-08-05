@@ -3,9 +3,9 @@
     "version": "0.1.0",
     "repository": {
         "type": "git",
-        "url": "https://github.com/el-angel/tmtheme-editor.git"
+        "url": "https://github.com/el-angel/theme-editor.git"
     },
-    "homepage": "https://el-angel.github.io/textmate-editor",
+    "homepage": "https://el-angel.github.io/theme-editor",
     "dependencies": {
         "@anche/textmate-utilities": "^0.0.0",
         "@material-ui/core": "^4.11.0",

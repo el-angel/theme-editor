@@ -51,7 +51,6 @@
         "url": "https://github.com/el-angel/theme-editor/issues"
     },
     "dependencies": {
-        "@anche/shared": "^1.0.0",
         "monaco-textmate": "^3.0.1",
         "onigasm": "^2.2.4"
     },

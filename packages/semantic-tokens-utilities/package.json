@@ -54,7 +54,6 @@
         "url": "https://github.com/el-angel/theme-editor/issues"
     },
     "dependencies": {
-        "@anche/shared": "^1.0.0",
         "typescript": "^3.9.7",
         "typescript-vscode-sh-plugin": "^0.6.14"
     },

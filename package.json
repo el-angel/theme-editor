@@ -20,7 +20,8 @@
         "p:server": "yarn workspace @anche/tmtheme-server",
         "p:client": "yarn workspace @anche/theme-editor",
         "p:textmate": "yarn workspace @anche/textmate-utilities",
-        "p:semantic": "yarn workspace @anche/semantic-tokens-utilities"
+        "p:semantic": "yarn workspace @anche/semantic-tokens-utilities",
+        "publish": "lerna publish --no-private"
     },
     "husky": {
         "hooks": {

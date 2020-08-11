@@ -30,9 +30,7 @@ const _default = selectorFamily({
             settings: {
                 foreground: defaults.color,
             },
-            __meta: {
-                type: EntityType.GeneralScope,
-            },
+            __type: EntityType.GeneralScope,
         };
     },
 });

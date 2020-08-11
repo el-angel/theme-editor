@@ -20,7 +20,7 @@ export const entitySettingsState = selector<Base | undefined>({
             return;
         }
 
-        set(mode, input.__meta.type);
+        set(mode, input.__type);
 
         set(_entitySettingsState, input);
     },

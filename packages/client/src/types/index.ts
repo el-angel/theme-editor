@@ -9,11 +9,7 @@ export interface Settings {
 }
 
 export interface StateMeta<T extends EntityType> {
-    __meta: {
-        state?: 'deleted';
-        touched?: boolean;
-        type: T;
-    };
+    __type: T;
 }
 
 export interface Base<T extends EntityType = EntityType> extends StateMeta<T> {

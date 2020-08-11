@@ -56,9 +56,7 @@ const createRule = (input: Partial<Rule>, options: Options): Rule => {
             foreground: input?.settings?.foreground || '#a0988a',
             fontStyle: input?.settings?.fontStyle || [],
         },
-        __meta: {
-            type: EntityType.Rule,
-        },
+        __type: EntityType.Rule,
     };
 
     return rule;

@@ -114,7 +114,6 @@ const Info: React.FC = () => {
                 type: EntityType.SemanticToken,
             });
 
-            console.log('semantic token added', entity);
             viewEntity(entity);
         }
     };

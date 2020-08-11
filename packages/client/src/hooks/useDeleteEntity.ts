@@ -7,13 +7,13 @@ import { entitySettingsState } from '~/state/ui';
 
 import { isRule, isSemanticToken } from '~/helpers/typeGuards';
 
-import { Entity, Rule, SemanticToken } from '~/types';
+import { Entity } from '~/types';
 
 type ReturnType = (input: Entity) => void;
 
 const useDeleteEntity = (): ReturnType => {
     const deleteEntity = useRecoilCallback(
-        ({ set, snapshot }) => async (input: Entity): Promise<void> => {
+        ({ set, snapshot, reset }) => async (input: Entity): Promise<void> => {
             const id = typeof input === 'string' ? input : input.id;
 
             const editEntity = await snapshot.getPromise(entitySettingsState);
@@ -33,21 +33,9 @@ const useDeleteEntity = (): ReturnType => {
                 throw new Error(`${input.id} cannot be deleted.`);
             }
 
-            const stateValue = await snapshot.getPromise<Rule | SemanticToken>(getter(input.id));
+            reset(getter(input.id));
 
-            if (stateValue) {
-                const deletedEntity = {
-                    ...stateValue,
-                    __meta: {
-                        ...stateValue.__meta!,
-                        state: 'deleted',
-                    },
-                };
-
-                set(getter(input.id), deletedEntity);
-            }
-
-            if (editEntity?.id === id && currentMode === editEntity.__meta.type) {
+            if (editEntity?.id === id && currentMode === editEntity.__type) {
                 set(entitySettingsState, undefined);
             }
         },

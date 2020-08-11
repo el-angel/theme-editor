@@ -80,22 +80,10 @@ const factory = <T extends Base>(opts: Options<T>) => {
                 return;
             }
 
-            if (input instanceof DefaultValue) {
-                set(_state(id), input);
-                return;
-            }
-
-            const entity = _state(id);
-
             const idArr = get(entityIds);
 
-            // new entity
-            if (!idArr.includes(id)) {
-                set(entityIds, [...idArr, id]);
-            }
-
-            // delete entity
-            if (input?.__meta?.state === 'deleted') {
+            if (input instanceof DefaultValue) {
+                set(_state(id), input);
                 set(
                     entityIds,
                     idArr.filter(_id => _id !== id),
@@ -108,13 +96,17 @@ const factory = <T extends Base>(opts: Options<T>) => {
                 return;
             }
 
+            const entity = _state(id);
+
+            // new entity
+            if (!idArr.includes(id)) {
+                set(entityIds, [...idArr, id]);
+            }
+
             set(entity, {
                 ...input,
                 id,
-                __meta: {
-                    touched: true,
-                    ...input.__meta,
-                },
+                __type: input.__type,
             });
 
             /**

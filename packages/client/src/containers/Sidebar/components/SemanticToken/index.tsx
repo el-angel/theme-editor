@@ -16,8 +16,7 @@ const SemanticToken: React.FC<SemanticTokenType> = props => {
     const viewEntity = useViewEntity();
     const editingEntity = useRecoilValue(entitySettingsState);
 
-    const isActive =
-        editingEntity?.id === id && editingEntity.__meta.type === EntityType.SemanticToken;
+    const isActive = editingEntity?.id === id && editingEntity.__type === EntityType.SemanticToken;
 
     return (
         <SidebarItem

@@ -19,9 +19,7 @@ const {
             foreground: '#000000',
             fontStyle: [],
         },
-        __meta: {
-            type: EntityType.Rule,
-        },
+        __type: EntityType.Rule,
     },
 });
 

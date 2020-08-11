@@ -35,9 +35,7 @@ const createSemanticToken = (
             foreground: input?.settings?.foreground || '#a0988a',
             fontStyle: input?.settings?.fontStyle || [],
         },
-        __meta: {
-            type: EntityType.SemanticToken,
-        },
+        __type: EntityType.SemanticToken,
     };
 
     return token;
